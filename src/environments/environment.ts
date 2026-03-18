@@ -2,9 +2,8 @@ export const environment = {
     production: true,
     test: false,
     menu: 1,
-    apiURL: 'https://erpservice-prod.azurewebsites.net/api/',
-    sgaURL:'http://192.168.0.204:100/',
-    signalrNotificationURL: 'https://erpservice-prod.azurewebsites.net/notificationHub/',
+    apiURL: 'https://api-back-dev-f0fcgne4h7cbbvg0.canadacentral-01.azurewebsites.net/api/',
+  //  signalrNotificationURL: 'https://erpservice-prod.azurewebsites.net/notificationHub/',
     name: 'Prod'
   };
   
