@@ -3,7 +3,7 @@ export const environment = {
     test: false,
     menu: 1,
     apiURL: 'https://api-back-dev-f0fcgne4h7cbbvg0.canadacentral-01.azurewebsites.net/api/',
-  //  signalrNotificationURL: 'https://erpservice-prod.azurewebsites.net/notificationHub/',
+    signalrNotificationURL: '',
     name: 'Prod'
   };
   
