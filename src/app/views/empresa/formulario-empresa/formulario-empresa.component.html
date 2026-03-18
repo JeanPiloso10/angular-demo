@@ -1,0 +1,569 @@
+<div class="animate__animated animate__fadeIn">
+    <form cForm [formGroup]="form">
+        <div class="right-z-index-top-toolbar" [ngStyle]="{'top': '0px'}">
+            <ejs-toolbar height="25px" width='100%'>
+                <e-items>
+                    <e-item text='Nuevo' [disabled]="!estadoBotones.btnNuevo" tooltipText='Grabar - Alt+N'
+                        prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow'
+                        (click)="nuevoRegistro()"></e-item>
+                    <e-item text='Modificar' [disabled]="!estadoBotones.btnModificar" tooltipText='Grabar - Alt+M'
+                        prefixIcon='e-icons e-edit' overflow='Show' showTextOn='overflow'
+                        (click)="modificarRegistro()"></e-item>
+                    <e-item text='Grabar' [disabled]="!this.estadoBotones.btnGrabar" tooltipText='Grabar - Alt+G'
+                        prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow'
+                        (click)="guardarCambios()"></e-item>
+                    <e-item id="btnAuditoria" text='Auditoria' (click)="getAuditoria()" [disabled]="!estadoBotones.btnAuditoria" 
+                            prefixIcon='e-icons e-clock' overflow='Show' showTextOn='overflow'></e-item>
+                    <e-item text='Cancelar' [disabled]="!this.estadoBotones.btnCancelar" tooltipText='Cancelar - Alt+C'
+                        prefixIcon='e-icons e-undo' overflow='Show' showTextOn='overflow' (click)="cancelar()"></e-item>
+                </e-items>
+            </ejs-toolbar>
+        </div>
+        <br />
+        <c-row>
+            <c-col lg="12" class="pb-3">
+                <c-card>
+                    <c-card-header>
+                        <c-row class="mt-2">
+                            <c-col lg="2">
+                                <label cLabel>Código</label>
+                                <input cFormControl sizing="sm" formControlName="codigo"
+                                    (keyup.enter)="enfocarSiguienteCampo('codigo')" style="text-transform: uppercase;"
+                                    [ngClass]="{'is-invalid': isInvalid('codigo')}" #codigo>
+                                <c-form-feedback [ngClass]="{'is-invalid': isInvalid('codigo')}">
+                                    {{ obtenerError('codigo') }}
+                                </c-form-feedback>
+                            </c-col>
+                            <c-col lg="6">
+                                <label cLabel>Nombre</label>
+                                <input cFormControl sizing="sm" formControlName="descripcion"
+                                    (keyup.enter)="enfocarSiguienteCampo('descripcion')"
+                                    style="text-transform: uppercase;"
+                                    [ngClass]="{'is-invalid': isInvalid('descripcion')}" #descripcion>
+                                <c-form-feedback [ngClass]="{'is-invalid': isInvalid('descripcion')}">
+                                    {{ obtenerError('descripcion') }}
+                                </c-form-feedback>
+                            </c-col>
+                            <c-col lg="2">
+                                <label cLabel>Ruc</label>
+                                <input cFormControl sizing="sm" formControlName="ruc"
+                                    (keyup.enter)="enfocarSiguienteCampo('ruc')" style="text-transform: uppercase;"
+                                    [ngClass]="{'is-invalid': isInvalid('ruc')}" #ruc>
+                                <c-form-feedback [ngClass]="{'is-invalid': isInvalid('ruc')}">
+                                    {{ obtenerError('ruc') }}
+                                </c-form-feedback>
+                            </c-col>
+                        </c-row>
+                        <c-row>
+                            <c-col lg="4" class="mt-2">
+                                <c-form-check [switch]="true">
+                                    <input cFormCheckInput type="checkbox" #activo id="activo" formControlName="activo"
+                                        (keyup.enter)="enfocarSiguienteCampo('activo')" />
+                                    <label [ngClass]="{ 'bold': form.get('activo').value }" #lblEstado
+                                        cFormCheckLabel>Activo</label>
+                                </c-form-check>
+                            </c-col>
+                        </c-row>
+                    </c-card-header>
+                    <c-card-body>
+                        <c-row class="mt-2">
+                            <c-col xs="12">
+                                <c-nav variant="pills">
+                                    <c-nav-item>
+                                        <a id="tabInformacionGeneral" [tabPaneIdx]="0" [cTabContent]="tabContent1"
+                                            (click)="toggleCollapse()" cNavLink>
+                                            <svg cIcon class="me-2" name="cilSettings"></svg>
+                                            Información General
+                                        </a>
+                                    </c-nav-item>
+                                    <c-nav-item>
+                                        <a id="tabRepresentanteLegal" [tabPaneIdx]="1" [cTabContent]="tabContent1"
+                                            cNavLink>
+                                            <svg cIcon class="me-2" name="cilBookmark"></svg>
+                                            Representante legal
+                                        </a>
+                                    </c-nav-item>
+                                    <c-nav-item>
+                                        <a id="tabContador" [cTabContent]="tabContent1" [tabPaneIdx]="2" cNavLink>
+                                            <svg cIcon class="me-2" name="cilAddressBook"></svg>
+                                            Contador
+                                        </a>
+                                    </c-nav-item>
+                                    <c-nav-item>
+                                        <a id="tabInformacionTributaria" [cTabContent]="tabContent1" [tabPaneIdx]="3" cNavLink>
+                                            <svg cIcon class="me-2" name="cilFolder"></svg>
+                                            Información Tributaria
+                                        </a>
+                                    </c-nav-item>
+                                </c-nav>
+                                <c-tab-content #tabContent1="cTabContent" [activeTabPaneIdx]="activeTabPaneIdx"
+                                    cRounded="bottom">
+                                    <!-- Información General -->
+                                    <c-tab-pane class="p-3 preview">
+                                        <c-row class="mt-2">
+                                            <c-col lg="4">
+                                                <label cLabel>Grupo Empresa</label>
+                                                <ejs-combobox id='grupoEmpresa' #grupoEmpresa [allowCustom]="false"
+                                                    (filtering)='onFilteringGrupoEmpresa($event)' formControlName="grupoEmpresa"
+                                                    (change)="onChangeGrupoEmpresa($event)"
+                                                    (keyup.enter)="enfocarSiguienteCampo('grupoEmpresa')" [allowFiltering]='true'
+                                                    [dataSource]='cbGrupoEmpresa' [fields]='localFieldsGrupoEmpresa'
+                                                    [ngClass]="{'is-invalid':form.get('grupoEmpresa').invalid && form.get('grupoEmpresa').touched}"></ejs-combobox>
+                                                <c-form-feedback
+                                                    [ngClass]="{'is-invalid': form.get('grupoEmpresa').invalid && form.get('grupoEmpresa').touched}">
+                                                    {{ obtenerError('grupoEmpresa') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="4">
+                                                <label cLabel>Razón Social</label>
+                                                <input cFormControl sizing="sm" formControlName="razonSocial"
+                                                    (keyup.enter)="enfocarSiguienteCampo('razonSocial')"
+                                                    style="text-transform: uppercase;"
+                                                    [ngClass]="{'is-invalid': isInvalid('razonSocial')}" #razonSocial>
+                                                <c-form-feedback [ngClass]="{'is-invalid': isInvalid('razonSocial')}">
+                                                    {{ obtenerError('razonSocial') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="4">
+                                                <label cLabel>Nombre Comercial</label>
+                                                <input cFormControl sizing="sm" formControlName="nombreComercial"
+                                                    (keyup.enter)="enfocarSiguienteCampo('nombreComercial')"
+                                                    style="text-transform: uppercase;"
+                                                    [ngClass]="{'is-invalid': isInvalid('nombreComercial')}" #nombreComercial>
+                                                <c-form-feedback [ngClass]="{'is-invalid': isInvalid('nombreComercial')}">
+                                                    {{ obtenerError('nombreComercial') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                        </c-row>
+
+                                        <c-row class="mt-2">
+                                            <c-col lg="4">
+                                                <label cLabel>Plan de Cuenta:</label>
+                                                <ejs-combobox id='planCuenta' #planCuenta [allowCustom]="false"
+                                                    (filtering)='onFilteringPlanCuenta($event)' formControlName="planCuenta"
+                                                    (change)="onChangePlanCuenta($event)" [allowFiltering]='true'
+                                                    [dataSource]='cbPlanCuenta' [fields]='localFieldsPlanCuenta'
+                                                    [ngClass]="{'is-invalid':form.get('planCuenta').invalid && form.get('planCuenta').touched}"></ejs-combobox>
+                                                <c-form-feedback
+                                                    [ngClass]="{'is-invalid': form.get('planCuenta').invalid && form.get('planCuenta').touched}">
+                                                    {{ obtenerError('planCuenta') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="4">
+                                                <label cLabel>Tipo Dato:</label>
+                                                <ejs-combobox id='codigoTipoDato' #codigoTipoDato [allowCustom]="false"
+                                                    (filtering)='onFilteringTipoDato($event)' formControlName="codigoTipoDato"
+                                                    [allowFiltering]='true' [dataSource]='cbTipoDatos'
+                                                    (keyup.enter)="enfocarSiguienteCampo('codigoTipoDato')"
+                                                    [fields]='localFieldsTipoDato'
+                                                    [ngClass]="{'is-invalid':form.get('codigoTipoDato').invalid && form.get('codigoTipoDato').touched}"></ejs-combobox>
+                                                <c-form-feedback
+                                                    [ngClass]="{'is-invalid': form.get('codigoTipoDato').invalid && form.get('codigoTipoDato').touched}">
+                                                    {{ obtenerError('codigoTipoDato') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="4">
+                                                <c-row>
+                                                    <c-col>
+                                                        <label cLabel>Día</label>
+                                                        <input type="number" cFormControl #dia sizing="sm" id="dia"
+                                                            (keyup.enter)="enfocarSiguienteCampo('dia')" formControlName="dia"
+                                                            [ngClass]="{'is-invalid': isInvalid('dia')}">
+                                                    </c-col>
+                                                    <c-col>
+                                                        <label cLabel>Mes</label>
+                                                        <input type="number" cFormControl #mes sizing="sm" id="mes"
+                                                            (keyup.enter)="enfocarSiguienteCampo('mes')" formControlName="mes"
+                                                            [ngClass]="{'is-invalid': isInvalid('dia')}">
+                                                    </c-col>
+                                                    <c-col>
+                                                        <label cLabel>Año</label>
+                                                        <input type="number" cFormControl #anio sizing="sm" id="anio"
+                                                            (keyup.enter)="enfocarSiguienteCampo('anio')" formControlName="anio"
+                                                            [ngClass]="{'is-invalid': isInvalid('dia')}">
+                                                    </c-col>
+                                                </c-row>
+                                                <div class="text-danger small mt-1" *ngIf="isInvalid('dia')">
+                                                    {{ obtenerError('dia') }}
+                                                </div>
+                                            </c-col>
+                                        </c-row>
+                                        <c-row class="mt-2">
+                                            <c-col lg="4">
+                                                <label cLabel>Cuenta Cierre:</label>
+                                                <ejs-combobox id='cuentaContableCierre' #cuentaContableCierre [allowCustom]="false"
+                                                    (filtering)="debouncedGetCuentasContables($event)"
+                                                    formControlName="cuentaContableCierre" [allowFiltering]='true'
+                                                    [dataSource]='cbCuentasContablesByPlanCuenta'
+                                                    (keyup.enter)="enfocarSiguienteCampo('cuentaContableCierre')"
+                                                    [fields]='localFieldsCuentaContable'
+                                                    [ngClass]="{'is-invalid':form.get('cuentaContableCierre').invalid && form.get('cuentaContableCierre').touched}"></ejs-combobox>
+                                                <c-form-feedback
+                                                    [ngClass]="{'is-invalid': form.get('cuentaContableCierre').invalid && form.get('cuentaContableCierre').touched}">
+                                                    {{ obtenerError('cuentaContableCierre') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="4">
+                                                <label cLabel>Fax</label>
+                                                <input #fax cFormControl sizing="sm" formControlName="fax"
+                                                    style="text-transform: uppercase;" (keyup.enter)="enfocarSiguienteCampo('fax')">
+                                            </c-col>
+                                            <c-col lg="4">
+                                                <label cLabel for="telefonos">Telefono</label>
+                                                <ejs-multiselect id="telefonos" class="heightBoostrap" [allowCustomValue]="true"
+                                                    [mode]="box" #telefonos [noRecordsTemplate]="noRecordsTemplate"
+                                                    formControlName="telefonos"></ejs-multiselect>
+                                                <ng-template #noRecordsTemplate></ng-template>
+                                            </c-col>
+                                        </c-row>
+                                        <c-row>
+                                            <c-col lg="4">
+                                                <label cLabel for="emails">Email</label>
+                                                <ejs-multiselect id="emails" class="heightBoostrap" [allowCustomValue]="true"
+                                                    [mode]="box" #emails [noRecordsTemplate]="noRecordsTemplate"
+                                                    formControlName="emails"></ejs-multiselect>
+                                            </c-col>
+                                        </c-row>
+                                    </c-tab-pane>
+                                    <!-- Representante Legal -->
+                                    <c-tab-pane class="p-3 preview">
+                                        <c-row class="mt-2">
+                                            <c-col lg="6">
+                                                <label cLabel>Nombre</label>
+                                                <input cFormControl sizing="sm"
+                                                    formControlName="descripcionRepresentanteLegal"
+                                                    style="text-transform: uppercase;"
+                                                    (keyup.enter)="enfocarSiguienteCampo('descripcionRepresentanteLegal')"
+                                                    [ngClass]="{'is-invalid': isInvalid('descripcionRepresentanteLegal')}"
+                                                    #descripcionRepresentanteLegal>
+                                                <c-form-feedback
+                                                    [ngClass]="{'is-invalid': isInvalid('descripcionRepresentanteLegal')}">
+                                                    {{ obtenerError('descripcionRepresentanteLegal') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="3">
+                                                <label cLabel>Tipo de Identificación</label>
+                                                <ejs-combobox id="idTipoIdentificacionRepresentanteLegal"
+                                                    [allowCustom]="false" [allowFiltering]="false"
+                                                    #idTipoIdentificacionRepresentanteLegal
+                                                    (keyup.enter)="enfocarSiguienteCampo('idTipoIdentificacionRepresentanteLegal')"
+                                                    data-next-control-id="idTipoIdentificacionRepresentanteLegal"
+                                                    [dataSource]="cbTiposIdentificacion"
+                                                    [fields]="fieldsTipoIdentificacion" [placeholder]="waterMark"
+                                                    formControlName="idTipoIdentificacionRepresentanteLegal"
+                                                    (change)="changeTipoIdentificacion($event)"
+                                                    [ngClass]="{'is-invalid':form.get('idTipoIdentificacionRepresentanteLegal').invalid && form.get('idTipoIdentificacionRepresentanteLegal').touched}"></ejs-combobox>
+                                                <c-form-feedback
+                                                    [ngClass]="{'is-invalid': form.get('idTipoIdentificacionRepresentanteLegal').invalid && form.get('idTipoIdentificacionRepresentanteLegal').touched}">
+                                                    {{ obtenerError('idTipoIdentificacionRepresentanteLegal') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="3">
+                                                <label cLabel for="numeroRepresentanteLegal">Identificación</label>
+                                                <input cFormControl #numeroRepresentanteLegal
+                                                    id="numeroRepresentanteLegal" type="text"
+                                                    (keyup.enter)="enfocarSiguienteCampo('numeroRepresentanteLegal')"
+                                                    data-next-control-id="numeroRepresentanteLegal" sizing="sm"
+                                                    formControlName="numeroRepresentanteLegal"
+                                                    [ngClass]="{'is-invalid': form.get('numeroRepresentanteLegal').invalid && form.get('numeroRepresentanteLegal').touched}" />
+                                                <c-form-feedback
+                                                    [ngClass]="{'is-invalid': form.get('numeroRepresentanteLegal').invalid && form.get('numeroRepresentanteLegal').touched}">
+                                                    {{ obtenerError('numeroRepresentanteLegal') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                        </c-row>
+                                    </c-tab-pane>
+                                    <!-- Contador -->
+                                    <c-tab-pane class="p-3 preview" role="tabpanel">
+
+                                        <c-row>
+                                            <c-col lg="6">
+                                                <label cLabel>Nombre</label>
+                                                <input cFormControl sizing="sm" formControlName="descripcionContador"
+                                                    style="text-transform: uppercase;"
+                                                    [ngClass]="{'is-invalid': isInvalid('descripcionContador')}"
+                                                    (keyup.enter)="enfocarSiguienteCampo('descripcionContador')"
+                                                    #descripcionContador>
+                                                <c-form-feedback
+                                                    [ngClass]="{'is-invalid': isInvalid('descripcionContador')}">
+                                                    {{ obtenerError('descripcionContador') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="3">
+                                                <label cLabel>Ruc</label>
+                                                <input cFormControl #rucContador id="rucContador" type="text"
+                                                    data-next-control-id="rucContador" sizing="sm"
+                                                    formControlName="rucContador" #ruc
+                                                    (keyup.enter)="enfocarSiguienteCampo('rucContador')"
+                                                    [ngClass]="{'is-invalid': form.get('rucContador').invalid && form.get('rucContador').touched}" />
+                                                <c-form-feedback
+                                                    [ngClass]="{'is-invalid': form.get('rucContador').invalid && form.get('rucContador').touched}">
+                                                    {{ obtenerError('rucContador') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="3">
+                                                <label cLabel for="registroProfesionalContador">Registro
+                                                    Profesional</label>
+                                                <input cFormControl #registroProfesionalContador
+                                                    (keyup.enter)="enfocarSiguienteCampo('registroProfesionalContador')"
+                                                    id="registroProfesionalContador" type="text"
+                                                    data-next-control-id="registroProfesionalContador" sizing="sm"
+                                                    formControlName="registroProfesionalContador" />
+
+                                            </c-col>
+
+                                        </c-row>
+                                    </c-tab-pane>
+                                    <!-- Información Tributaria -->
+                                    <c-tab-pane class="p-3 preview" role="tabpanel">
+                                        <c-row>
+                                            <c-col lg="3" class="mt-3">
+                                                <span>
+                                                    <c-form-check [switch]="true">
+                                                        <input cFormCheckInput type="checkbox" #esContribuyenteEspecial
+                                                            id="esContribuyenteEspecial"
+                                                            formControlName="esContribuyenteEspecial"
+                                                            (keyup.enter)="enfocarSiguienteCampo('esContribuyenteEspecial')"
+                                                            (change)="onChangeContribuyenteEspecial($event)" />
+                                                        <label cFormCheckLabel
+                                                            for='esContribuyenteEspecial'>Contribuyente Especial</label>
+                                                    </c-form-check>
+                                                </span>
+                                                <span>
+                                                    <c-form-check [switch]="true">
+                                                        <input cFormCheckInput type="checkbox" #recibeDevolucionIva
+                                                            id="recibeDevolucionIva"
+                                                            formControlName="recibeDevolucionIva"
+                                                            (keyup.enter)="enfocarSiguienteCampo('recibeDevolucionIva')" />
+                                                        <label cFormCheckLabel for='recibeDevolucionIva'>Recibe
+                                                            Devolución Iva</label>
+                                                    </c-form-check>
+                                                </span>
+                                            </c-col>
+                                            <c-col lg="3">
+                                                <label cLabel>Nº Resolución.</label>
+                                                <input cFormControl sizing="sm"
+                                                    formControlName="numeroResolucionContribuyenteEspecial"
+                                                    style="text-transform: uppercase;"
+                                                    (keyup.enter)="enfocarSiguienteCampo('numeroResolucionContribuyenteEspecial')"
+                                                    [ngClass]="{'is-invalid': isInvalid('numeroResolucionContribuyenteEspecial')}"
+                                                    #numeroResolucionContribuyenteEspecial>
+                                                <c-form-feedback
+                                                    [ngClass]="{'is-invalid': isInvalid('numeroResolucionContribuyenteEspecial')}">
+                                                    {{ obtenerError('numeroResolucionContribuyenteEspecial') }}
+                                                </c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="3">
+                                                <label cLabel>Fecha</label>
+                                                <input type="date" cFormControl #fechaResolucionContribuyenteEspecial
+                                                    sizing="sm"
+                                                    (keyup.enter)="enfocarSiguienteCampo('fechaResolucionContribuyenteEspecial')"
+                                                    id="fechaResolucionContribuyenteEspecial"
+                                                    formControlName="fechaResolucionContribuyenteEspecial">
+                                            </c-col>
+                                            <c-col lg="3">
+                                                <label cLabel>Declara SRI</label>
+                                                <ejs-combobox id='declaraSri' #declaraSri [allowCustom]="true"
+                                                    (filtering)='onFilteringTiposAnexos($event)'
+                                                    formControlName="declaraSri" [allowFiltering]='true'
+                                                    [dataSource]='cbTiposAnexos'
+                                                    (keyup.enter)="enfocarSiguienteCampo('declaraSri')"
+                                                    [fields]='localFieldsTipoAnexos'></ejs-combobox>
+                                            </c-col>
+
+                                        </c-row>
+                                        <c-card class="mt-2">
+                                            <c-card-header>
+                                                Tipos documentos a Emitir
+                                            </c-card-header>
+                                            <c-card-body>
+                                                <c-row class="mt-2 mb-4">
+                                                    <c-col lg="4">
+                                                        <label cLabel>Tipo Ambiente(Solo Dcto Electrónico)</label>
+                                                        <ejs-combobox id='tipoAmbienteEmisionDctoElectronico'
+                                                            #tipoAmbienteEmisionDctoElectronico [allowCustom]="false"
+                                                            (filtering)='onFilteringTiposAmbientesDocumentos($event)'
+                                                            formControlName="tipoAmbienteEmisionDctoElectronico"
+                                                            [allowFiltering]='true'
+                                                            (keyup.enter)="enfocarSiguienteCampo('tipoAmbienteEmisionDctoElectronico')"
+                                                            [dataSource]='cbTiposAmbienteDocumentos'
+                                                            [fields]='localFieldsTipoAmbienteDocumentos'></ejs-combobox>
+                                                    </c-col>
+                                                    <c-col lg="4">
+                                                        <label cLabel>Factura</label>
+                                                        <ejs-combobox id='emisionDocFactura' #emisionDocFactura
+                                                            [allowCustom]="false"
+                                                            (filtering)='onFilteringTipoEmisionDocumentos($event)'
+                                                            formControlName="emisionDocFactura" [allowFiltering]='true'
+                                                            (keyup.enter)="enfocarSiguienteCampo('emisionDocFactura')"
+                                                            [dataSource]='cbTiposEmisionDocumentos'
+                                                            [fields]='localFieldsTipoEmisionDocumento'></ejs-combobox>
+                                                    </c-col>
+                                                    <c-col lg="4">
+                                                        <label cLabel>Guía Remisión</label>
+                                                        <ejs-combobox id='emisionDocGuiaRemision'
+                                                            #emisionDocGuiaRemision [allowCustom]="false"
+                                                            (filtering)='onFilteringTipoEmisionDocumentos($event)'
+                                                            formControlName="emisionDocGuiaRemision"
+                                                            [allowFiltering]='true'
+                                                            (keyup.enter)="enfocarSiguienteCampo('emisionDocGuiaRemision')"
+                                                            [dataSource]='cbTiposEmisionDocumentos'
+                                                            [fields]='localFieldsTipoEmisionDocumento'></ejs-combobox>
+                                                    </c-col>
+                                                </c-row>
+                                                <c-row class="mt-2 mb-4">
+                                                    <c-col lg="4">
+                                                        <label cLabel>Nota Crédito/Débito</label>
+                                                        <ejs-combobox id='emisionDocNotaCreditoDebito'
+                                                            #emisionDocNotaCreditoDebito [allowCustom]="true"
+                                                            (filtering)='onFilteringTipoEmisionDocumentos($event)'
+                                                            (keyup.enter)="enfocarSiguienteCampo('emisionDocNotaCreditoDebito')"
+                                                            formControlName="emisionDocNotaCreditoDebito"
+                                                            [allowFiltering]='true'
+                                                            [dataSource]='cbTiposEmisionDocumentos'
+                                                            [fields]='localFieldsTipoEmisionDocumento'></ejs-combobox>
+                                                    </c-col>
+                                                    <c-col lg="4">
+                                                        <label cLabel>Liquidación de Compras</label>
+                                                        <ejs-combobox id='emisionDocLiquidacionCompra'
+                                                            #emisionDocLiquidacionCompra [allowCustom]="true"
+                                                            (filtering)='onFilteringTipoEmisionDocumentos($event)'
+                                                            formControlName="emisionDocLiquidacionCompra"
+                                                            [allowFiltering]='true'
+                                                            (keyup.enter)="enfocarSiguienteCampo('emisionDocLiquidacionCompra')"
+                                                            [dataSource]='cbTiposEmisionDocumentos'
+                                                            [fields]='localFieldsTipoEmisionDocumento'></ejs-combobox>
+                                                    </c-col>
+                                                    <c-col lg="4">
+                                                        <label cLabel>Retención</label>
+                                                        <ejs-combobox id='emisionDocRetencion' #emisionDocRetencion
+                                                            [allowCustom]="false"
+                                                            (filtering)='onFilteringTipoEmisionDocumentos($event)'
+                                                            formControlName="emisionDocRetencion"
+                                                            [allowFiltering]='true'
+                                                            (keyup.enter)="enfocarSiguienteCampo('emisionDocRetencion')"
+                                                            [dataSource]='cbTiposEmisionDocumentos'
+                                                            [fields]='localFieldsTipoEmisionDocumento'></ejs-combobox>
+                                                    </c-col>
+                                                </c-row>
+                                            </c-card-body>
+                                        </c-card>
+
+                                    </c-tab-pane>
+                                </c-tab-content>
+                            </c-col>
+                        </c-row>
+                        
+                        <br />
+                        <div style="text-align: left;">
+
+                            <c-nav variant="tabs">
+                                <c-nav-item>
+                                    <a [cTabContent]="tabContent3" [tabPaneIdx]="0" cNavLink>
+                                        <svg cIcon class="me-2" name="cilBadge"></svg>
+                                        Sucursal
+                                    </a>
+                                </c-nav-item>
+                                <c-nav-item>
+                                    <a [cTabContent]="tabContent3" [tabPaneIdx]="1" cNavLink>
+                                        <svg cIcon class="me-2" name="cilBuilding"></svg>
+                                        Socio negocio
+                                    </a>
+                                </c-nav-item>
+
+                            </c-nav>
+                            <c-tab-content #tabContent3="cTabContent" cRounded="bottom" [activeTabPaneIdx]="0">
+                                <c-tab-pane class="p-3 preview" role="tabpanel">
+                                    <c-row>
+                                        <c-col lg="3">
+                                            <button type="button" [disabled]="!estadoBotones.btnAgregarSucursal"
+                                                class="btn btn-primary btn-sm" #agregarSucursal
+                                                (click)="modalSucursal(TipoAccion.Create,null)">
+                                                <svg cIcon name="cilPlus" size="lg" title="List Icon" class="mr-2">
+
+                                                </svg>Agregar Sucursal</button>
+                                        </c-col>
+
+                                    </c-row>
+                                    <br>
+                                    <c-row>
+                                        <ejs-grid #gridSucursal [dataSource]='filteredListadoSucursal'
+                                            [pageSettings]='pageOption' [allowSorting]='true' [allowResizing]="true"
+                                            (commandClick)="commandClick($event)" [editSettings]='editSettings'>
+                                            <e-columns>
+                                                <e-column field='idSucursal' headerText='Id' [visible]="false"
+                                                    width='75' [showInColumnChooser]="false" textAlign='center'
+                                                    [isPrimaryKey]="true"></e-column>
+                                                <e-column headerText="" width="80" textAlign='center'
+                                                    [showInColumnChooser]="false" [commands]="commands"></e-column>
+
+                                                <e-column field='codigoEmpresa' [visible]="false"
+                                                    headerText='Código Empresa'></e-column>
+                                                <e-column field='codigoDivision'
+                                                    headerText='Código División'></e-column>
+                                                <e-column field='codigoSucursal'
+                                                    headerText='Código Sucursal'></e-column>
+                                                <e-column field='descripcion' headerText='Descripción'></e-column>
+                                                <e-column headerText="Activo" textAlign='center'>
+                                                    <ng-template #template let-data>
+                                                        <input type="checkbox" [checked]="data.activo"
+                                                            (change)="onActivoChange($event, data)" />
+                                                    </ng-template>
+                                                </e-column>
+                                            </e-columns>
+                                        </ejs-grid>
+                                    </c-row>
+
+                                </c-tab-pane>
+                                <c-tab-pane class="p-3 preview">
+                                    <app-socio-negocio-shared [modelo]='this.modelo' [StateEnum]="this.StateEnum">
+                                    </app-socio-negocio-shared>
+                                </c-tab-pane>
+                            </c-tab-content>
+
+
+
+
+                        </div>
+
+                    </c-card-body>
+                    <br />
+                    <c-card-footer *ngIf="mostrarAuditoria">
+                        <div class="row">
+                            <c-col lg="2">
+                                <label cLabel>Creado Por:</label>
+                                <input cFormControl id="usuarioCreacion" sizing="sm" type="text"
+                                    formControlName="usuarioCreacion" autocomplete="off">
+                            </c-col>
+                            <c-col lg="2">
+                                <label cLabel>Fecha Crea:</label>
+                                <input cFormControl id="fechaCreacion" sizing="sm" type="text"
+                                    formControlName="fechaCreacion" autocomplete="off">
+                            </c-col>
+                            <c-col lg="2">
+                                <label cLabel>Equipo Crea:</label>
+                                <input cFormControl id="equipoCreacion" sizing="sm" type="text"
+                                    formControlName="equipoCreacion" autocomplete="off">
+                            </c-col>
+                            <c-col lg="2">
+                                <label cLabel>Modificado Por:</label>
+                                <input cFormControl id="usuarioModificacion" sizing="sm" type="text"
+                                    formControlName="usuarioModificacion" autocomplete="off">
+                            </c-col>
+                            <c-col lg="2">
+                                <label cLabel>Fecha Modifica:</label>
+                                <input cFormControl id="fechaModificacion" sizing="sm" type="text"
+                                    formControlName="fechaModificacion" autocomplete="off">
+                            </c-col>
+                            <c-col lg="2">
+                                <label cLabel>Equipo Modifica:</label>
+                                <input cFormControl id="equipoModificacion" sizing="sm" type="text"
+                                    formControlName="equipoModificacion" autocomplete="off">
+                            </c-col>
+                        </div>
+                    </c-card-footer>
+                </c-card>
+            </c-col>
+        </c-row>
+    </form>
+</div>

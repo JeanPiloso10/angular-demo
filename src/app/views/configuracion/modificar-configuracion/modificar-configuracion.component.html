@@ -1,0 +1,20 @@
+
+
+
+   
+        <div class="modal-header">
+            <h4 class="modal-title">Modificar Configuración</h4>
+            <button type="button" (click)="cerrar()" cButtonClose>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <app-formulario-configuracion
+            *ngIf="modelo"
+            [errores]="errores"
+            [modelo]="modelo"
+            [StateEnum]="StateEnum" 
+            (onSubmit)="guardarCambios($event)"></app-formulario-configuracion>
+            
+
+        </div>  

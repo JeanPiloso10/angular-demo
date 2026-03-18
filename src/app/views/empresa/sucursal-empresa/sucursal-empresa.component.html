@@ -1,0 +1,60 @@
+<div class="animate__animated animate__fadeIn">
+    <form [formGroup]="Form" autocomplete="off">
+
+        <c-card>
+            <div class="modal-header">
+                <h4 class="modal-title">Sucursal</h4>
+                <button type="button" (click)="cerrar()" cButtonClose>
+                </button>
+            </div>
+            <c-card-body>
+                <c-row class="mt-2">
+                    <c-col lg="12">
+                        <label cLabel>Codigo Sucursal</label>
+                        <input 
+                        #codigoSucursal
+                        cFormControl id="codigoSucursal" sizing="sm" style="text-transform: uppercase;" maxlength="6" type="text" formControlName="codigoSucursal" autocomplete="off"
+                        [ngClass]="{ 'is-invalid': Form.get('codigoSucursal').invalid && Form.get('codigoSucursal').touched}"> 
+                        <c-form-feedback
+                        [ngClass]="{ 'is-invalid': Form.get('codigoSucursal').invalid && Form.get('codigoSucursal').touched}">{{obtenerError('codigoSucursal')}}</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mt-2">
+                    <c-col lg="12">
+                        <label cLabel>Codigo División</label>
+                        <input cFormControl id="codigoDivision" style="text-transform: uppercase;" sizing="sm"  maxlength="6" type="text" formControlName="codigoDivision" autocomplete="off"
+                        [ngClass]="{ 'is-invalid': Form.get('codigoDivision').invalid && Form.get('codigoDivision').touched}"> 
+                        <c-form-feedback
+                        [ngClass]="{ 'is-invalid': Form.get('codigoDivision').invalid && Form.get('codigoDivision').touched}">{{obtenerError('codigoDivision')}}</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mt-2">
+                    <c-col lg="12">
+                        <label cLabel>Descripción Sucursal</label>
+                        <input 
+                        #descripcion
+                        cFormControl id="descripcion" style="text-transform: uppercase;" sizing="sm" type="text" formControlName="descripcion" autocomplete="off"
+                        [ngClass]="{ 'is-invalid': Form.get('descripcion').invalid && Form.get('descripcion').touched}"> 
+                        <c-form-feedback
+                        [ngClass]="{ 'is-invalid': Form.get('descripcion').invalid && Form.get('descripcion').touched}">{{obtenerError('descripcion')}}</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mt-2">
+                    <c-col lg="12">
+                        <c-form-check [switch]="true">
+                            <input cFormCheckInput type="checkbox" #activo id="activo" formControlName="activo" />
+                            <label [ngClass]="{ 'bold': Form.get('activo').value }" cFormCheckLabel>Activo</label>
+                        </c-form-check>
+                    </c-col>
+                    </c-row>
+            </c-card-body>
+            <c-card-footer>
+                <c-button-group aria-label="" role="group">
+                    <a cButton color="primary" (click)="aceptar()">
+                        Aceptar
+                    </a>
+                </c-button-group>
+            </c-card-footer>
+        </c-card>
+    </form>
+</div>

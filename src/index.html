@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+* ERP Corporativo Powered by CoreUI - Angular 18.1 Free Admin Template
+* @version v5.2.5
+* @link https://coreui.io/angular/
+-->
+<html lang="es" translate="no" class="notranslate">
+<head>
+  <meta charset="utf-8">
+  <base href="./">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport" />
+  <meta content="" name="description" />
+  <meta content="" name="author" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="googlebot" content="noindex, nofollow" />
+  <meta name="google-site-verification" content="google3286e21cb948cf92" />
+  <meta name="google" content="notranslate" />
+  <meta http-equiv="Content-Language" content="es" />
+  <meta
+    content=""
+    name="keyword"
+  />
+
+  <link href="assets/favicon_logo2.ico" rel="icon" type="image/x-icon">
+  <!-- Highlight.js CSS - carga asíncrona para no bloquear el render -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/atom-one-dark.min.css"></noscript>
+
+  <title>Wave ERP</title>
+  
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+
+<div id="erp-spinner-container" style="width:100%;height:100%;" class="custom-rolling"></div>
+<app-root>
+  <div class="fade show" style="text-align: center; padding-top: calc(100vh / 2); height: 100vh">
+    <i class="spinner-grow spinner-grow-sm"></i>
+    <span class="m-1">Loading...</span>    
+  </div>
+</app-root>
+
+<!-- Highlight.js JS Library - carga diferida para no bloquear -->
+<script>
+  // Cargar Highlight.js de forma diferida después de que la página esté lista
+  function cargarHighlightJs() {
+    setTimeout(function() {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js';
+      script.async = true;
+      script.onload = function() {
+        // Solo aplicar highlight a elementos existentes con código
+        if (typeof hljs !== 'undefined') {
+          document.querySelectorAll('pre code').forEach(function(block) {
+            hljs.highlightElement(block);
+          });
+        }
+      };
+      document.head.appendChild(script);
+    }, 2000);
+  }
+  
+  // Verificar si load ya ocurrió (SPA rápida) o esperar el evento
+  if (document.readyState === 'complete') {
+    cargarHighlightJs();
+  } else {
+    window.addEventListener('load', cargarHighlightJs);
+  }
+</script>
+
+
+</body>
+</html>

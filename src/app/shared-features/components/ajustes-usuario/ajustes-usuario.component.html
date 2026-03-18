@@ -1,0 +1,68 @@
+
+<form  cForm [formGroup]="Form">
+    <c-card>
+        <div class="modal-header">
+            <h4 class="modal-title">Ajustes de Usuario</h4>
+            <button type="button" (click)="cerrar()" cButtonClose>
+            </button>
+        </div>
+                                                    
+    <c-card-body>
+        <c-row>
+            <c-col>
+                <label cLabel>Empresa por defecto</label>
+                <ejs-combobox id='sucursal' #sucursal 
+                [allowCustom]="allowCustom"
+                [dataSource]='cbsucursal' 
+                formControlName="sucursal"
+                [fields]='localFieldsSucursal' 
+                allowFiltering="true" 
+                (filtering)='onFilteringSucursal($event)'
+                [ngClass]="{ 'is-invalid': Form.get('sucursal').invalid && Form.get('sucursal').touched}"></ejs-combobox>
+                <c-form-feedback
+                    [ngClass]="{ 'is-invalid': Form.get('sucursal').invalid && Form.get('sucursal').touched}">{{obtenerError('sucursal')}}</c-form-feedback>
+            </c-col>
+        </c-row>
+        <br/>
+        <c-row>
+            <c-col>
+                <label cLabel>Recibir notificaciones al correo electrónico</label>
+                <c-form-check [switch]="true">
+                    <input cFormCheckInput type="checkbox" id="notificaCorreo" formControlName="notificaCorreo"  />
+                    <label #lblEstadoNotificaCorreo id="lblEstadoNotificaCorreo" cFormCheckLabel></label>
+                </c-form-check>      
+            </c-col>
+        </c-row>
+        <br/>
+        <c-row>
+            <c-col>
+                <label cLabel>Mostrar mensaje de confirmación antes de aprobar</label>
+                <c-form-check [switch]="true">
+                    <input cFormCheckInput type="checkbox" id="solicitaConfirmacion" formControlName="solicitaConfirmacion"  />
+                    <label #lblSolicitaConfirmacion id="lblSolicitaConfirmacion" cFormCheckLabel></label>
+                </c-form-check>      
+            </c-col>
+        </c-row>
+        
+            
+    </c-card-body>
+          <c-card-footer>
+    
+            <c-button-group  role="group">
+                <button (click)="grabar()" [disabled]="Form.invalid || loading" cButton color="primary" >
+                    <c-spinner [hidden]="!loading" component="span" size="sm"></c-spinner>
+                    Guardar
+                </button>    
+                <a cButton color="secondary" variant="outline" (click)="cerrar()">
+                    Cerrar
+                </a>    
+            </c-button-group>
+           
+            
+          </c-card-footer>
+    
+    </c-card>
+    
+        
+    </form>
+    

@@ -1,0 +1,361 @@
+// Import SCSS locales con @use
+@use "charts";
+@use "scrollbar";
+
+// Estilos personalizados
+.calendar-cell.today {
+  --cui-calendar-cell-today-color: var(--cui-info) !important;
+}
+
+.select-week .calendar-row.current {
+  cursor: pointer;
+}
+
+.show-spinner .spinner {
+  display: block;
+}
+
+.spinner {
+  display: none;
+}
+
+.custom-button {
+  display: flex;
+  align-items: center;
+}
+
+.main-form {
+  margin: 10px;
+}
+
+.right-z-index-top-toolbar {
+  position: sticky;
+  z-index: var(--cui-zindex-sticky, 1020); // Asegúrate de que esto tenga sentido o usa $zindex-sticky si lo reexportas
+  top: 112px;
+  width: 100%;
+  height: 25px;
+  margin-top: 0;
+  padding: 0px;
+  border-radius: 0;
+}
+
+// Gradiente sutil sobre los botones de la toolbar (items) sin cambiar el color del tema
+// Aplica a los botones internos que usan clases de Syncfusion: .e-tbar-btn / .e-btn
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item .e-tbar-btn,
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item .e-btn {
+  // Capa de gradiente encima del background-color provisto por el tema
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0) 55%);
+  background-repeat: no-repeat;
+  // background-blend-mode: overlay; // opcional si deseas otra mezcla
+}
+
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item .e-tbar-btn:hover,
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item .e-btn:hover {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0) 55%);
+}
+
+// Estado activo / presionado o seleccionado (toggle)
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item .e-tbar-btn:active,
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item .e-btn:active,
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item .e-tbar-btn.e-active,
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item .e-btn.e-active {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 40%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0) 60%);
+}
+
+// Estado deshabilitado (no tocar color del tema, solo atenuar un poco el efecto)
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item.e-overlay .e-tbar-btn,
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item.e-overlay .e-btn,
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item .e-tbar-btn:disabled,
+.right-z-index-top-toolbar .e-toolbar .e-toolbar-item .e-btn:disabled {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0) 55%);
+}
+
+// Gradiente sutil en toolbars del Grid de Syncfusion
+// Cubre los botones internos de la toolbar del grid (.e-tbar-btn / .e-btn)
+.e-grid .e-toolbar .e-toolbar-item .e-tbar-btn,
+.e-grid .e-toolbar .e-toolbar-item .e-btn {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0) 55%);
+  background-repeat: no-repeat;
+}
+
+.e-grid .e-toolbar .e-toolbar-item .e-tbar-btn:hover,
+.e-grid .e-toolbar .e-toolbar-item .e-btn:hover {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0) 55%);
+}
+
+// Estado activo / presionado o seleccionado en toolbar de grid
+.e-grid .e-toolbar .e-toolbar-item .e-tbar-btn:active,
+.e-grid .e-toolbar .e-toolbar-item .e-btn:active,
+.e-grid .e-toolbar .e-toolbar-item .e-tbar-btn.e-active,
+.e-grid .e-toolbar .e-toolbar-item .e-btn.e-active {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 40%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0) 60%);
+}
+
+// Estado deshabilitado en toolbar de grid
+.e-grid .e-toolbar .e-toolbar-item.e-overlay .e-tbar-btn,
+.e-grid .e-toolbar .e-toolbar-item.e-overlay .e-btn,
+.e-grid .e-toolbar .e-toolbar-item .e-tbar-btn:disabled,
+.e-grid .e-toolbar .e-toolbar-item .e-btn:disabled {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0) 55%);
+}
+
+// Opcional: aplicar el mismo efecto a los botones del paginador del grid
+.e-grid .e-pager .e-btn {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0) 55%);
+  background-repeat: no-repeat;
+}
+
+.e-grid .e-pager .e-btn:hover {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0) 55%);
+}
+
+.e-grid .e-pager .e-btn:active,
+.e-grid .e-pager .e-btn.e-active {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 40%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0) 60%);
+}
+
+.e-grid .e-pager .e-btn:disabled,
+.e-grid .e-pager .e-disable .e-btn {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0) 55%);
+}
+
+.sidebar {
+  font-size: 80% !important;
+}
+
+.e-toolbar .e-tbar-btn {
+  line-height: 1.4 !important;
+  cursor: pointer !important;
+}
+
+#erp-spinner-container .e-spinner-pane {
+  z-index: 11000 !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.chip-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chip-badge {
+  padding: 30px;
+  margin-right: 0.5rem;
+  background-color: green !important;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.close-icon {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  padding: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.chip-badge:hover {
+  background-color: #0056b3;
+}
+.tooltip .tooltip-inner,
+.tooltip-inner {
+  white-space: pre-line !important;
+  text-align: left !important;     
+  width: max-content;
+  max-width: 80vw;
+}
+
+//Se utiliza para que se visualice todo el texto del combox de synfusion
+.e-ddl.e-popup {
+  width: auto !important;  
+  max-width: 900px;         
+}
+
+.e-ddl.e-popup .e-list-item,
+.e-ddl.e-popup .e-list-text {
+  white-space: normal !important; 
+  height: auto;
+  line-height: 1.25;
+}
+
+
+/** Estilos para botones */
+.large-button {
+  font-size: 15px !important;  /* Tamaño del texto del botón */
+  padding: 2px 8px !important;  /* Espacio dentro del botón: arriba/abajo y izquierda/derecha */
+  height: 30px !important;  /* Altura del botón */
+  width: auto !important;  /* Ancho automático del botón */
+  line-height: 1.5 !important;  /* Alineación vertical del texto */
+  margin: 2px;
+}
+
+.large-button.e-small {
+  padding: 3px 8px !important;  /* Sobrescribir el padding de e-small */
+  font-size: 16px !important;  /* Ajustar el tamaño del texto */
+}
+
+.large-button.e-icons {
+  font-size: 15px !important;  /* Aumenta el tamaño del icono */
+}
+
+.largeNegar-button {
+  font-size: 15px !important;  /* Tamaño del texto del botón */
+  padding: 2px 8px !important;  /* Espacio dentro del botón: arriba/abajo y izquierda/derecha */
+  height: 30px !important;  /* Altura del botón */
+  width: auto !important;  /* Ancho automático del botón */
+  line-height: 1.5 !important;  /* Alineación vertical del texto */
+  margin: 2px;
+  background-color: red !important;
+  border-color: white !important;
+}
+
+.largeNegar-button.e-small {
+  padding: 3px 8px !important;  /* Sobrescribir el padding de e-small */
+  font-size: 16px !important;  /* Ajustar el tamaño del texto */
+}
+
+.largeNegar-button.e-icons {
+  font-size: 15px !important;  /* Aumenta el tamaño del icono */
+  color: white !important;
+}
+
+.largeAprobar-button {
+  font-size: 15px !important;  /* Tamaño del texto del botón */
+  padding: 2px 8px !important;  /* Espacio dentro del botón: arriba/abajo y izquierda/derecha */
+  height: 30px !important;  /* Altura del botón */
+  width: auto !important;  /* Ancho automático del botón */
+  line-height: 1.5 !important;  /* Alineación vertical del texto */
+  font-family: inherit !important;
+  margin: 2px;
+  background-color: #5856d6 !important;
+  // border-color: white;
+}
+
+.largeAprobar-button.e-small {
+  padding: 3px 8px !important;  /* Sobrescribir el padding de e-small */
+  font-size: 16px !important;  /* Ajustar el tamaño del texto */
+}
+
+.largeAprobar-button.e-icons {
+  font-size: 15px !important;  /* Aumenta el tamaño del icono */
+  color: white !important;
+}
+
+.largeRevisar-button {
+  font-size: 15px !important;  /* Tamaño del texto del botón */
+  padding: 2px 8px !important;  /* Espacio dentro del botón: arriba/abajo y izquierda/derecha */
+  height: 30px !important;  /* Altura del botón */
+  width: auto !important;  /* Ancho automático del botón */
+  line-height: 1.5 !important;  /* Alineación vertical del texto */
+  font-family: inherit !important;
+  margin: 2px;
+  background-color: #007bff !important;
+  // border-color: white;
+}
+
+.largeRevisar-button.e-small {
+  padding: 3px 8px !important;  /* Sobrescribir el padding de e-small */
+  font-size: 16px !important;  /* Ajustar el tamaño del texto */
+}
+
+.largeRevisar-button.e-icons {
+  font-size: 15px !important;  /* Aumenta el tamaño del icono */
+  color: white !important;
+}
+
+
+.largeQuitarAprobado-button {
+  font-size: 15px !important;  /* Tamaño del texto del botón */
+  padding: 2px 8px !important;  /* Espacio dentro del botón: arriba/abajo y izquierda/derecha */
+  height: 30px !important;  /* Altura del botón */
+  width: auto !important;  /* Ancho automático del botón */
+  line-height: 1.5 !important;  /* Alineación vertical del texto */
+  margin: 2px;
+  background-color: #28a745;
+  border-color: white;
+}
+
+.largeQuitarAprobado-button.e-small {
+  padding: 3px 8px !important;  /* Sobrescribir el padding de e-small */
+  font-size: 16px !important;  /* Ajustar el tamaño del texto */
+}
+
+.largeQuitarAprobado-button.e-icons {
+  font-size: 15px !important;  /* Aumenta el tamaño del icono */
+  color: white;
+}
+
+.ejs-grid .e-spinner-pane,
+.e-grid .e-spinner-pane {
+  display: none !important;
+}
+/** Final de estilos para botones*/
+
+// --- Resizable table columns ---
+// Handle appended inside <th> by the resizable columns directive
+.table-resize-handle {
+  position: absolute;
+  top: 0;
+  right: -3px; // slightly outside to make it easier to hit
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+  z-index: 2;
+}
+
+// Improve visual feedback when hovering the resize area
+th:hover .table-resize-handle {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+// Se quita el padding extra en tablas (small tables)
+table[cTable] th,
+table[cTable] td {
+  padding: 1px 1px !important;
+  vertical-align: middle;
+}
+
+// Se quita el padding extra en los combobox dentro de tablas small
+table[cTable] td ejs-combobox.e-control.e-combobox.e-lib {
+  padding: 1px 1px !important;   // quita el padding del host del combo
+  margin: 0 !important;
+  display: block;
+}

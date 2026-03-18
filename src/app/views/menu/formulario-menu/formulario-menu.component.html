@@ -1,0 +1,90 @@
+
+<div class="animate__animated animate__fadeIn">
+    <form cForm
+    [formGroup]="form">
+
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px"  width='100%'>
+            <e-items>
+                <e-item text='Grabar' tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()" ></e-item>
+                <e-item text='Cancelar' tooltipText='Cancelar - Alt+C' prefixIcon='e-icons e-undo' overflow='Show' showTextOn='overflow' (click)="cancelar()"  ></e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>   
+    
+    <br/>
+
+    <c-row >
+        <c-col md="6" lg="6" xl="6">
+            <c-card >
+                <c-card-body>                                                    
+                        <c-col [hidden]="true">
+                            <label cLabel >Id</label>
+                        </c-col>
+                        
+                        <c-col >
+                            <label cLabel >Nombre</label>
+                            <input sizing="sm" 
+                            [ngClass]="{ 'is-invalid': form.get('nombre').invalid && form.get('nombre').touched }"
+                            cFormControl type="nombre" formControlName="nombre" type="text" #nombre/>
+                            <c-form-feedback [valid]="form.get('nombre').valid && form.get('nombre').touched">{{obtenerError('nombre')}}</c-form-feedback>
+                        </c-col>
+
+                        <c-col>
+                            <label cLabel >Url</label>
+                            <input cFormControl sizing="sm" formControlName="url" type="text" #url/>
+                        </c-col>
+
+                        <c-col >
+                            <label cLabel >Icono</label>
+                            <input cFormControl sizing="sm" formControlName="icono" type="text" #icono/>
+                        </c-col>
+                        
+
+                        <c-col >
+                            <label cLabel >Orden</label>
+                            <input cFormControl sizing="sm" formControlName="orden" type="number" #orden/>
+                        </c-col>
+
+                        <c-col>
+                            <label cLabel >Transacción/Operación</label>
+                            <ejs-combobox id='idOperacionTransaccion' #idOperacionTransaccion
+                                    [dataSource]='listadoOperacionTransaccion' 
+                                    [fields]='fieldsOperacionTransaccion'
+                                    [allowCustom]="false"
+                                    allowFiltering="true"
+                                    [placeholder]='placeholder' 
+                                    formControlName="idOperacionTransaccion"
+                                    [ngClass]="{ 'is-invalid':  form.get('idOperacionTransaccion').invalid &&  form.get('idOperacionTransaccion').touched}">
+                                </ejs-combobox>
+                                <c-form-feedback
+                                    [ngClass]="{ 'is-invalid':  form.get('idOperacionTransaccion').invalid &&  form.get('idOperacionTransaccion').touched}">
+                                    {{ obtenerError('idOperacionTransaccion') }}
+                                </c-form-feedback>                         
+                        </c-col>
+
+                        <c-col>
+                            <label cLabel >Menú Padre</label>                                                     
+                            <input id="default" />
+
+                        </c-col>
+
+                       
+                        
+
+                        <br/>
+
+                        <c-form-check [switch]="true">
+                            <input cFormCheckInput sizing="sm" type="checkbox" id="activo" formControlName="activo"  />
+                            <label #lblEstado id="lblEstado" cFormCheckLabel></label>
+                        </c-form-check>                    
+                    
+                        <br/>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row> 
+    </form> 
+</div>
+
+

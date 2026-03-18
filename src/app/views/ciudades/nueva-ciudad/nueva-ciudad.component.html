@@ -1,0 +1,10 @@
+<div class="modal-header">
+    <h4 class="modal-title">Nueva Ciudad</h4>
+    <button type="button" (click)="cerrar()" cButtonClose>
+    </button>
+</div>
+<div class="modal-body">
+    <app-formulario-ciudad [isModal]="true" [errores]="errores" [StateEnum]="StateEnum"
+        [modelo]="codigoProvincia ? { codigoProvincia: codigoProvincia } : null"
+        (onSubmit)="guardarCambios($event)"></app-formulario-ciudad>
+</div>

@@ -1,0 +1,16 @@
+
+  <div class="modal-body">
+        
+    <div ejs-chatui
+        #chatui
+        [headerText]="'Asistente de IA'"
+        [user]="user"
+        [messages]="messages"
+        (messageSend)="onMessageSend($event)"
+        [showTimeStamp]="true"
+        [showTimeBreak]="true"
+        [autoScrollToBottom]="true"
+        placeholder="Escribe tu mensaje...">
+    </div>
+
+  </div>

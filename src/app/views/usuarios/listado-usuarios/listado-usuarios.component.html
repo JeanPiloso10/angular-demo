@@ -1,0 +1,84 @@
+<div class="animate__animated animate__fadeIn">
+  <div class="right-z-index-top-toolbar">
+    <ejs-toolbar height="25px" width='100%'>
+      <e-items>
+        <e-item text='Nuevo' tooltipText='Nuevo - Alt+N' prefixIcon='e-icons e-plus' overflow='Show'
+          showTextOn='overflow' (click)="nuevoRegistro()"></e-item>
+      </e-items>
+    </ejs-toolbar>
+  </div>
+  <br />
+
+  <ejs-grid #grid [dataSource]='data' [allowPaging]="true" [appDragScroll]="{ selector: '.e-content', axis: 'x' }"
+  allowResizing="true"
+  [allowTextWrap]="true"
+  [allowFiltering]='true'
+  [filterSettings]='filterSettings'
+  [pageSettings]='pageSettings'
+  [allowSorting]='true' 
+  [allowExcelExport]="true"
+  [toolbar]="toolbar" 
+  [showColumnChooser]="true"
+  enableStickyHeader=true 
+  (toolbarClick)='clickHandler($event)'
+  (commandClick)="commandClick($event)" 
+  [editSettings]='editSettings'>
+    <e-columns>
+      <e-column headerText="" width="150" [commands]="commands"></e-column>
+      <e-column field='id' headerText='Id' width='120' textAlign='Right' [visible]="false"
+        [isPrimaryKey]="true"></e-column>
+      <e-column field='twoFactorEnabled' headerText='2F Auth' width='100' textAlign='Center'>
+        <ng-template #template let-item>
+          @if(item.twoFactorEnabled === true) {
+          <span (click)="disableA2F(item.id);$event.preventDefault();" class="badge bg-success me-1"
+            style="cursor: pointer;">SÍ</span>
+          }@else {
+          <span class="badge bg-warning me-1">NO</span>
+          }
+        </ng-template>
+      </e-column>
+      <e-column field='userName' headerText='UserName' width='130'></e-column>
+      <e-column field='fullName' headerText='Nombre Completo' width='120'></e-column>
+      <e-column field='email' headerText='E-Mail' width='130'></e-column>
+      <e-column field='emailConfirmed' headerText='E-Mail Confirmado' width='120' textAlign='Center'>
+        <ng-template #template let-item>
+          @if(item.emailConfirmed === true) {
+          <span class="badge bg-success me-1">SÍ</span>
+          }@else {
+          <span class="badge bg-warning me-1">NO</span>
+          }
+        </ng-template>
+      </e-column>
+      <e-column field='roleNames' headerText='Roles' width='200' textAlign='Center'>
+        <ng-template #template e-template let-data>
+          <ng-container *ngFor="let role of transformToBadgeArray(data.roleNames)">
+            <span class="badge bg-primary me-1">{{ role }}</span>
+          </ng-container>
+        </ng-template>
+      </e-column>
+      <e-column field='areaNames' headerText='Areas' width='200' textAlign='Center' 
+      tooltip='true' title='Área predeterminada'>
+        <ng-template #template e-template let-data title='Área predeterminada t'>
+          <ng-container *ngFor="let area of transformToBadgeArray(data.areaNames)">
+            @if(area === data.areaPredeterminada){
+            <span class="badge bg-success me-1" title='Área predeterminada'>{{area}}</span>
+            }@else {
+            <span class="badge bg-primary me-1">{{area}}</span>
+            }
+          </ng-container>
+        </ng-template>
+      </e-column>
+      <e-column field='phoneNumber' headerText='Fono' width='120'></e-column>
+      <e-column field='status' headerText='Activo' width='120'>
+        <ng-template #template let-item>
+          @if(item.status === true) {
+          <span class="badge bg-success me-1">SÍ</span>
+          }@else {
+          <span class="badge bg-warning me-1">NO</span>
+          }
+        </ng-template>
+      </e-column>
+    </e-columns>
+  </ejs-grid>
+
+</div>

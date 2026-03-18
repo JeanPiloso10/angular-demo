@@ -1,0 +1,230 @@
+<div class="animate__animated animate__fadeIn">
+  <form cForm [formGroup]="form">
+
+    <!-- ═══ BARRA DE HERRAMIENTAS ═══ -->
+    <div class="right-z-index-top-toolbar">
+      <ejs-toolbar height="25px" width="100%">
+        <e-items>
+          <e-item text="Nuevo" [disabled]="!estadoBotones.btnNuevo" tooltipText="Nuevo - Alt+N"
+                  prefixIcon="e-icons e-plus" overflow="Show" showTextOn="overflow"
+                  (click)="nuevoRegistro()"></e-item>
+          <e-item text="Modificar" [disabled]="!estadoBotones.btnModificar" tooltipText="Modificar - Alt+M"
+                  prefixIcon="e-icons e-edit" overflow="Show" showTextOn="overflow"
+                  (click)="modificarRegistro()"></e-item>
+          <e-item text="Grabar" [disabled]="!estadoBotones.btnGrabar"
+                  tooltipText="Grabar - Alt+G"
+                  prefixIcon="e-icons e-save" overflow="Show" showTextOn="overflow"
+                  (click)="guardarCambios()"></e-item>
+          <e-item text="Cancelar" tooltipText="Cancelar - Alt+C"
+                  prefixIcon="e-icons e-undo" overflow="Show" showTextOn="overflow"
+                  (click)="cancelar()"></e-item>
+          <e-item text="Set Password" [disabled]="!estadoBotones.btnSetPassword"
+                  tooltipText="Cambiar contraseña del usuario"
+                  prefixIcon="e-icons e-lock" overflow="Show" showTextOn="overflow"
+                  (click)="abrirSetPassword()"></e-item>
+          <e-item text="Desactivar 2FA" [disabled]="!estadoBotones.btnDesactivar2FA"
+                  tooltipText="Desactivar autenticación de doble factor"
+                  prefixIcon="e-icons e-close" overflow="Show" showTextOn="overflow"
+                  (click)="desactivar2FA()"></e-item>
+          <e-item text="Copiar Permisos" [disabled]="!estadoBotones.btnCopiarPermisos"
+                  tooltipText="Copiar permisos de otro usuario"
+                  prefixIcon="e-icons e-copy" overflow="Show" showTextOn="overflow"
+                  (click)="abrirCopiarPermisos()"></e-item>
+          <e-item type="Separator"></e-item>
+          <e-item text="Asignación Masiva" tooltipText="Asignar sucursales/bodegas a múltiples usuarios"
+                  prefixIcon="e-icons e-people" overflow="Show" showTextOn="overflow"
+                  (click)="irAsignacionMasiva()"></e-item>
+          <e-item text="Listado" tooltipText="Ir al listado de usuarios"
+                  prefixIcon="e-icons e-list-unordered" overflow="Show" showTextOn="overflow"
+                  (click)="irListadoUsuarios()"></e-item>
+        </e-items>
+      </ejs-toolbar>
+    </div>
+
+    <br />
+
+    <c-row>
+      <!-- ═══════════════════════════════════════════════ -->
+      <!--  COLUMNA IZQUIERDA: DATOS DEL USUARIO          -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <c-col md="6" lg="6" xl="6">
+        <c-card>
+          <c-card-header>
+            <strong>Datos del Usuario</strong>
+          </c-card-header>
+          <c-card-body>
+
+            <!-- Username -->
+            <c-col>
+              <label cLabel>Username</label>
+              @if (StateEnum === tipoAccion.Read) {
+                <ejs-combobox id="UserName" formControlName="UserName"
+                             [allowCustom]="true" [allowFiltering]="true"
+                             (filtering)="debouncedGetUsuario($event)"
+                             (change)="onUsuarioChange($event)"
+                             (keyup.enter)="onEnterKeyPressed()"
+                             #UserNameCombo
+                             [dataSource]="cbUsuarios"
+                             [fields]="fieldsUsuario"
+                             placeholder="Buscar usuario..."
+                             [ngClass]="{ 'is-invalid': form.get('UserName')!.invalid && form.get('UserName')!.touched }">
+                </ejs-combobox>
+              } @else {
+                <c-input-group>
+                  <input sizing="sm" cFormControl formControlName="UserName" type="text"
+                         (keydown.enter)="onEnterKeyPressed()"
+                         [ngClass]="{ 'is-invalid': form.get('UserName')!.invalid && form.get('UserName')!.touched }"
+                         #UserName />
+                  <button cButton color="secondary" type="button" variant="outline" class="btn btn-sm"
+                          (click)="onEnterKeyPressed()"
+                          [disabled]="!estadoBotones.btnConsultar">
+                    <svg cIcon class="me-1" name="cilSearch"></svg>
+                  </button>
+                </c-input-group>
+              }
+              <c-form-feedback [valid]="form.get('UserName')!.valid && form.get('UserName')!.touched && form.get('UserName')!.enabled">
+                {{ obtenerError('UserName') }}
+              </c-form-feedback>
+            </c-col>
+
+            <!-- Email -->
+            <c-col>
+              <label cLabel>Email</label>
+              <input sizing="sm" cFormControl type="email" formControlName="Email"
+                     [ngClass]="{ 'is-invalid': form.get('Email')!.invalid && form.get('Email')!.touched }" />
+              <c-form-feedback [valid]="form.get('Email')!.valid && form.get('Email')!.touched">
+                {{ obtenerError('Email') }}
+              </c-form-feedback>
+            </c-col>
+
+            <!-- Teléfono -->
+            <c-col>
+              <label cLabel>Teléfono</label>
+              <input cFormControl sizing="sm" formControlName="PhoneNumber" type="text" />
+            </c-col>
+
+            <!-- Nombre Completo -->
+            <c-col>
+              <label cLabel>Nombre Completo</label>
+              <input sizing="sm" cFormControl formControlName="FullName" type="text"
+                     [ngClass]="{ 'is-invalid': form.get('FullName')!.invalid && form.get('FullName')!.touched }" />
+              <c-form-feedback [valid]="form.get('FullName')!.valid && form.get('FullName')!.touched">
+                {{ obtenerError('FullName') }}
+              </c-form-feedback>
+            </c-col>
+
+            <!-- Roles + Botón crear rol -->
+            <c-col>
+              <div class="d-flex align-items-center justify-content-between">
+                <label cLabel>Roles</label>
+                <button type="button" cButton size="sm"
+                        class="p-0 px-1" title="Crear nuevo rol"
+                        (click)="abrirCrearRol()"
+                        [disabled]="StateEnum === tipoAccion.Read">
+                  <svg cIcon name="cilPlus" size="sm"></svg> Nuevo Rol
+                </button>
+              </div>
+              <ejs-multiselect formControlName="Roles" id="Roles" sizing="sm"
+                               [dataSource]="listadoRoles" allowFiltering="true"
+                               (filtering)="filterRole($event)" [mode]="default"
+                               [fields]="fieldsRol" [placeholder]="multiselectWaterMarkRol">
+              </ejs-multiselect>
+            </c-col>
+
+            <!-- Área Predeterminada -->
+            <c-col>
+              <label cLabel>Área Predeterminada</label>
+              <ejs-combobox formControlName="AreaPredeterminada" id="AreaPredeterminada"
+                            sizing="sm" [dataSource]="listadoAreas" [fields]="fieldsArea"
+                            allowFiltering="true" (filtering)="onFilteringArea($event)">
+              </ejs-combobox>
+            </c-col>
+
+            <!-- Áreas Secundarias -->
+            <c-col>
+              <label cLabel>Área(s) Secundaria(s)</label>
+              <ejs-multiselect formControlName="Areas" id="Areas" sizing="sm"
+                               [dataSource]="listadoAreas" allowFiltering="true"
+                               (filtering)="onFilteringArea($event)" [mode]="default"
+                               [fields]="fieldsArea">
+              </ejs-multiselect>
+            </c-col>
+
+            <br />
+            <c-form-check [switch]="true">
+              <input cFormCheckInput type="checkbox" id="Status" formControlName="Status" />
+              <label #lblEstado id="lblEstado" cFormCheckLabel>Activo</label>
+            </c-form-check>
+
+            @if (usuarioGuardado) {
+              <c-form-check [switch]="true" class="mt-2">
+                <input cFormCheckInput type="checkbox" id="TwoFactorEnabled"
+                       formControlName="TwoFactorEnabled"
+                       [attr.disabled]="true"
+                       (change)="$event.preventDefault()" />
+                <label cFormCheckLabel for="TwoFactorEnabled">
+                  Autenticación Doble Factor (2FA)
+                </label>
+              </c-form-check>
+            }
+          </c-card-body>
+        </c-card>
+      </c-col>
+
+      <!-- ═══════════════════════════════════════════════ -->
+      <!--  COLUMNA DERECHA: PERMISOS                     -->
+      <!-- ═══════════════════════════════════════════════ -->
+      <c-col md="6" lg="6" xl="6">
+        <c-card>
+          <c-card-header>
+            <div class="d-flex align-items-center justify-content-between">
+              <strong>Permisos del Usuario (Sucursales / Bodegas)</strong>
+              <button type="button" cButton color="primary" size="sm"
+                      [disabled]="!estadoBotones.btnGrabarPermisos"
+                      (click)="guardarPermisos()">
+                <svg cIcon name="cilSave" size="sm" class="me-1"></svg>
+                Guardar Permisos
+              </button>
+            </div>
+          </c-card-header>
+          <c-card-body>
+
+            @if (!usuarioGuardado) {
+              <div class="text-muted text-center py-4">
+                <svg cIcon name="cilInfo" size="xl" class="mb-2"></svg>
+                <p>Guarde primero el usuario para poder asignar permisos de sucursales y bodegas.</p>
+              </div>
+            } @else {
+              <!-- Sucursales -->
+              <c-col>
+                <label cLabel>Sucursales</label>
+                <ejs-multiselect id="sucursales" formControlName="sucursales"
+                                 [dataSource]="listadoSucursales" [fields]="fieldsSucursal"
+                                 allowFiltering="true" (filtering)="onSucursalFiltering($event)"
+                                 [mode]="'Box'" (valueChange)="onSucursalChange($event)">
+                </ejs-multiselect>
+              </c-col>
+
+              <!-- Bodegas -->
+              <c-col class="mt-3">
+                <label cLabel>Bodegas</label>
+                <ejs-multiselect id="bodegas" formControlName="bodegas"
+                                 [dataSource]="listadoBodegasFiltered" [fields]="fieldsBodega"
+                                 allowFiltering="true" (filtering)="onBodegaFiltering($event)"
+                                 [mode]="'Box'">
+                </ejs-multiselect>
+              </c-col>
+
+              <div class="text-muted small mt-3">
+                <svg cIcon name="cilInfo" size="sm" class="me-1"></svg>
+                Las bodegas se filtran según las sucursales seleccionadas.
+              </div>
+            }
+
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+
+  </form>
+</div>

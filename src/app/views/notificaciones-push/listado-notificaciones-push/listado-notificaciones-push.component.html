@@ -1,0 +1,71 @@
+<div class="d-flex justify-content-center">
+    <c-col md="8" xs="12">
+        <c-card class="mb-4">
+            <c-card-body>
+                <!-- <c-alert *ngIf="mostrarAlerta" [@fadeInOut] color="success">Tiene nuevas notificaciones</c-alert> -->
+                <!-- Bloque para las notificaciones no leídas -->
+                <div cListGroup *ngIf="notificacionesNoLeidas.length > 0">
+                    <h5>Notificaciones Nuevas</h5>
+                    <a *ngFor="let notificacion of notificacionesNoLeidas" 
+                       [routerLink]="notificacion.notificacionPush.urlRedireccion" 
+                       [ngClass]="'notification-item'"
+                       (click)="onNotificacionClick(notificacion)" 
+                       cListGroupItem>
+                        <div class="d-flex justify-content-between">
+                            <!-- <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle"></span> -->
+                            <h6 class="mb-1 titulo-ajustado">{{ notificacion.notificacionPush.titulo }}</h6>
+                            <small>{{ formatearFecha(notificacion.notificacionPush.fechaCreacion) }}</small>
+                        </div>
+                        <span *ngIf="!notificacion.clicked" class="position-absolute middle-0 end-90 p-1 bg-info border border-light rounded-circle"></span>
+                        <p class="mb-1 titulo-ajustado">{{ notificacion.notificacionPush.mensaje }}</p>
+                    </a>
+                </div>
+
+                <!-- Mensaje cuando no hay notificaciones nuevas -->
+                <ng-template #noNotificaciones>
+                    <p class="text-center">No existen notificaciones nuevas...</p>
+                </ng-template>
+
+                <!-- Bloque para las notificaciones leídas -->
+                <div cListGroup *ngIf="notificacionesLeidas.length > 0">
+                    <h5>Notificaciones Recibidas</h5>
+
+                    <ng-container *ngFor="let notificacion of notificacionesLeidas; let i = index">
+                        <!-- Mostrar el separador de fecha -->
+                        <div *ngIf="shouldShowDateSeparator(i)" class="date-separator">
+                            <h6>{{ getDateLabel(notificacion.notificacionPush.fechaCreacion) }}</h6>
+                        </div>
+
+                        <a [routerLink]="notificacion.notificacionPush.urlRedireccion" 
+                        (click)="onNotificacionClick(notificacion)" 
+                           cListGroupItem>
+                            
+                            <div class="d-flex justify-content-between">
+                                
+                                <h6 class="mb-1 titulo-ajustado">{{ notificacion.notificacionPush.titulo }}</h6>
+                                <small>{{ formatearFecha(notificacion.notificacionPush.fechaCreacion)}}</small>
+                            </div>
+                            <span *ngIf="!notificacion.clicked" class="position-absolute middle-0 end-90 p-1 bg-info border border-light rounded-circle"></span>
+                            <p class="mb-1 titulo-ajustado">{{ notificacion.notificacionPush.mensaje }}</p>
+                        </a>
+                    </ng-container>
+                </div>
+
+                 <!-- Mensaje cuando no hay notificaciones -->
+                 <ng-template #noNotificaciones>
+                    <p class="text-center">No existen notificaciones nuevas...</p>
+                </ng-template>
+
+                <div *ngIf="notificacionesNoLeidas.length === 0 && notificacionesLeidas.length === 0">
+                    <ng-container *ngTemplateOutlet="noNotificaciones"></ng-container>
+                </div>
+
+                <!-- Indicador de carga de más notificaciones -->
+                <div *ngIf="isLoading" class="text-center">
+                    <p>Cargando más notificaciones...</p>
+                </div>
+
+            </c-card-body>
+        </c-card>
+    </c-col>
+</div>

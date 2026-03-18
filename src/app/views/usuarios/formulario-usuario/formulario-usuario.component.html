@@ -1,0 +1,121 @@
+<div class="animate__animated animate__fadeIn">
+    <form cForm
+    [formGroup]="form">
+
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px"  width='100%'>
+            <e-items>
+                <e-item text='Nuevo' [disabled]="!estadoBotones.btnNuevo" tooltipText='Nuevo - Alt+N' prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow' (click)="nuevoRegistro()" ></e-item>
+                <e-item text='Modificar' [disabled]="!estadoBotones.btnModificar"  tooltipText='Grabar - Alt+M' prefixIcon='e-icons e-edit' overflow='Show' showTextOn='overflow' (click)="modificarRegistro()" ></e-item>
+                <e-item text='Grabar' [disabled]="!estadoBotones.btnGrabar" tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()"></e-item>
+                <e-item text='Cancelar' tooltipText='Cancelar - Alt+C' prefixIcon='e-icons e-undo' overflow='Show' showTextOn='overflow' (click)="cancelar()"  ></e-item>
+                <e-item text='Auditoria' [disabled]="!estadoBotones.btnAuditoria" (click)="getAuditoria()"
+                        prefixIcon='e-icons e-clock' overflow='Show' showTextOn='overflow'></e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>   
+    
+    <br/>
+
+    <c-row >
+        <c-col md="6" lg="6" xl="6">
+            <c-card >
+                <c-card-body>                                                    
+                        <c-col >
+
+                            <label cLabel >Username</label>
+
+                           <label cLabel class="float-end text-decoration-underline fw-bold cursor-pointer" cTooltipPlacement="top" (click)="VerPermisosPorUsuario()">
+                            Permisos por Usuario
+                            </label>
+                          
+                            <c-input-group>
+                                <input sizing="sm" cFormControl formControlName="UserName" type="text" 
+                                (keydown.enter)="onEnterKeyPressed()"
+                                [ngClass]="{ 'is-invalid': form.get('UserName').invalid && form.get('UserName').touched}"
+                                #UserName />
+    
+                            <button cButton color="secondary" [disabled]="!estadoBotones.btnConsultar"
+                                    (click)="onEnterKeyPressed()" type="button" variant="outline"
+                                    class="btn btn-sm">
+                                    <svg cIcon class="me-1" name="cilSearch"></svg>
+                            </button>
+                            </c-input-group>
+                            <c-form-feedback [valid]="form.get('UserName').valid && (form.get('UserName').touched) && form.get('UserName').enabled">
+                                {{ obtenerError('UserName') }}
+                              </c-form-feedback>
+                        </c-col>
+                        
+                        <c-col >
+                            <label cLabel >Email</label>
+                            <input sizing="sm" cFormControl type="email" formControlName="Email" type="email" 
+                            [ngClass]="{ 'is-invalid': form.get('Email').invalid && form.get('Email').touched}"
+                            #Email/>
+                            <c-form-feedback [valid]="form.get('Email').valid && (form.get('Email').touched)">{{obtenerError('Email')}}</c-form-feedback>
+                        </c-col>
+
+                        <c-col >
+                            <label cLabel >Teléfono</label>
+                            <input cFormControl sizing="sm" formControlName="PhoneNumber" type="text" #PhoneNumber/>
+                        </c-col>
+
+                        <c-col >
+                            <label cLabel >Nombre Completo</label>
+                            <input sizing="sm" cFormControl formControlName="FullName" type="text" 
+                            [ngClass]="{ 'is-invalid': form.get('FullName').invalid && form.get('FullName').touched}"
+                            #FullName />
+                            <c-form-feedback [valid]="form.get('FullName').valid && (form.get('FullName').touched)">{{obtenerError('FullName')}}</c-form-feedback>
+                        </c-col>
+                        <c-col >
+                            <!-- <label cLabel >Roles</label> -->
+                             <label cLabel cTooltipPlacement="top"
+                            style="text-decoration: underline; cursor: pointer; font-weight: bold;"
+                            (click)="VerRoles()">Roles</label>
+
+                            <label cLabel class="float-end text-decoration-underline fw-bold cursor-pointer" cTooltipPlacement="top" (click)="VerPermisosPorRol()">
+                            Permisos por Rol
+                            </label>
+
+                          
+
+                            <ejs-multiselect formControlName="Roles" id='Roles' 
+                            sizing="sm" [dataSource]='listadoRoles' 
+                            allowFiltering="true"
+                            (filtering)='filterRole($event)'
+                            [mode]='default' 
+                            [fields]='fields' [placeholder]='multiselectWaterMarkRol' 
+                            #Roles></ejs-multiselect>
+                        </c-col>
+                        <c-col >
+                            <label cLabel >Área Predeterminada</label>
+                            <ejs-combobox formControlName="AreaPredeterminada" 
+                            allowFiltering="true"
+                            (filtering)='onFilteringArea($event)'
+                            id='AreaPredeterminada' sizing="sm" [dataSource]='listadoAreas' [fields]='fieldsArea' 
+                            [ngClass]="{ 'is-invalid': form.get('AreaPredeterminada').invalid && form.get('AreaPredeterminada').touched}"
+                            #AreaPredeterminada></ejs-combobox>
+                        </c-col>
+                        <c-col >
+                            <label cLabel >Área(s) Secundaria(s)</label>
+                            <ejs-multiselect formControlName="Areas" id='Areas' 
+                            sizing="sm" [dataSource]='listadoAreas' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringArea($event)'
+                            [mode]='default' 
+                            [fields]='fieldsArea' #Areas></ejs-multiselect>
+                        </c-col>
+                        <br/>
+                        <c-form-check [switch]="true">
+                            <input cFormCheckInput type="checkbox" id="Status" formControlName="Status"  />
+                            <label #lblEstado id="lblEstado" cFormCheckLabel></label>
+                        </c-form-check>                    
+                    
+                        <br/>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row> 
+    </form> 
+</div>
+
+

@@ -1,0 +1,6 @@
+<app-formulario-menu 
+*ngIf="modelo"
+[modelo]="modelo"
+[StateEnum]="StateEnum" 
+(onSubmit)="guardarCambios($event)"
+></app-formulario-menu>

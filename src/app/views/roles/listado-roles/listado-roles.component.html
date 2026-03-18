@@ -1,0 +1,36 @@
+<div class="animate__animated animate__fadeIn">
+ 
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px"  width='100%'>
+            <e-items>
+                <e-item text='Nuevo' tooltipText='Nuevo - Alt+N' prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow' (click)="nuevoRegistro()" ></e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>
+    <br/>
+    
+    <ejs-grid #grid 
+              [dataSource]='data' 
+              [allowPaging]="true" 
+              [pageSettings]='pageSettings' 
+              [allowSorting]='true' 
+              [allowResizing]="true"
+              [allowFiltering]="true"
+              [filterSettings]="{ type: 'Excel' }"
+              [allowExcelExport]="true"
+              [toolbar]="toolbar"
+              [appDragScroll]="{ selector: '.e-content', axis: 'x' }"
+              enableStickyHeader=true 
+              (toolbarClick)='clickHandler($event)'
+              (commandClick)="commandClick($event)"
+              [editSettings]='editSettings' 
+              [showColumnChooser]="true"
+              >
+      <e-columns>
+          <e-column headerText="" width="50" [commands]="commands"></e-column>
+          <e-column field='id' headerText='Id' width='80' textAlign='Left' [visible]="false" [isPrimaryKey]="true" [showInColumnChooser]="true"></e-column>
+          <e-column field='name' headerText='Name' width='120' [validationRules]='rolenamerules'  ></e-column>
+      </e-columns>
+  </ejs-grid>
+
+</div>

@@ -1,0 +1,103 @@
+<div class="animate__animated animate__fadeIn">
+    <form cForm [formGroup]="form">
+        <div class="right-z-index-top-toolbar">
+            <ejs-toolbar height="25px" width='100%'>
+
+                <e-items>
+                    <e-item text='Nuevo' [disabled]="!estadoBotones.btnNuevo" tooltipText='Grabar - Alt+N'
+                        prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow'
+                        (click)="nuevoRegistro()"></e-item>
+                </e-items>
+
+            </ejs-toolbar>
+        </div>
+        <br />
+        <c-row>
+            <c-col lg="12" class="pb-3">
+                <c-card>
+                    <c-card-header>
+                        <c-row class="mt-2">
+                            <c-col lg="3">
+                                <label cLabel >Transacción</label>
+                                <ejs-combobox
+                                #codigoTransaccion
+                                id='codigoTransaccion' 
+                                allowFiltering="true"
+                                (filtering)='onFilteringTransaccion($event)'
+                                (change)="onChangeTransaccion($event.value)"
+                                [allowCustom]="false"
+                                [showClearButton]="true" 
+                                formControlName="codigoTransaccion" 
+                                [dataSource]='cbTransaccion' 
+                                [fields]='localFieldsTransaccion'                                 
+                                ></ejs-combobox> 
+                            </c-col>
+                        </c-row>
+                        <br />
+                    </c-card-header>
+                    <c-card-body>
+                        <ejs-grid #grid [dataSource]='data' allowResizing="true" id='DefaultExport'
+                            allowSorting="true" [allowFiltering]='true'
+                            [filterSettings]='filterSettings' gridLines='Both' (toolbarClick)='toolbarClick($event)'
+                            [allowExcelExport]='true'
+                            [toolbar]="toolbar" enableStickyHeader=true [showColumnChooser]='true'
+                            (commandClick)="commandClick($event)" [editSettings]='editSettings'>
+                            <e-columns>
+                                <e-column headerText="Opciones" width="110" [commands]="commands"></e-column>
+                                <e-column field='idNotificacionOperacionTransaccion' [visible]='false' headerText='Id'
+                                    width='50' textAlign='Right' [showInColumnChooser]='false'
+                                    [isPrimaryKey]="true"></e-column>
+                                <e-column field='userName' headerText='Usuario' width='140'></e-column>
+                                <e-column field='usuario.fullName' headerText='Nombre Completo' width='120'></e-column>
+                                <e-column field='usuario.userName' headerText='Username' width='120'></e-column>
+                                <e-column field='codigoTransaccion' headerText='Código Transacción' width='150'></e-column>
+                                <e-column field='codigoAccion' headerText='Código Acción' width='140'></e-column>
+                                <e-column field='codigoOperacion' headerText='Código Operación' width='160'></e-column>
+                                <e-column field='idSucursal' headerText='Sucursal' width='120' textAlign='Right'></e-column>
+                                <e-column field='codigoArea' headerText='Área' width='120'></e-column>
+                                <e-column field='codigoCategoriaCompra' headerText='Categoría Compra' width='160'></e-column>
+                                <e-column field='codigoBodega' headerText='Bodega' width='140'></e-column>
+                                <e-column field='esImportacion' headerText='Importación' width='120'>
+                                    <ng-template #template let-item>
+                                        @if(item.esImportacion === true) {
+                                        <span class="badge bg-success me-1">SÍ</span>
+                                        } @else if (item.esImportacion === false) {
+                                        <span class="badge bg-warning me-1">NO</span>
+                                        } @else {
+                                        <span>&nbsp;</span>
+                                        }
+                                    </ng-template>
+                                </e-column>
+                                <e-column field='usuarioCreacionDocumentoOrigen' headerText='Usuario Creación Origen' width='190'></e-column>
+                                <e-column field='usuarioCreacionDocumentoOrigen2' headerText='Usuario Creación Origen 2' width='210'></e-column>
+                                <e-column field='usuarioAprobacionDocumentoOrigen' headerText='Usuario Aprobación Origen' width='200'></e-column>
+                                <e-column field='codigoTipoCompra' headerText='Tipo Compra' width='140'></e-column>
+                                <e-column field='activo' headerText='Activo' width='80'>
+                                    <ng-template #template let-item>
+                                        @if(item.activo === true) {
+                                        <span class="badge bg-success me-1">SÍ</span>
+                                        }@else {
+                                        <span class="badge bg-warning me-1">NO</span>
+                                        }
+                                    </ng-template>
+                                </e-column>
+                                <e-column field='usuarioCreacion' [visible]='false' headerText='Creado por'
+                                    width='120'></e-column>
+                                <e-column field='fechaCreacion' [visible]='false' headerText='Fecha Creación'
+                                    width='120'></e-column>
+                                <e-column field='equipoCreacion' [visible]='false' headerText='Creado desde'
+                                    width='120'></e-column>
+                                <e-column field='usuarioModificacion' [visible]='false' headerText='Modificado por'
+                                    width='120'></e-column>
+                                <e-column field='fechaModificacion' [visible]='false' headerText='Fecha Modificación'
+                                    width='120'></e-column>
+                                <e-column field='equipoModificacion' [visible]='false' headerText='Modificado desde'
+                                    width='120'></e-column>
+                            </e-columns>
+                        </ejs-grid>
+                    </c-card-body>
+                </c-card>
+            </c-col>
+        </c-row>
+    </form>
+</div>

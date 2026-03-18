@@ -1,0 +1,69 @@
+<c-card class="mb-0">
+  <c-card-header>
+    <strong>Copiar Permisos</strong>
+    <small class="text-muted ms-2">→ {{ userNameDestino }}</small>
+  </c-card-header>
+
+  <c-card-body>
+
+    <!-- Usuario origen -->
+    <div class="mb-3">
+      <label cLabel>Usuario Origen</label>
+      <ejs-combobox id="usuarioOrigen"
+                    [allowCustom]="false"
+                    [allowFiltering]="true"
+                    (filtering)="onFilteringUsuario($event)"
+                    (change)="onUsuarioOrigenChange($event)"
+                    [dataSource]="cbUsuarios"
+                    [fields]="fieldsUsuario"
+                    placeholder="Buscar usuario origen...">
+      </ejs-combobox>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="cargandoPermisos" class="text-center py-3">
+      <c-spinner color="primary" size="sm"></c-spinner>
+      <span class="ms-2">Cargando permisos...</span>
+    </div>
+
+    <!-- Preview de permisos -->
+    <div *ngIf="permisosCargados && !cargandoPermisos">
+      <hr />
+      <p class="fw-semibold mb-2">Permisos del usuario origen:</p>
+
+      <div class="mb-2">
+        <strong>Sucursales:</strong>
+        <span *ngIf="sucursalesOrigen.length === 0" class="text-muted ms-1">Ninguna</span>
+        <span *ngIf="sucursalesOrigen.length > 0" class="ms-1">{{ sucursalesOrigen.length }} asignada(s)</span>
+      </div>
+
+      <div class="mb-2">
+        <strong>Bodegas:</strong>
+        <span *ngIf="bodegasOrigen.length === 0" class="text-muted ms-1">Ninguna</span>
+        <span *ngIf="bodegasOrigen.length > 0" class="ms-1">{{ bodegasOrigen.length }} asignada(s)</span>
+      </div>
+
+      <div class="mb-2">
+        <strong>Áreas:</strong>
+        <span *ngIf="areasOrigen.length === 0" class="text-muted ms-1">Ninguna</span>
+        <span *ngIf="areasOrigen.length > 0" class="ms-1">{{ areasOrigen.length }} asignada(s)</span>
+      </div>
+
+      <div class="text-warning small mt-2">
+        <strong>Nota:</strong> Esta acción reemplazará todos los permisos actuales del usuario destino.
+      </div>
+    </div>
+
+  </c-card-body>
+
+  <c-card-footer class="d-flex justify-content-end gap-2">
+    <button cButton color="secondary" size="sm" (click)="cerrar()">
+      Cancelar
+    </button>
+    <button cButton color="primary" size="sm"
+            [disabled]="!permisosCargados || cargandoPermisos || loading"
+            (click)="aceptar()">
+      Aceptar
+    </button>
+  </c-card-footer>
+</c-card>

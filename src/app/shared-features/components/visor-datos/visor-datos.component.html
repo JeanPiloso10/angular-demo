@@ -1,0 +1,8 @@
+<div class="modal-header">
+  <h4 class="modal-title">Vista previa del {{ tipo.toUpperCase() }}</h4>
+  <button type="button" (click)="cerrar()" cButtonClose></button>
+</div>
+
+<div class="modal-body">
+  <pre highlight-js [lang]="lang">{{ contenidoFormateado }}</pre>
+</div>

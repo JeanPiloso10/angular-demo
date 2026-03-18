@@ -1,0 +1,80 @@
+
+<div class="animate__animated animate__fadeIn" id="emailComposerModal">
+<div class="modal-header d-flex justify-content-between align-items-start">
+  <div>
+    <h4 id="emailComposerTitle" class="modal-title mb-0">{{ titulo }}</h4>
+    <small *ngIf="subtitulo" class="text-muted">{{ subtitulo }}</small>
+  </div>
+  <div class="d-flex align-items-center gap-2">
+    <button type="button" class="btn btn-sm btn-outline-primary btn-help" title="Ayuda" (click)="startTour()">
+      <svg cIcon name="cilInfo" size="lg"></svg>
+    </button>
+    <button type="button" (click)="cerrar()" cButtonClose></button>
+  </div>
+</div>
+<div class="modal-body" id="emailComposerModalBody">
+  <form cForm [formGroup]="form">
+      <c-col >
+        <label for="from" class="form-label">De:</label>
+        <input #from type="email" formControlName="from" id="from" class="form-control" 
+        placeholder="Type email"  name="from"
+        [ngClass]="{ 'is-invalid': form.get('from').invalid && form.get('from').touched}">
+        <c-form-feedback [ngClass]="{ 'is-invalid': form.get('from').invalid && form.get('from').touched}">{{obtenerError('from')}}</c-form-feedback>
+      </c-col >
+      <c-col >
+        <label for="to" class="form-label">Para:</label>
+        <ejs-multiselect id="to" autocomplete="off" #to
+        class="heightBoostrap" 
+        [dataSource]="this.cbUsuarios"
+        (filtering)="debouncedGetUsuario($event)"
+        [allowFiltering]='true'
+        [fields]='fieldsDestinatarios'
+        placeholder="Escriba la dirección de correo"
+        [allowCustomValue]="true" [mode]="box"
+        formControlName="to"
+        [ngClass]="{ 'is-invalid': form.get('to').invalid && form.get('to').touched}"
+        ></ejs-multiselect>
+
+        <c-form-feedback [ngClass]="{ 'is-invalid': form.get('to').invalid && form.get('to').touched}">{{obtenerError('to')}}</c-form-feedback>
+      </c-col >
+      <c-col >
+          <label for="subject" class="form-label">Asunto:</label>
+          <input type="text" formControlName="subject" id="subject" 
+          class="form-control" placeholder="Escriba un asunto" name="subject"
+          [ngClass]="{ 'is-invalid': form.get('subject').invalid && form.get('subject').touched}">
+          <c-form-feedback [ngClass]="{ 'is-invalid': form.get('subject').invalid && form.get('subject').touched}">{{obtenerError('subject')}}</c-form-feedback>
+
+      </c-col >
+      <br/>
+      <c-col >
+        <div *ngIf="adjunto && adjunto.nombreArchivo">
+          <button  cButton color="primary" (click)="abrirFancyBox()" class="btn-adjunto" title="Ver adjunto">
+              {{ adjunto.nombreArchivo }}
+          </button>
+        </div>
+      </c-col> 
+      <c-col >
+        <label for="body" class="form-label">Mensaje:</label>
+        <ejs-richtexteditor #bodyEditor id="body" formControlName="body"
+        [toolbarSettings]="toolbarSettings"
+        [ngClass]="{ 'is-invalid': form.get('body').invalid && form.get('body').touched}"
+        height="250px">
+        </ejs-richtexteditor>
+      </c-col>
+    </form>   
+</div>
+
+<div class="modal-footer d-flex justify-content-start">
+   <c-button-group aria-label="" role="group">
+    <button (click)="enviar()" cButton color="primary" [disabled]="loading" class="btn-enviar">
+      <c-spinner [hidden]="!loading" component="span" size="sm"></c-spinner>
+      Enviar
+    </button>    
+    <a cButton color="secondary" variant="outline" [disabled]="loading" (click)="cerrar()" class="btn-cerrar">
+        Cerrar
+    </a>    
+  </c-button-group>
+</div> 
+</div>
+
+

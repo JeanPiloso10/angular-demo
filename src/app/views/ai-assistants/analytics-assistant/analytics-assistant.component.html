@@ -1,0 +1,84 @@
+<div class="analytics-assistant-wrapper">
+  <div ejs-chatui
+       #chatui
+       [headerText]="'Asistente Analytics'"
+       [user]="user"
+       [messages]="messages"
+       (messageSend)="onMessageSend($event)"
+       [showTimeStamp]="true"
+       [showTimeBreak]="true"
+       [autoScrollToBottom]="true"
+       placeholder="Pregunta por tus datos (ej. precio promedio por talla en 2025)…">
+  </div>
+
+  <!-- Panel de confirmaciones -->
+  <div *ngIf="suggestions?.length" class="card mt-3">
+    <div class="card-header">Se requieren confirmaciones</div>
+    <div class="card-body">
+      <p class="text-body-secondary mb-3">{{ lastResult?.resumen || 'Confirma a qué entidad o valor te refieres.' }}</p>
+      <div class="row g-3">
+        <div class="col-12" *ngFor="let s of suggestions">
+          <div class="p-3 border rounded">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <div>
+                <strong>{{ s.field }}</strong>
+                <span class="text-body-secondary ms-2" *ngIf="s.typed">(captado: "{{ s.typed }}")</span>
+              </div>
+            </div>
+            <div *ngIf="s.candidates?.length" class="mb-2">
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-sm" 
+                        [ngClass]="{ 'btn-primary': isChosen(s.field, c), 'btn-outline-primary': !isChosen(s.field, c) }"
+                        *ngFor="let c of s.candidates"
+                        (click)="chooseCandidate(s.field, c)">
+                  {{ c }}
+                </button>
+              </div>
+            </div>
+            <div class="input-group input-group-sm mt-2">
+              <span class="input-group-text">Valor</span>
+              <input type="text" class="form-control" [ngModel]="getConfirmationValue(s.field)" (ngModelChange)="updateConfirmation(s.field, $event)">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-primary" (click)="runWithConfirmations()" [disabled]="loading">
+          Ejecutar con confirmaciones
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de resultado estructurado -->
+  <div *ngIf="lastRows?.length" class="card mt-3">
+    <div class="card-header">{{ lastResult?.resumen || 'Resultado' }}</div>
+    <div class="card-body">
+      <div *ngIf="lastPlan" class="mb-3 small text-body-secondary">
+        <div class="mb-1"><strong>Dominio:</strong> {{ lastPlan?.domain }}</div>
+        <div class="mb-1"><strong>Vista:</strong> {{ lastPlan?.view }}</div>
+        <div class="mb-1" *ngIf="lastPlan?.dateRange"><strong>Rango:</strong> {{ lastPlan?.dateRange?.from }} → {{ lastPlan?.dateRange?.to }}</div>
+        <div class="mb-1" *ngIf="lastPlan?.dimensions?.length"><strong>Dimensiones:</strong> <span class="badge text-bg-secondary me-1" *ngFor="let d of lastPlan?.dimensions">{{ d }}</span></div>
+        <div class="mb-1" *ngIf="lastPlan?.measures?.length"><strong>Medidas:</strong> <span class="badge text-bg-info me-1" *ngFor="let m of lastPlan?.measures">{{ m }}</span></div>
+        <div class="mb-1" *ngIf="lastPlan?.filters?.length"><strong>Filtros:</strong> <span class="badge text-bg-light border me-1" *ngFor="let f of lastPlan?.filters">{{ f.field }} {{ f.op }} {{ f.value || (f.values?.join(', ')) }}</span></div>
+        <div class="mb-1" *ngIf="lastPlan?.orderBy"><strong>Orden:</strong> {{ lastPlan?.orderBy }}</div>
+        <div class="mb-1" *ngIf="lastPlan?.top"><strong>Top:</strong> {{ lastPlan?.top }}</div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th *ngFor="let col of lastColumns">{{ col }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of lastRows">
+              <td *ngFor="let col of lastColumns">{{ r[col] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

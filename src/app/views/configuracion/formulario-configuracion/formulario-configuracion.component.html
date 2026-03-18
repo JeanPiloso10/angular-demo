@@ -1,0 +1,60 @@
+<div class="animate__animated animate__fadeIn">
+    <form cForm
+    [formGroup]="form">
+
+  <div class="right-z-index-top-toolbar" [ngStyle]="{'top': '0px'}">
+        <ejs-toolbar height="25px"  width='100%'>
+            <e-items>
+                <e-item text='Grabar' tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()" [disabled]="form.invalid" ></e-item>
+                <!-- <e-item text='Cancelar' tooltipText='Cancelar - Alt+C' prefixIcon='e-icons e-undo' overflow='Show' showTextOn='overflow' (click)="cancelar()"  ></e-item> -->
+            </e-items>
+        </ejs-toolbar>
+    </div>
+
+    <br/>
+    <c-row>
+        <c-col>
+            <c-card>
+                <c-card-body> 
+                  
+                       
+
+                    <c-col >
+                        <label cLabel >Codigo</label>
+                        <input cFormControl sizing="sm" 
+                        [readonly]="StateEnum == tipoAccion.Update"
+                        [ngClass]="{ 'is-invalid': form.get('codigo').invalid && form.get('codigo').touched }"
+                        oninput="this.value = this.value.toUpperCase()" autocomplete="off" formControlName="codigo" type="text" #codigo />  
+                        <c-form-feedback [valid]="form.get('codigo').valid && form.get('codigo').touched">{{obtenerError('codigo')}}</c-form-feedback>
+                    </c-col>
+                    
+                    <c-col >
+                        <label cLabel >Descripcion</label>
+                        <input cFormControl sizing="sm" 
+                        [ngClass]="{ 'is-invalid': form.get('descripcion').invalid && form.get('descripcion').touched }"
+                        oninput="this.value = this.value.toUpperCase()"  autocomplete="off" formControlName="descripcion" type="text" #descripcion />  
+                        <c-form-feedback [valid]="form.get('descripcion').valid && form.get('descripcion').touched">{{obtenerError('descripcion')}}</c-form-feedback>
+                    </c-col>
+
+                    <c-col >
+                        <label cLabel >Valor por Defecto</label>
+                        <input cFormControl sizing="sm" [valid]="form.get('valorPorDefecto').valid"  oninput="this.value = this.value.toUpperCase()"  autocomplete="off" formControlName="valorPorDefecto" type="text" #descripcion />  
+                        <c-form-feedback [valid]="form.get('valorPorDefecto').valid">{{obtenerError('valorPorDefecto')}}</c-form-feedback>
+                    </c-col>
+                    <br/>
+                    <c-col>
+                        <c-form-check [switch]="true">
+                            <input cFormCheckInput type="checkbox" id="activo" formControlName="activo"  />
+                            <label #lblEstado id="lblEstado" cFormCheckLabel></label>
+                        </c-form-check>       
+                    </c-col>
+        
+                    
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+  
+    
+</form>
+</div>

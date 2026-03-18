@@ -1,0 +1,132 @@
+<div class="animate__animated animate__fadeIn">
+        <form [formGroup]="Form" autocomplete="off">
+            <div class="right-z-index-top-toolbar">
+                <ejs-toolbar height="25px" width='100%'>
+                    <e-items>
+                        <e-item text='Nuevo' [disabled]="!estadoBotones.btnNuevo" tooltipText='Nuevo - Alt+N'
+                            prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow'
+                            (click)="nuevoRegistro()"></e-item>
+                        <e-item text='Modificar' [disabled]="!estadoBotones.btnModificar" tooltipText='Grabar - Alt+M'
+                            prefixIcon='e-icons e-edit' overflow='Show' showTextOn='overflow'
+                            (click)="modificarRegistro()"></e-item>
+                        <e-item text='Grabar' [disabled]="!estadoBotones.btnGrabar" tooltipText='Grabar - Alt+G'
+                            prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow'
+                            (click)="guardarCambios()"></e-item>
+                        <e-item text='Cancelar' tooltipText='Cancelar - Alt+C' prefixIcon='e-icons e-undo'
+                            overflow='Show' showTextOn='overflow' (click)="cancelar()"></e-item>
+                    </e-items>
+                </ejs-toolbar>
+            </div>
+            <br />
+            <c-row>
+                <c-col md="6" lg="6" xl="6">
+                    <c-card>
+                        <c-card-body>
+                            <c-col>
+                                <label cLabel>Código</label>
+                                <input cFormControl formControlName="codigo" id="codigo" #AreaCodigo sizing="sm"
+                                    type="text" style="text-transform: uppercase;"
+                                    (keyup.enter)="onFocusInput('codigo')" (keydown.enter)="onBuscarArea()"
+                                    [ngClass]="{ 'is-invalid': Form.get('codigo').invalid && Form.get('codigo').touched}">
+                                <c-form-feedback
+                                    [ngClass]="{ 'is-invalid': Form.get('codigo').invalid && Form.get('codigo').touched}">{{obtenerError('codigo')}}
+                                </c-form-feedback>
+                            </c-col>
+                            <c-col>
+                                <label cLabel>Descripción </label>
+                                <ejs-combobox id="descripcion" formControlName="descripcion" [allowCustom]="true"
+                                    [allowFiltering]="true" (keyup.enter)="onFocusInput('descripcion')"
+                                    (filtering)="debouncedGetArea($event)"
+                                    (change)="onDescripcionChange($event)" #AreaDescripcion [dataSource]="areaList"
+                                    [fields]="fieldsArea" formControlName="descripcion"
+                                    [ngClass]="{ 'is-invalid': Form.get('descripcion').invalid && Form.get('descripcion').touched}"></ejs-combobox>
+                                <c-form-feedback
+                                    [ngClass]="{ 'is-invalid': Form.get('descripcion').invalid && Form.get('descripcion').touched}">{{obtenerError('descripcion')}}
+                                </c-form-feedback>
+                            </c-col>
+                            <c-col>
+                                <label cLabel>Departamento</label>
+                                <ejs-combobox id='codigoDepartamento' #AreaCodigoDepartamento
+                                    [allowCustom]="allowCustomValue" [dataSource]='cbDepartamentos'
+                                    (filtering)='onFilteringDepartamento($event)' [fields]='fieldsDepartamentos'
+                                    placeholder="Seleccione..." formControlName="codigoDepartamento"
+                                    [allowFiltering]='true' (keyup.enter)="onFocusInput('codigoDepartamento')"
+                                    (change)="onChangeDepartamento($event)"
+                                    [ngClass]="{ 'is-invalid': Form.get('codigoDepartamento').invalid && Form.get('codigoDepartamento').touched }">
+                                </ejs-combobox>
+                                <c-form-feedback
+                                    [ngClass]="{ 'is-invalid': Form.get('codigoDepartamento').invalid && Form.get('codigoDepartamento').touched }">{{obtenerError('codigoDepartamento')}}
+                                </c-form-feedback>
+                            </c-col>
+                            <c-col>
+                                <label cLabel>Centro de costo</label>
+                                <ejs-combobox id='codigoCentroCosto' #AreaCodigoCentroCosto
+                                    formControlName="codigoCentroCosto" [dataSource]='cbCentroCosto'
+                                    (filtering)='onFilteringCentroCosto($event)' [allowFiltering]='true'
+                                    [allowCustom]="allowCustomValue" [fields]='fieldsCentroCosto'
+                                    placeholder='Seleccione...' (change)="onChangeCentroCosto($event)"
+                                    (keyup.enter)="onFocusInput('codigoCentroCosto')"
+                                    [ngClass]="{ 'is-invalid': Form.get('codigoCentroCosto').invalid && Form.get('codigoCentroCosto').touched }">
+                                </ejs-combobox>
+                                <c-form-feedback
+                                    [ngClass]="{ 'is-invalid': Form.get('codigoCentroCosto').invalid && Form.get('codigoCentroCosto').touched }">{{obtenerError('codigoCentroCosto')}}
+                                </c-form-feedback>
+                            </c-col>
+                            <br />
+                            <c-col>
+                                <c-col lg="6">
+                                    <c-form-check [switch]="true">
+                                        <input cFormCheckInput sizing="sm" type="checkbox" id="activo"
+                                            formControlName="activo" />
+                                        <label #lblEstado id="lblEstado" cFormCheckLabel>Activo</label>
+                                    </c-form-check>
+                                </c-col>
+                            </c-col>
+                        </c-card-body>
+                        @if(this.modelo != undefined && this.modelo.usuarioCreacion){
+                        <c-card-footer>
+                            <c-row>
+                                @if(this.modelo.usuarioCreacion){
+                                <c-col lg="4">
+                                    <label cLabel>Creado Por:</label>
+                                    <input cFormControl id="usuarioCreacion" sizing="sm" type="text"
+                                        formControlName="usuarioCreacion" autocomplete="off">
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Fecha Creación:</label>
+                                    <input cFormControl id="fechaCreacion" sizing="sm" type="text"
+                                        formControlName="fechaCreacion" autocomplete="off">
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Equipo Creación:</label>
+                                    <input cFormControl id="equipoCreacion" sizing="sm" type="text"
+                                        formControlName="equipoCreacion" autocomplete="off">
+                                </c-col>
+                                }
+                            </c-row>
+                            <c-row>
+                                <c-col lg="4">
+                                    <label cLabel>Modificado Por:</label>
+                                    <input cFormControl id="usuarioModificacion" sizing="sm" type="text"
+                                        formControlName="usuarioModificacion" autocomplete="off">
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Fecha Modificación:</label>
+                                    <input cFormControl id="fechaModificacion" sizing="sm" type="text"
+                                        formControlName="fechaModificacion" autocomplete="off">
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Equipo Modificación:</label>
+                                    <input cFormControl id="equipoModificacion" sizing="sm" type="text"
+                                        formControlName="equipoModificacion" autocomplete="off">
+                                </c-col>
+                            </c-row>
+                        </c-card-footer>
+                        }
+                    </c-card>
+                </c-col>
+
+            </c-row>
+
+        </form>
+</div>

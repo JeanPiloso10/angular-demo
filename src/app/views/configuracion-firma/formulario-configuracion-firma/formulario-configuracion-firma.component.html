@@ -1,0 +1,342 @@
+<div class="animate__animated animate__fadeIn">
+    <form cForm
+    [formGroup]="form">
+
+    <div class="right-z-index-top-toolbar" [ngStyle]="{'top': '0px'}">
+        <ejs-toolbar height="25px"  width='100%'>
+            <e-items>
+                <e-item text='Grabar' tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()" [disabled]="form.invalid" ></e-item>
+                <!-- <e-item text='Cancelar' tooltipText='Cancelar - Alt+C' prefixIcon='e-icons e-undo' overflow='Show' showTextOn='overflow' (click)="cancelar()"  ></e-item> -->
+            </e-items>
+        </ejs-toolbar>
+    </div>
+
+    <br/>
+    <c-row>
+        <c-col>
+            <c-card>
+                <c-card-body> 
+                    <c-row>
+                        <c-col lg="4">
+                            <label cLabel >Transacción</label>
+                            <ejs-combobox
+                            #codigoTransaccion
+                            id='codigoTransaccion' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringTransaccion($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="codigoTransaccion" 
+                            
+                            [dataSource]='transacciones' 
+                            [fields]='fieldsTransaccion' 
+                            [placeholder]='localWaterMark'
+                            [ngClass]="{ 'is-invalid':  form.get('codigoTransaccion').invalid &&  form.get('codigoTransaccion').touched}"
+                            ></ejs-combobox> 
+                            <c-form-feedback
+                            [ngClass]="{ 'is-invalid':  form.get('codigoTransaccion').invalid &&  form.get('codigoTransaccion').touched}">
+                            {{ obtenerError('codigoTransaccion') }}
+                        </c-form-feedback>
+                        </c-col>
+                        
+                        <c-col lg="4">
+                            <label cLabel >Sucursal</label>
+                            <ejs-combobox id='idSucursal' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringSucursal($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="idSucursal" 
+                            [dataSource]='sucursales' 
+                            [fields]='fieldsSucursal' 
+                            [placeholder]='localWaterMark'
+                            [ngClass]="{ 'is-invalid':  form.get('idSucursal').invalid &&  form.get('idSucursal').touched}"
+                            ></ejs-combobox> 
+                            <c-form-feedback
+                            [ngClass]="{ 'is-invalid':  form.get('idSucursal').invalid &&  form.get('idSucursal').touched}">
+                            {{ obtenerError('idSucursal') }}
+                        </c-form-feedback>
+                        </c-col>
+    
+                        <c-col lg="4">
+                            <label cLabel >Tipo Documento</label>
+                            <input cFormControl sizing="sm" [valid]="form.get('tipoDocumento').valid" oninput="this.value = this.value.toUpperCase()" autocomplete="off" formControlName="tipoDocumento" type="text" #tipoDocumento />  
+                            <c-form-feedback [valid]="form.get('tipoDocumento').valid">{{obtenerError('tipoDocumento')}}</c-form-feedback>
+                        </c-col>
+                    </c-row>
+
+                    <c-row>
+                        
+                    <c-col >
+                        <label cLabel >Referencia 1</label>
+
+                        <ejs-combobox formControlName="referencia1" 
+                        allowFiltering="true"
+                        (filtering)='onFilteringArea($event)'
+                        id='referencia1' sizing="sm" [dataSource]='listadoAreas' [fields]='fieldsArea' 
+                        [ngClass]="{ 'is-invalid': form.get('referencia1').invalid && form.get('referencia1').touched}"
+                        #referencia1></ejs-combobox>
+
+                        <!-- <input cFormControl sizing="sm" [valid]="form.get('referencia1').valid" oninput="this.value = this.value.toUpperCase()" autocomplete="off" formControlName="referencia1" type="text" #referencia1 />   -->
+                        <c-form-feedback [valid]="form.get('referencia1').valid">{{obtenerError('referencia1')}}</c-form-feedback>
+                    </c-col>
+
+                    <c-col >
+                        <label cLabel >Referencia 2</label>
+
+                        <ejs-combobox formControlName="referencia2" 
+                        allowFiltering="true"
+                        (filtering)='onFilteringCategoriaCompra($event)'
+                        id='referencia2' sizing="sm" [dataSource]='listadoCategoriasCompra' [fields]='fieldsCategoriaCompra' 
+                        [ngClass]="{ 'is-invalid': form.get('referencia2').invalid && form.get('referencia2').touched}"
+                        #referencia2></ejs-combobox>
+
+                        <c-form-feedback [valid]="form.get('referencia2').valid">{{obtenerError('referencia2')}}</c-form-feedback>
+                    </c-col>
+
+                    <c-col >
+                        <label cLabel >Referencia 3</label>
+                        <input cFormControl sizing="sm" 
+                        oninput="this.value = this.value.toUpperCase()" 
+                        autocomplete="off" formControlName="referencia3" 
+                        type="text" #referencia3 />  
+                        <c-form-feedback [valid]="form.get('referencia3').valid">{{obtenerError('referencia3')}}</c-form-feedback>
+                    </c-col>
+
+                    </c-row>
+              
+                    
+                    <c-row>
+                        <c-col lg="3" sm="6">
+                            <label cLabel >Usuario Firmante</label>
+                            <ejs-combobox id='usuarioFirmante' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringUsuario($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="usuarioFirmante" 
+                            [dataSource]='usuarios' 
+                            [fields]='fieldsUsuario' 
+                            [placeholder]='localWaterMark'
+                            [ngClass]="{ 'is-invalid':  form.get('usuarioFirmante').invalid &&  form.get('usuarioFirmante').touched}"
+                            ></ejs-combobox> 
+                            <c-form-feedback
+                            [ngClass]="{ 'is-invalid':  form.get('usuarioFirmante').invalid &&  form.get('usuarioFirmante').touched}">
+                            {{ obtenerError('usuarioFirmante') }}
+                        </c-form-feedback>
+                        </c-col>
+    
+                        <c-col lg="3" sm="6">
+                            <label cLabel >Rol Firmante</label>
+                            <ejs-combobox id='idRolFirmante' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringRol($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="idRolFirmante" 
+                            [dataSource]='roles' 
+                            [fields]='fieldsRoles' 
+                            [placeholder]='localWaterMark'
+                            [ngClass]="{ 'is-invalid':  form.get('idRolFirmante').invalid &&  form.get('idRolFirmante').touched}"
+                            ></ejs-combobox> 
+                            <c-form-feedback
+                            [ngClass]="{ 'is-invalid':  form.get('idRolFirmante').invalid &&  form.get('idRolFirmante').touched}">
+                            {{ obtenerError('idRolFirmante') }}
+                        </c-form-feedback>
+                        </c-col>
+    
+                        <c-col lg="3" sm="6">
+                            <label cLabel >Tipo Aprobador</label>
+                            <ejs-combobox id='codigoTipoAprobador' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringTipoAprobador($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="codigoTipoAprobador" 
+                            [dataSource]='tipoAprobadores' 
+                            [fields]='fieldsTipoAprobadores' 
+                            [placeholder]='localWaterMark'
+                            (valueChange)="onTipoAprobadorChange($event)"
+                            [ngClass]="{ 'is-invalid':  form.get('codigoTipoAprobador').invalid &&  form.get('codigoTipoAprobador').touched}"
+                            ></ejs-combobox> 
+                            <c-form-feedback
+                            [ngClass]="{ 'is-invalid':  form.get('codigoTipoAprobador').invalid &&  form.get('codigoTipoAprobador').touched}">
+                            {{ obtenerError('codigoTipoAprobador') }}
+                        </c-form-feedback>
+                        </c-col>
+    
+                        <c-col lg="3" sm="6">
+                            <label cLabel>Monto Máximo</label>
+                            <input
+                              cFormControl
+                              sizing="sm"
+                              autocomplete="off"
+                              formControlName="montoMaximo"
+                              type="number"
+                              #montoMaximo
+                            />
+                            <c-form-feedback [valid]="form.get('montoMaximo').valid">{{ obtenerError('montoMaximo') }}</c-form-feedback>
+                        </c-col>
+                    </c-row>
+
+                    <c-row>
+                        <c-col lg="3" sm="6">
+                            <label cLabel >Usuario Firmante Superior</label>
+                            <ejs-combobox id='usuarioFirmanteSuperior' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringUsuario($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="usuarioFirmanteSuperior" 
+                            [dataSource]='usuarios' 
+                            [fields]='fieldsUsuario' 
+                            [placeholder]='localWaterMark'
+                            [ngClass]="{ 'is-invalid':  form.get('usuarioFirmanteSuperior').invalid &&  
+                            form.get('usuarioFirmanteSuperior').touched}"
+                            ></ejs-combobox> 
+                            <c-form-feedback
+                            [ngClass]="{ 'is-invalid':  form.get('usuarioFirmanteSuperior').invalid && 
+                            form.get('usuarioFirmanteSuperior').touched}">
+                            {{ obtenerError('usuarioFirmanteSuperior') }}
+                        </c-form-feedback>
+                        </c-col>
+    
+                        <c-col lg="3" sm="6">
+                            <label cLabel >Rol Firmante Superior</label>
+                            <ejs-combobox id='idRolFirmanteSuperior' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringRol($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="idRolFirmanteSuperior" 
+                            [dataSource]='roles' 
+                            [fields]='fieldsRoles' 
+                            [placeholder]='localWaterMark'
+                            [ngClass]="{ 'is-invalid':  form.get('idRolFirmanteSuperior').invalid &&  
+                            form.get('idRolFirmanteSuperior').touched}"
+                            ></ejs-combobox> 
+                            <c-form-feedback
+                            [ngClass]="{ 'is-invalid':  form.get('idRolFirmanteSuperior').invalid &&  
+                            form.get('idRolFirmanteSuperior').touched}">
+                            {{ obtenerError('idRolFirmanteSuperior') }}
+                        </c-form-feedback>
+                        </c-col>
+    
+                        <c-col lg="3" sm="6">
+                            <label cLabel >Tipo Aprobador Superior</label>
+                            <ejs-combobox id='codigoTipoAprobadorSuperior' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringTipoAprobador($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="codigoTipoAprobadorSuperior" 
+                            [dataSource]='tipoAprobadores' 
+                            [fields]='fieldsTipoAprobadores' 
+                            [placeholder]='localWaterMark'
+                            (valueChange)="onTipoAprobadorSuperiorChange($event)"
+                            [ngClass]="{ 'is-invalid':  form.get('codigoTipoAprobadorSuperior').invalid && 
+                            form.get('codigoTipoAprobadorSuperior').touched}"
+                            ></ejs-combobox> 
+                            <c-form-feedback
+                            [ngClass]="{ 'is-invalid':  form.get('codigoTipoAprobadorSuperior').invalid && 
+                            form.get('codigoTipoAprobadorSuperior').touched}">
+                            {{ obtenerError('codigoTipoAprobadorSuperior') }}
+                        </c-form-feedback>
+                        </c-col>
+    
+                        <c-col lg="3" sm="6">
+                            <label cLabel>Monto Máximo Superior</label>
+                            <input
+                              cFormControl
+                              sizing="sm"
+                              autocomplete="off"
+                              formControlName="montoMaximoSuperior"
+                              type="number"
+                              #montoMaximoSuperior
+                            />
+                            <c-form-feedback [valid]="form.get('montoMaximoSuperior').valid">{{ obtenerError('montoMaximoSuperior') }}</c-form-feedback>
+                          </c-col>
+                    </c-row>
+
+                    <c-row>
+                        <c-col lg="3" sm="6">
+                            <label cLabel >Usuario Firmante Alterno</label>
+                            <ejs-combobox id='usuarioFirmanteAlterno' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringUsuario($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="usuarioFirmanteAlterno" 
+                            [dataSource]='usuarios' 
+                            [fields]='fieldsUsuario' 
+                            [placeholder]='localWaterMark'
+                            ></ejs-combobox> 
+                        </c-col>
+    
+                        <c-col lg="3" sm="6">
+                            <label cLabel >Rol Firmante Alterno</label>
+                            <ejs-combobox id='idRolFirmanteAlterno' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringRol($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="idRolFirmanteAlterno" 
+                            [dataSource]='roles' 
+                            [fields]='fieldsRoles' 
+                            [placeholder]='localWaterMark'
+                            ></ejs-combobox> 
+                        </c-col>
+
+                        <c-col lg="3" sm="6">
+                            <label cLabel >Usuario Firmante Superior Alterno</label>
+                            <ejs-combobox id='usuarioFirmanteSuperiorAlterno' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringUsuario($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="usuarioFirmanteSuperiorAlterno" 
+                            [dataSource]='usuarios' 
+                            [fields]='fieldsUsuario' 
+                            [placeholder]='localWaterMark'
+                            ></ejs-combobox> 
+                        </c-col>
+    
+                        <c-col lg="3" sm="6">
+                            <label cLabel >Rol Firmante Superior Alterno</label>
+                            <ejs-combobox id='idRolFirmanteSuperiorAlterno' 
+                            allowFiltering="true"
+                            (filtering)='onFilteringRol($event)'
+                            [allowCustom]="false"
+                            [showClearButton]="true" 
+                            formControlName="idRolFirmanteSuperiorAlterno" 
+                            [dataSource]='roles' 
+                            [fields]='fieldsRoles' 
+                            [placeholder]='localWaterMark'
+                            ></ejs-combobox> 
+                        </c-col>
+                    </c-row>
+
+                  
+
+
+                    <c-col lg="2">
+                        <label cLabel >Orden Firma</label>
+                        <input cFormControl sizing="sm" [valid]="form.get('ordenFirma').valid" autocomplete="off" formControlName="ordenFirma" type="number" #ordenFirma />  
+                        <c-form-feedback [valid]="form.get('ordenFirma').valid">{{obtenerError('ordenFirma')}}</c-form-feedback>
+                    </c-col>
+
+                    <br/>
+                    <c-col>
+                        <c-form-check [switch]="true">
+                            <input cFormCheckInput type="checkbox" id="activo" formControlName="activo"  />
+                            <label #lblEstado id="lblEstado" cFormCheckLabel></label>
+                        </c-form-check>      
+                    </c-col>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+  
+    
+</form>
+</div>

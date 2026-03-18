@@ -1,0 +1,50 @@
+<form (ngSubmit)="guardarCambios()" autocomplete="off" [formGroup]="Form">
+
+    <c-card>
+        <div class="modal-header d-flex justify-content-between align-items-start">
+            <div>
+                <h4 class="modal-title mb-0">{{ titulo }}</h4>
+                <small *ngIf="titulo" class="text-muted">{{ this.subtitulo }}</small>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-sm btn-outline-primary btn-help" title="Ayuda" (click)="startTour()">
+                  <svg cIcon name="cilInfo" size="lg"></svg>
+                </button>
+                <button type="button" (click)="cerrar()" cButtonClose></button>
+            </div>
+        </div>
+        <div class="modal-body">
+                <c-row class="mt-2">
+                    <c-col lg="6">
+                        <label cLabel>Motivo</label>
+                        <ejs-multiselect id='idMotivoAuditoria' 
+                        #motivoAuditoria
+                        [dataSource]='listadoMotivo' formControlName="idMotivoAuditoria"
+                        allowFiltering="true"  [fields]='localFieldsMotivo'
+                        [mode]='box'></ejs-multiselect>
+                    </c-col>
+                <c-col lg="12">
+                    <label cLabel for="name">Observación</label>
+                    <textarea cFormControl id="observacion" #observacion autocomplete="off" rows="2"
+                        formControlName="observacion"
+                        [ngClass]="{ 'is-invalid': Form.get('observacion').invalid && Form.get('observacion').touched}"></textarea>
+                    <c-form-feedback
+                        [ngClass]="{ 'is-invalid': Form.get('observacion').invalid && Form.get('observacion').touched}">{{obtenerError('observacion')}}</c-form-feedback>
+                </c-col>
+                </c-row>
+        </div>
+        <div class="modal-footer d-flex justify-content-start">
+            <c-button-group aria-label="Basic mixed styles example" role="group">
+                <button cButton color="primary" type="submit" [disabled]="Form.invalid" class="btn-guardar">
+                    <c-spinner [hidden]="!loading" component="span" size="sm"></c-spinner>
+                    Guardar
+                </button>    
+                <a cButton color="secondary" variant="outline" (click)="cerrar()" class="btn-cerrar">
+                    Cerrar
+                </a>  
+            </c-button-group>
+        </div>
+            
+    </c-card>
+
+</form>

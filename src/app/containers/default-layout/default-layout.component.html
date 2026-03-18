@@ -1,0 +1,85 @@
+<!--sidebar-->
+<c-sidebar
+  #sidebar1="cSidebar"
+  class="d-print-none sidebar sidebar-fixed border-end"
+  colorScheme="dark"
+  id="sidebar1"
+  visible>
+
+  <c-sidebar-header class="border-bottom">
+    <c-sidebar-brand 
+    [brandFull]="{
+      src: 'assets/img/brand/wave003_color_V002.svg',
+      width: 190,
+      height: 35,
+      alt: 'ERP Logo'
+    }"
+    [brandNarrow]="{
+      src: 'assets/img/brand/wave003_ISO_V002.svg',
+      width: 45,
+      height: 35,
+      alt: 'ERP Logo'
+    }"
+    [routerLink]="[]">
+      
+    </c-sidebar-brand>
+  </c-sidebar-header>
+  
+  <a class="nav-link-sm">
+      <input #search type="text" class="form-control" (keyup)="filtrarMenu(search.value)" placeholder="Buscar en Menú">
+  </a>
+  <!-- (updated)="onScrollbarUpdate(scrollbar.state)" -->
+  <ng-scrollbar #scrollbar="ngScrollbar"  class="overflow" pointerEventsMethod="scrollbar" visibility="hover">
+    <c-sidebar-nav #overflow 
+    [navItems]="filteredNavMenu" 
+    dropdownMode="none" 
+    compact/>
+  </ng-scrollbar>
+  @if (!sidebar1.narrow) {
+    <c-sidebar-footer cSidebarToggle="sidebar1" class="border-top d-none d-lg-flex" toggle="unfoldable" style="cursor: pointer;">
+      <button cSidebarToggler></button>
+    </c-sidebar-footer>
+  }
+</c-sidebar>
+
+<!--main-->
+<div class="wrapper d-flex flex-column min-vh-100">
+  <!--app-header-->
+
+  
+ 
+  
+
+  <app-default-header [cShadowOnScroll]="'sm'"
+                      class="mb-1 d-print-none header header-sticky p-0 shadow-sm"
+                      position="sticky"
+                      sidebarId="sidebar1" />
+  <!--app-body-->
+  <div class="body flex-grow-1">
+
+        <div class="main-form">          
+          <router-outlet />
+
+          <!-- Contenedor para el slide-in -->
+          <ng-template #slideInContainer></ng-template>
+        </div>
+ 
+  </div>
+  <!--app footer-->
+  <app-default-footer />
+
+  <!-- AI Chat Sidebar (global, fuera del header) -->
+  <app-ai-chat-sidebar *ngIf="aiChatEnabled"
+    [visible]="aiChatVisible"
+    (visibleChange)="onAiChatVisibleChange($event)">
+  </app-ai-chat-sidebar>
+
+  <c-alert *ngIf="updateAvailable" color="warning" class="update-alert">
+    <div class="update-text">
+      <strong>Nueva versión disponible.</strong> Por favor, actualiza para ver los últimos cambios.
+    </div>
+    <button cButton color="primary" size="sm" class="update-btn"  (click)="reloadPage()">Actualizar</button>
+  </c-alert>
+
+</div>
+

@@ -1,0 +1,198 @@
+<!-- Mensaje de actualización -->
+
+
+  <ng-container>
+
+    <c-container [fluid]="true" class="border-bottom px-4">
+      
+      <button
+        [cSidebarToggle]="sidebarId"
+        cHeaderToggler
+        class="btn"
+        toggle="visible"
+        style="margin-inline-start: -14px;">
+
+
+      <svg cIcon name="cilMenu" size="lg"></svg>
+      </button>
+      <c-header-nav class="d-none d-md-flex">
+        <c-nav-item>
+          <!-- <a cNavLink routerLink="/dashboard" routerLinkActive="active">Dashboard</a> -->
+        </c-nav-item>
+      </c-header-nav>
+
+  
+      <c-header-nav class="ms-auto ms-md-0">
+        
+      </c-header-nav>
+  
+      <c-header-nav class="mx-0">
+        <ng-container *ngIf="aiChatEnabled">
+          <div class="nav-item py-1">
+            <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+          </div>
+          <ng-container *ngTemplateOutlet="aiAssistant" />
+        </ng-container>
+        <div class="nav-item py-1">
+          <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+        </div>
+        <ng-container *ngTemplateOutlet="menuRapido" />
+        <div class="nav-item py-1">
+          <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+        </div>
+        <ng-container *ngTemplateOutlet="notifications" />
+        <div class="nav-item py-1">
+          <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+        </div>
+        <ng-container *ngTemplateOutlet="themeDropdown" />
+        <div class="nav-item py-1">
+          <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+        </div>
+        
+        <ng-container *ngTemplateOutlet="userDropdown" />
+        
+      </c-header-nav>
+  
+    </c-container>
+
+   
+    <c-container [fluid]="true" class="px-4">
+      <c-breadcrumb-router />
+    </c-container>
+  </ng-container>
+  <!--</c-header>-->
+  
+  <ng-template #aiAssistant>
+    <button *ngIf="aiChatEnabled" type="button"
+    (click)="toggleAiSidebar()"
+    class="btn btn-ghost position-relative"
+    title="Asistente de Analytics">
+      <svg cIcon name="cilSpeech" size="lg"></svg>
+    </button>
+  </ng-template>
+  
+  <ng-template #menuRapido>
+    <button type="button" 
+    [routerLink]="['/menu-usuario']"
+    [queryParams]="{ from: this.router.url }"
+    class="btn btn-ghost position-relative">
+      <svg cIcon name="cilViewColumn" size="lg"></svg>
+    </button>
+  </ng-template>
+
+  <ng-template #notifications>
+    <button type="button" [routerLink]="['/notificaciones']"
+    class="btn btn-ghost position-relative">
+    
+      <svg cIcon name="cilBell" size="lg"></svg>
+      <span class="cil-contrast"></span>
+      @if(notificationCounter > 0)
+      {
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          {{ notificationCounter }}
+        </span>
+      }
+
+    </button>
+
+
+  </ng-template>
+
+  <ng-template #userDropdown>
+    <c-dropdown [popperOptions]="{ placement: 'bottom-start' }" variant="nav-item">
+      <button [caret]="false" cDropdownToggle class="py-0 pe-0">
+        <div class="avatar avatar-md bg-success">
+          <img class="avatar-img"
+          shape="rounded-1"
+          [src]="this.imagenUrl"
+          status="success"
+          textColor="primary"
+          disableOptimizedImage
+        />
+        
+        <span class="avatar-status bg-success"></span>
+        </div>
+        
+      </button>
+      <ul cDropdownMenu class="pt-0 w-auto">
+        <li>
+          <h6 cDropdownHeader class="bg-body-secondary text-body-secondary fw-semibold py-2 rounded-top">
+            {{this.getUserName()}}
+          </h6>
+        </li>
+        <li>
+          <a style="cursor: pointer;" (click)="changePassword()"  cDropdownItem>
+            <svg cIcon class="me-2" name="cilUser"></svg>
+            Cambiar contraseña
+          </a>
+        </li>
+        <li>
+          <a style="cursor: pointer;" (click)="show2FAModal()"  cDropdownItem>
+            <svg cIcon class="me-2" name="cilShieldAlt"></svg>
+            Autenticación 2F
+          </a>
+        </li>
+        <li>
+          <a style="cursor: pointer;" (click)="changeProfilePic()"  cDropdownItem>
+            <svg cIcon class="me-2" name="cilImage"></svg>
+            Cambiar imagen de perfil
+          </a>
+        </li>
+        <li>
+          <a style="cursor: pointer;" (click)="ajustesUsuario()"  cDropdownItem>
+            <svg cIcon class="me-2" name="cilSettings"></svg>
+            Ajustes de usuario
+          </a>
+        </li>
+        <li>
+          <hr cDropdownDivider />
+        </li>
+        <li>
+          <a style="cursor: pointer;" (click)="logout()" cDropdownItem>
+            <svg cIcon class="me-2" name="cilAccountLogout"></svg>
+            Cerrar sesión
+          </a>
+        </li>
+      </ul>
+    </c-dropdown>
+  </ng-template>
+  
+  <ng-template #themeDropdown>
+    <c-dropdown alignment="end" variant="nav-item">
+      <button [caret]="false" cDropdownToggle>
+        @switch (colorMode()) {
+          @case ("dark") {
+            <svg cIcon name="cilMoon" size="lg"></svg>
+          }
+          @case ("auto") {
+            <svg cIcon name="cilContrast" size="lg"></svg>
+          }
+          @default {
+            <svg cIcon name="cilSun" size="lg"></svg>
+          }
+        }
+      </button>
+      <div cDropdownMenu>
+        <button
+          (click)="setColorTheme('light')"
+          [active]="colorMode()==='light'"
+          [routerLink]="[]"
+          cDropdownItem
+          class="d-flex align-items-center"
+        >
+          <svg cIcon class="me-2" name="cilSun" size="lg"></svg>
+          Light
+        </button>
+        <button
+          (click)="setColorTheme('dark')"
+          [active]="colorMode()==='dark'"
+          [routerLink]="[]"
+          cDropdownItem
+          class="d-flex align-items-center"
+        >
+          <svg cIcon class="me-2" name="cilMoon" size="lg"></svg>
+          Dark
+        </button>
+      </div>
+    </c-dropdown>
+  </ng-template>

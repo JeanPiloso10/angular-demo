@@ -1,0 +1,31 @@
+
+        <form  cForm
+        enctype="multipart/form-data">
+        <c-card>
+            <div class="modal-header">
+                <h4 class="modal-title">Seleccione una imagen</h4>
+                <button type="button" (click)="cerrar()" cButtonClose>
+                </button>
+              </div>
+            <c-card-body>                                                    
+                   
+                
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" required>    
+               
+            </c-card-body>
+            <c-card-footer>
+                <c-button-group aria-label="Basic mixed styles example" role="group">
+                    <button (click)="grabar()" cButton color="primary" >
+                        <c-spinner [hidden]="!loading" component="span" size="sm"></c-spinner>
+                        Guardar
+                    </button>    
+                    <a cButton color="secondary" variant="outline" (click)="cerrar()">
+                        Cerrar
+                    </a>    
+                </c-button-group>
+               
+                
+            </c-card-footer>
+        </c-card>
+        </form>
+        

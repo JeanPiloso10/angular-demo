@@ -1,0 +1,45 @@
+<div class="animate__animated animate__fadeIn">
+ 
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px"  width='100%'>
+            <e-items>
+                <e-item text='Nuevo' tooltipText='Nuevo - Alt+N' prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow' (click)="nuevoRegistro()" ></e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>
+    <br/>
+    
+    <ejs-grid #grid 
+              [dataSource]='data' 
+              [allowPaging]="true" 
+              [pageSettings]='pageSettings' 
+              [allowSorting]='true' 
+              [sortSettings]='sortOptions'
+              [toolbar]="toolbar"
+              [allowExcelExport]="true"
+              [allowFiltering]="true"
+              [filterSettings]="{ type: 'Excel' }"
+              [appDragScroll]="{ selector: '.e-content', axis: 'x' }"
+              enableStickyHeader=true 
+              [showColumnChooser]= 'true'
+              (toolbarClick)='clickHandler($event)'
+              (commandClick)="commandClick($event)"
+              [editSettings]='editSettings' 
+              >
+      <e-columns>
+          <e-column headerText="Opciones" width="100" [commands]="commands"></e-column>
+          <e-column field='codigo' headerText='Código' width='50' textAlign='Left' [showInColumnChooser]='false' [isPrimaryKey]="true"></e-column>
+          <e-column field='descripcion' headerText='Descripción' width='120'  ></e-column>
+          <e-column field='pais.codigo' headerText='Código País' width='50'  ></e-column>
+          <e-column field='pais.descripcion' headerText='Descripción País' width='120'  ></e-column>
+          <e-column field='pais.region.descripcion' headerText='Región' width='120'  ></e-column>
+          <e-column field='usuarioCreacion' [visible]='false' headerText='Creado por' width='120'  ></e-column>
+          <e-column field='fechaCreacion' [visible]='false' headerText='Fecha Creación' width='120'  ></e-column>
+          <e-column field='equipoCreacion' [visible]='false' headerText='Creado desde' width='120'  ></e-column>
+          <e-column field='usuarioModificacion' [visible]='false' headerText='Modificado por' width='120'  ></e-column>
+          <e-column field='fechaModificacion' [visible]='false' headerText='Fecha Modificación' width='120'  ></e-column>
+          <e-column field='equipoModificacion' [visible]='false' headerText='Modificado desde' width='120'  ></e-column>
+      </e-columns>
+  </ejs-grid>
+
+</div>

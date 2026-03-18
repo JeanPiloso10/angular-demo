@@ -1,0 +1,75 @@
+<div class="animate__animated animate__fadeIn">
+    <form cForm [formGroup]="form" autocomplete="off">
+        <div class="right-z-index-top-toolbar">
+            <ejs-toolbar height="25px"  width='100%'>
+                <e-items>
+                    <!-- <e-item text='Nuevo' tooltipText='Grabar - Alt+N' prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow' (click)="nuevoRegistro()" ></e-item> -->
+                    <e-item text='Modificar' [disabled]="!estadoBotones.btnModificar"  tooltipText='Grabar - Alt+M' prefixIcon='e-icons e-edit' overflow='Show' showTextOn='overflow' (click)="modificarRegistro()" ></e-item>
+                    <e-item text='Grabar' [disabled]="!estadoBotones.btnGrabar"  tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()" ></e-item>
+                    <!-- <e-item text='Buscar' tooltipText='Buscar - Alt+B' prefixIcon='e-icons e-search' overflow='Show' showTextOn='overflow' (click)="buscarRegistro()" ></e-item> -->
+                    <e-item text='Cancelar' tooltipText='Cancelar - Alt+C' prefixIcon='e-icons e-undo' overflow='Show' showTextOn='overflow' (click)="cancelar()"  ></e-item>
+                </e-items>
+            </ejs-toolbar>
+        </div>
+        <br />
+        <c-row>
+            <c-col lg="12" class="pb-3">
+                <c-card>
+
+                    <c-card-body>
+
+                        <c-col lg="6">
+                            <label cLabel >Roles</label>
+                            <ejs-combobox id='roleId' #roleId
+                                    [dataSource]='listaRoles'
+                                    [allowCustom]='false'
+                                    sizing="sm" 
+                                    allowFiltering="true"
+                                    (filtering)='filterRole($event)'
+                                    [fields]='fieldsRoles'
+                                    (valueChange)="onChange($event)"
+                                    [placeholder]='waterMark' 
+                                    formControlName="roleId"></ejs-combobox>
+                        </c-col>
+                        
+                    </c-card-body>
+                </c-card>
+            </c-col>
+
+          
+                    
+        </c-row>
+      
+        <div class="control-section">
+            <div class="col-lg-12">
+                <ejs-treegrid #treegrid 
+             [appDragScroll]="{ axis: 'x' }"
+                [dataSource]='data' 
+                [toolbar]="toolbar"
+                [treeColumnIndex]='1' 
+                allowResizing="true"
+                [allowTextWrap]="true"
+             [allowFiltering]="true"
+             [filterSettings]="filterSettings"
+                childMapping='children' 
+                autoCheckHierarchy='true'
+                [searchSettings]='searchSettings' 
+                (dataBound)="databound()"
+                (checkboxChange)="checkboxChange($event)"  
+           >
+                    <e-columns>
+                            <e-column field='indice' headerText='' width='20' textAlign='Right' [isPrimaryKey]="true"></e-column>
+                            <e-column field='codigo' headerText='Código' textAlign='Left' width=80 [showCheckbox]='true'></e-column>
+                            <e-column field='descripcion' headerText='Descripción' textAlign='Left' width=90></e-column>
+                            <e-column field='controlador' headerText='Controlador' textAlign='Left' width=60></e-column>
+                            <e-column field='accion' headerText='Acción' textAlign='Left' width=60></e-column>
+                            <e-column field='idPermisoRol' [visible]="false" headerText='idPermisoRol' textAlign='Left' width=80></e-column>
+                            <e-column field='roleId' [visible]="false" headerText='roleId' textAlign='Left' width=80></e-column> 
+                            <e-column field='idOperacionTransaccion' [visible]="false" headerText='idOperacionTransaccion' textAlign='Left' width=80></e-column>
+                    </e-columns>
+                </ejs-treegrid>
+                
+            </div>
+        </div>
+    </form>
+</div>

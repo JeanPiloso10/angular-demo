@@ -1,0 +1,16 @@
+
+
+<div class="modal-header">
+    <h4 class="modal-title">Nuevo Reporte</h4>
+    <button type="button" (click)="cerrar()" cButtonClose>
+    </button>
+</div>
+<div class="modal-body">
+
+    <app-formulario-reporte
+    [errores]="errores"
+    [StateEnum]="StateEnum" 
+    ></app-formulario-reporte>
+    
+
+</div>

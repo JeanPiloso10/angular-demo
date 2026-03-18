@@ -1,0 +1,39 @@
+
+
+<div class="animate__animated animate__fadeIn">
+    <form cForm
+    [formGroup]="form">
+
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px"  width='100%'>
+            <e-items>
+                <e-item text='Grabar' tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()" [disabled]="form.invalid" ></e-item>
+                <e-item text='Cancelar' tooltipText='Cancelar - Alt+C' prefixIcon='e-icons e-undo' overflow='Show' showTextOn='overflow' (click)="cancelar()"  ></e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>
+
+    <br/>
+
+    <c-row >
+        <c-col md="6" lg="6" xl="6">
+            <c-card>
+                <c-card-body> 
+                    <c-col >
+                        <label cLabel >Name</label>
+                        <input cFormControl sizing="sm" 
+                        [ngClass]="{ 'is-invalid': form.get('Name').invalid && form.get('Name').touched}"
+                        id="Name" autocomplete="off" formControlName="Name" type="text" #rolName />  
+                        <c-form-feedback [valid]="form.get('Name').valid && (form.get('Name').touched)">{{obtenerError('Name')}}</c-form-feedback>
+                    </c-col>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+   
+
+
+
+    </form>
+
+</div>

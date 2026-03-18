@@ -1,0 +1,30 @@
+<c-card>
+    <div class="modal-header">
+        <h4 class="modal-title">Autenticación de Dos Factores</h4>
+        <button type="button" (click)="cerrar()" cButtonClose></button>
+    </div>
+    <c-card-body>
+        <div *ngIf="!isEmailConfirmed" class="alert alert-warning">
+            Debe confirmar su correo electrónico antes de habilitar la autenticación de dos factores.
+            <button (click)="sendEmailConfirmation()" class="btn btn-warning" [disabled]="loading">
+                <c-spinner [hidden]="!loading" component="span" size="sm"></c-spinner>
+                Enviar Confirmación de Correo
+            </button>
+        </div>
+        <div *ngIf="displayDiv && isEmailConfirmed">
+            <button (click)="enableTwoFactorAuth()" class="btn btn-primary" [disabled]="loading || isTwoFactorEnabled || qrCodeGenerated">
+                <c-spinner [hidden]="!loading" component="span" size="sm"></c-spinner>
+                Generar QR 2FA
+            </button>
+        </div>
+        <div *ngIf="qrCodeUrl" class="mt-3">
+            <h6>Escanea este código QR con tu aplicación de autenticación</h6>
+            <img [src]="qrCodeUrl" alt="QR Code" class="img-fluid">
+        </div>
+    </c-card-body>
+    <c-card-footer>
+        <c-button-group role="group">
+            <a cButton color="primary" (click)="cerrar()">Cerrar</a>
+        </c-button-group>
+    </c-card-footer>
+</c-card>

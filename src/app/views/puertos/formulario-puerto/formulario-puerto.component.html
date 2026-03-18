@@ -1,0 +1,94 @@
+<div class="animate__animated animate__fadeIn">
+    <form cForm
+    [formGroup]="form">
+
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px"  width='100%'>
+            <e-items>
+                <e-item text='Grabar' tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()" [disabled]="form.invalid" ></e-item>
+                <e-item text='Cancelar' tooltipText='Cancelar - Alt+C' prefixIcon='e-icons e-undo' overflow='Show' showTextOn='overflow' (click)="cancelar()"  ></e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>
+
+    <br/>
+    <c-row>
+        <c-col md="6" lg="6" xl="6">
+            <c-card>
+                <c-card-body> 
+                    <c-col >
+                        <label cLabel >Codigo</label>
+                        <input 
+                        [readonly]="StateEnum == tipoAccion.Update"   
+                        oninput="this.value = this.value.toUpperCase()"
+                        cFormControl sizing="sm" 
+                            
+                        autocomplete="off" 
+                        formControlName="codigo" 
+                        type="text"  
+                        #codigo />  
+                        <c-form-feedback [valid]="form.get('codigo').valid && form.get('codigo').touched">{{obtenerError('codigo')}}</c-form-feedback>
+                    </c-col>
+
+                    <c-col >
+                        <label cLabel >Descripción</label>
+                        <input cFormControl 
+                        oninput="this.value = this.value.toUpperCase()"
+                        sizing="sm" 
+                        [ngClass]="{ 'is-invalid': form.get('descripcion').invalid && form.get('descripcion').touched }" 
+                        autocomplete="off" formControlName="descripcion" type="text" #descripcion />  
+                        <c-form-feedback [ngClass]="{ 'is-invalid': form.get('descripcion').invalid && form.get('descripcion').touched }">{{obtenerError('descripcion')}}</c-form-feedback>
+                    </c-col>
+        
+                    <c-col>
+                        <label cLabel >Tipo Puerto</label>
+                        <ejs-combobox id='codigoTipoPuerto' 
+                        allowFiltering="true"
+                        [allowCustom]="allowCustomValue"
+                        [showClearButton]="true" 
+                        formControlName="codigoTipoPuerto" 
+                        [dataSource]='tiposPuerto' 
+                        [fields]='tipoPuertoFields' 
+                        [placeholder]='tiposPuertoWaterMark'
+                        [ngClass]="{ 'is-invalid':  form.get('codigoTipoPuerto').invalid &&  form.get('codigoTipoPuerto').touched}"
+                        >
+                        </ejs-combobox> 
+                        <c-form-feedback
+                        [ngClass]="{ 'is-invalid':  form.get('codigoTipoPuerto').invalid &&  form.get('codigoTipoPuerto').touched}">
+                        {{ obtenerError('codigoTipoPuerto') }}
+                    </c-form-feedback>
+                    </c-col>
+
+                    <c-col>
+                        <label cLabel >Ciudad</label>
+                        <ejs-combobox id='codigoCiudad' 
+                        allowFiltering="true"
+                        [allowCustom]="allowCustomValue"
+                        [showClearButton]="true" 
+                        formControlName="codigoCiudad" 
+                        [dataSource]='ciudades' 
+                        [fields]='ciudadFields' 
+                        [placeholder]='ciudadWaterMark'
+                        [ngClass]="{ 'is-invalid':  form.get('codigoCiudad').invalid &&  form.get('codigoCiudad').touched}"
+                        >
+                        </ejs-combobox> 
+                        <c-form-feedback
+                        [ngClass]="{ 'is-invalid':  form.get('codigoCiudad').invalid &&  form.get('codigoCiudad').touched}">
+                        {{ obtenerError('codigoCiudad') }}
+                    </c-form-feedback>
+                    </c-col>
+                    <br/>
+                    <c-col>
+                        <c-form-check [switch]="true">
+                            <input cFormCheckInput type="checkbox" id="activo" formControlName="activo"  />
+                            <label #lblEstado id="lblEstado" cFormCheckLabel></label>
+                        </c-form-check>         
+                    </c-col>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+  
+    
+</form>
+</div>

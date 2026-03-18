@@ -1,0 +1,82 @@
+<div class="animate__animated animate__fadeIn">
+    <form cForm [formGroup]="form">
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px"  width='100%'>
+            
+                <e-items>
+                    <e-item text='Nuevo' [disabled]="!estadoBotones.btnNuevo" tooltipText='Grabar - Alt+N' prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow' (click)="nuevoRegistro()" ></e-item>
+                </e-items>
+       
+        </ejs-toolbar>
+    </div>
+    <br />
+    <c-row>
+        <c-col lg="12" class="pb-3">
+            <c-card>
+                <c-card-header>
+                    <c-row class="mt-2">
+                        <c-col lg="6">
+                            <label cLabel>Transacción</label>
+                            <ejs-combobox id='transaccion' #transaccion 
+                              allowFiltering="true"
+                              (filtering)='onFilteringTransaccion($event)'
+                              [allowCustom]="false"
+                              
+                              
+                              (valueChange)="onChange($event)"
+                              [dataSource]='cbtransaccion' formControlName="transaccion"
+                              [fields]='localFieldsTransaccion'></ejs-combobox>
+                          </c-col>
+                    </c-row>
+                </c-card-header>
+                <c-card-body>
+       
+                    <ejs-grid 
+                    #grid 
+                    [dataSource]='data' 
+                    [allowSorting]='true' 
+                    [allowResizing]="true" 
+                    [sortSettings]='sortOptions'
+                    [toolbar]="toolbar"
+                    [allowFiltering]="true"
+                    [filterSettings]="{ type: 'Excel' }"
+                    [allowExcelExport]="true"
+                    [appDragScroll]="{ selector: '.e-content', axis: 'x' }"
+                    enableStickyHeader=true 
+                    [showColumnChooser]= 'true'
+                    (toolbarClick)='clickHandler($event)'
+                    (commandClick)="commandClick($event)"
+                    [editSettings]='editSettings' 
+                    >
+                        <e-columns>
+                            <e-column headerText="Opciones" width="80" [commands]="commands"></e-column>
+                            <e-column field='idReporte' [visible]='false' headerText='Id' width='50' textAlign='Right' [showInColumnChooser]='false' [isPrimaryKey]="true"></e-column>
+                            <e-column field='codigoTransaccion' [visible]='false' headerText='Transacción' width='80'  ></e-column>
+                            <e-column field='sucursal.cnoSucursal' headerText='Sucursal' width='120'  ></e-column>
+                            <e-column field='referencia1' headerText='Referencia 1' width='80'  ></e-column>
+                            <e-column field='referencia2' headerText='Referencia 2' width='80'  ></e-column>
+                            <e-column field='referencia3' headerText='Referencia 3' width='80'  ></e-column>
+
+                            <e-column field='xmlName' headerText='xmlName' width='80'  ></e-column>
+                            <e-column field='xmlPathSchema' headerText='xmlPathSchema' width='80'  ></e-column>
+
+                            <e-column field='blobUri' headerText='URL' width='80'  ></e-column>
+                            <e-column field='originalFileName' headerText='Name' width='120'></e-column>
+                            <e-column field='usuarioCreacion' headerText='Usuario Creación' width='120'></e-column>
+                            <e-column field='fechaCreacion' headerText='Fecha Creación' width='50'></e-column>
+                            <e-column field='fileName' headerText='File Id' [visible]="false" width='50'></e-column>
+                            <e-column field='usuarioCreacion' [visible]='false' headerText='Creado por' width='120'  ></e-column>
+                            <e-column field='fechaCreacion' [visible]='false' headerText='Fecha Creación' width='120'  ></e-column>
+                            <e-column field='equipoCreacion' [visible]='false' headerText='Creado desde' width='120'  ></e-column>
+                            <e-column field='usuarioModificacion' [visible]='false' headerText='Modificado por' width='120'  ></e-column>
+                            <e-column field='fechaModificacion' [visible]='false' headerText='Fecha Modificación' width='120'  ></e-column>
+                            <e-column field='equipoModificacion' [visible]='false' headerText='Modificado desde' width='120'  ></e-column>
+                        </e-columns>
+                    </ejs-grid>
+
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+    </form>
+</div>

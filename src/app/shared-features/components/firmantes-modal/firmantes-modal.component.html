@@ -1,0 +1,79 @@
+<div class="modal-header d-flex justify-content-between align-items-start">
+  <div>
+    <h4 class="modal-title mb-0">{{ titulo }}</h4>
+    @if (subtitulo) { <small class="text-muted">{{ subtitulo }}</small> }
+  </div>
+  <div class="d-flex align-items-center gap-2">
+    <button type="button" (click)="cerrar()" cButtonClose></button>
+  </div>
+</div>
+<div class="modal-body">
+    @if (modoSeleccion) {
+    <form [formGroup]="form" class="mb-3" autocomplete="off">
+      <div class="row g-2 align-items-end">
+        <div class="col-12">
+          <label class="form-label">Seleccionar firmante adicional</label>
+          <ejs-combobox
+            #firmanteAdicional
+            id="firmante"
+            formControlName="firmante"
+            [dataSource]="cbUsuarios"
+            [fields]="fieldsUsuario"
+            [allowFiltering]="true"
+            [filterType]="'Contains'"
+            (filtering)="debouncedGetUsuario($event)"
+            placeholder="Buscar por nombre (min. 3 caracteres)">
+          </ejs-combobox>
+          @if (form.get('firmante')?.touched && form.get('firmante')?.invalid) {
+            <div class="text-danger small">Debe seleccionar un firmante.</div>
+          }
+        </div>
+      </div>
+    </form>
+    }
+    @if (detallesOrdenados?.length) {
+      <div class="list-group">
+        @for (det of detallesOrdenados; track trackByDet($index, det)) {
+        <div class="list-group-item d-flex align-items-center justify-content-between">
+          <div class="flex-grow-1">
+            <div class="fw-semibold">{{ det.descripcionFirmante }}</div>
+            @if (det.firmado && det.fechaFirma) { <div class="text-muted small">Fecha firma: {{ det.fechaFirma | date:'yyyy-MM-dd HH:mm' }}</div> }
+            @if (det.esAdicional) { <div class="text-muted small">(Firmante adicional agregado por {{ det.usuarioAgrega }})</div> }
+            @if (det.esSustitucion && (det.descripcionFirmanteOriginal || det.usuarioFirmanteOriginal)) { <div class="text-muted small">(Sustituto de {{ det.descripcionFirmanteOriginal || det.usuarioFirmanteOriginal }})</div> }
+            @if (!det.firmado && det.descripcionFirmanteAlterno && !det.esSustitucion) { <div class="text-muted small">Alterno: {{ det.descripcionFirmanteAlterno }}</div> }
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            @if (!det.firmado && (det.usuarioFirmanteAlterno || det.idRolFirmanteAlterno) && !det.esSustitucion) {
+              <button type="button" class="btn btn-sm btn-outline-warning" [title]="'Delegar a ' + det.descripcionFirmanteAlterno" (click)="sustituirFirmante(det)">
+                <c-icon name="cilSwapHorizontal"></c-icon>
+              </button>
+            }
+            @if (!det.firmado && det.esSustitucion) {
+              <button type="button" class="btn btn-sm btn-outline-info" title="Revertir delegación" (click)="revertirSustitucion(det)">
+                <c-icon name="cilLoop"></c-icon>
+              </button>
+            }
+            @if (puedeEliminar(det)) {
+              <button type="button" class="btn-icon-delete" aria-label="Eliminar firmante" (click)="eliminar(det)">
+                <c-icon name="cilTrash"></c-icon>
+              </button>
+            }
+            <span class="badge" [ngClass]="det.firmado ? 'bg-success' : 'bg-secondary'">
+              {{ det.firmado ? 'Firmado' : 'Pendiente' }}
+            </span>
+          </div>
+        </div>
+        }
+      </div>
+    } @else {
+      <div class="text-muted">No hay firmantes para este documento.</div>
+    }
+  </div>
+
+  @if (modoSeleccion) {
+    <div class="modal-footer d-flex justify-content-start">
+      <c-button-group aria-label="" role="group">
+        <button cButton color="primary" (click)="seleccionar()" [disabled]="form.invalid">Solicitar</button>
+      </c-button-group>
+    </div>
+  }

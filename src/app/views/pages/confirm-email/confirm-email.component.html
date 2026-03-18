@@ -1,0 +1,37 @@
+<div class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center">
+    <c-container breakpoint="md">
+      <c-row class="justify-content-center">
+        <c-col md="8" lg="6" xl="4">
+          <c-card-group>
+            <c-card class="p-4">
+              <c-card-body>
+                @if(loading)
+                {
+                  <div>
+                    <c-spinner component="span" size="sm"></c-spinner>
+                    Validando el correo electrónico, por favor espere...
+                  </div>
+                }
+                @if(!loading && !error)
+                {
+                  <div>
+                    <h5 class="card-title">Correo electrónico confirmado</h5>
+                    <p class="text-medium-emphasis">Su correo electrónico ha sido confirmado exitosamente.</p>
+                    <a cButton color="primary" (click)="navigateToLogin()">Ir al Login</a>
+                  </div>
+                }
+                @if(!loading && error)
+                {
+                  <div>
+                    <h5 class="card-title">Error al confirmar el correo electrónico</h5>
+                    <p class="text-medium-emphasis">{{ errorMessage }}</p>
+                    <a cButton color="primary" (click)="navigateToLogin()">Ir al Login</a>
+                  </div>
+                }
+              </c-card-body>
+            </c-card>
+          </c-card-group>
+        </c-col>
+      </c-row>
+    </c-container>
+  </div>

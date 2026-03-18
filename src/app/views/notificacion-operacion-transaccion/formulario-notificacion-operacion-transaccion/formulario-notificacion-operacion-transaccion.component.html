@@ -1,0 +1,245 @@
+
+<div class="animate__animated animate__fadeIn">
+    <div class="modal-header">
+        <h4 class="modal-title">{{titulo}}</h4>
+        <button type="button" (click)="cerrar()" cButtonClose></button>
+    </div>
+    <div class="modal-body">
+        <form cForm [formGroup]="form">
+            <div class="right-z-index-top-toolbar" [ngStyle]="{'top': '0px'}">
+                <ejs-toolbar height="25px" width='100%'>
+                    <e-items>
+                        <e-item text='Grabar' tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show'
+                            showTextOn='overflow' (click)="guardarCambios()"></e-item>
+                    </e-items>
+                </ejs-toolbar>
+            </div>
+
+            <br />
+
+            <c-row>
+                <c-col>
+                    <c-card>
+                        <c-card-body>
+                            <c-row class="mt-2">
+                                <c-col lg="4">
+                                    <label cLabel>Transacción</label>
+                                    <ejs-combobox
+                                        #codigoTransaccion
+                                        id='codigoTransaccion'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringTransaccion($event)'
+                                        [allowCustom]="false"
+                                        [showClearButton]="true"
+                                        formControlName="codigoTransaccion"
+                                        [dataSource]='cbTransacciones'
+                                        [fields]='fieldsTransaccion'
+                                        [placeholder]='localWaterMark'
+                                        [ngClass]="{ 'is-invalid':  form.get('codigoTransaccion').invalid &&  form.get('codigoTransaccion').touched }">
+                                    </ejs-combobox>
+                                    <c-form-feedback
+                                        [ngClass]="{ 'is-invalid':  form.get('codigoTransaccion').invalid &&  form.get('codigoTransaccion').touched }">
+                                        {{ obtenerError('codigoTransaccion') }}
+                                    </c-form-feedback>
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Acción</label>
+                                    <ejs-combobox id='codigoAccion'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringAccion($event)'
+                                        [allowCustom]="false"
+                                        [showClearButton]="true"
+                                        formControlName="codigoAccion"
+                                        [dataSource]='cbAcciones'
+                                        [fields]='fieldsAccion'
+                                        [placeholder]='localWaterMark'
+                                        [ngClass]="{ 'is-invalid':  form.get('codigoAccion').invalid &&  form.get('codigoAccion').touched }">
+                                    </ejs-combobox>
+                                    <c-form-feedback
+                                        [ngClass]="{ 'is-invalid':  form.get('codigoAccion').invalid &&  form.get('codigoAccion').touched }">
+                                        {{ obtenerError('codigoAccion') }}
+                                    </c-form-feedback>
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Operación</label>
+                                    <ejs-combobox id='codigoOperacion'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringOperacion($event)'
+                                        [allowCustom]="false"
+                                        [showClearButton]="true"
+                                        formControlName="codigoOperacion"
+                                        [dataSource]='cbOperaciones'
+                                        [fields]='fieldsOperacion'
+                                        [placeholder]='localWaterMark'
+                                        [ngClass]="{ 'is-invalid':  form.get('codigoOperacion').invalid &&  form.get('codigoOperacion').touched }">
+                                    </ejs-combobox>
+                                    <c-form-feedback
+                                        [ngClass]="{ 'is-invalid':  form.get('codigoOperacion').invalid &&  form.get('codigoOperacion').touched }">
+                                        {{ obtenerError('codigoOperacion') }}
+                                    </c-form-feedback>
+                                </c-col>     
+                            </c-row>
+
+                            <c-row class="mt-2">
+                                <c-col lg="4">
+                                    <label cLabel>Destinatario</label>
+                                    <ejs-combobox id='userName'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringUsuarios($event)'
+                                        [allowCustom]="false"
+                                        [showClearButton]="true"
+                                        formControlName="userName"
+                                        [dataSource]='cbUsuarios'
+                                        [fields]='fieldsUsarios'
+                                        [placeholder]='localWaterMark'
+                                        [ngClass]="{ 'is-invalid':  form.get('userName').invalid &&  form.get('userName').touched }">
+                                    </ejs-combobox>
+                                    <c-form-feedback
+                                        [ngClass]="{ 'is-invalid':  form.get('userName').invalid &&  form.get('userName').touched }">
+                                        {{ obtenerError('userName') }}
+                                    </c-form-feedback>
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Usuario creación doc. origen</label>
+                                    <ejs-combobox id='usuarioCreacionDocumentoOrigen'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringUsuarios($event)'
+                                        [allowCustom]="false"
+                                        [showClearButton]="true"
+                                        formControlName="usuarioCreacionDocumentoOrigen"
+                                        [dataSource]='cbUsuarios'
+                                        [fields]='fieldsUsarios'
+                                        [placeholder]='localWaterMark'>
+                                    </ejs-combobox>
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Usuario aprobación doc. origen</label>
+                                    <ejs-combobox id='usuarioAprobacionDocumentoOrigen'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringUsuarios($event)'
+                                        [allowCustom]="false"
+                                        [showClearButton]="true"
+                                        formControlName="usuarioAprobacionDocumentoOrigen"
+                                        [dataSource]='cbUsuarios'
+                                        [fields]='fieldsUsarios'
+                                        [placeholder]='localWaterMark'>
+                                    </ejs-combobox>
+                                </c-col>
+                            </c-row>
+
+                            <c-row class="mt-2">
+                                <c-col lg="4">
+                                    <label cLabel>Usuario creación doc. origen 2</label>
+                                    <ejs-combobox id='usuarioCreacionDocumentoOrigen2'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringUsuarios($event)'
+                                        [allowCustom]="false"
+                                        [showClearButton]="true"
+                                        formControlName="usuarioCreacionDocumentoOrigen2"
+                                        [dataSource]='cbUsuarios'
+                                        [fields]='fieldsUsarios'
+                                        [placeholder]='localWaterMark'>
+                                    </ejs-combobox>
+                                </c-col>
+                            </c-row>
+
+                            <c-row class="mt-2">
+                                <c-col lg="4">
+                                    <label cLabel>Sucursal</label>
+                                    <ejs-combobox id='idSucursal'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringSucursal($event)'
+                                        [allowCustom]="allowCustom"
+                                        [showClearButton]="allowCustom"
+                                        formControlName="idSucursal"
+                                        [dataSource]='sucursales'
+                                        [fields]='fieldsSucursal'
+                                        [placeholder]='localWaterMark'
+                                        [ngClass]="{ 'is-invalid':  form.get('idSucursal').invalid &&  form.get('idSucursal').touched }">
+                                    </ejs-combobox>
+                                    <c-form-feedback
+                                        [ngClass]="{ 'is-invalid':  form.get('idSucursal').invalid &&  form.get('idSucursal').touched }">
+                                        {{ obtenerError('idSucursal') }}
+                                    </c-form-feedback>
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Área</label>
+                                    <ejs-combobox id='codigoArea'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringArea($event)'
+                                        formControlName="codigoArea"
+                                        [dataSource]='listadoAreas'
+                                        [fields]='fieldsArea'
+                                        [placeholder]='localWaterMark'>
+                                    </ejs-combobox>
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Categoría de compra</label>
+                                    <ejs-combobox id='codigoCategoriaCompra'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringCategoriaCompra($event)'
+                                        formControlName="codigoCategoriaCompra"
+                                        [dataSource]='cbCategoriaCompra'
+                                        [fields]='fieldsCategoriaCompra'
+                                        [placeholder]='localWaterMark'>
+                                    </ejs-combobox>
+                                </c-col>
+                            </c-row>
+
+                            <c-row class="mt-2">
+                                <c-col lg="4">
+                                    <label cLabel>Bodega</label>
+                                    <ejs-combobox id='codigoBodega'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringBodega($event)'
+                                        formControlName="codigoBodega"
+                                        [dataSource]='cbBodegas'
+                                        [fields]='fieldsBodega'
+                                        [placeholder]='localWaterMark'>
+                                    </ejs-combobox>
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Tipo de compra</label>
+                                    <ejs-combobox id='codigoTipoCompra'
+                                        allowFiltering="true"
+                                        (filtering)='onFilteringTipoCompra($event)'
+                                        formControlName="codigoTipoCompra"
+                                        [dataSource]='cbTipoCompra'
+                                        [fields]='fieldsTipoCompra'
+                                        [placeholder]='localWaterMark'>
+                                    </ejs-combobox>
+                                </c-col>
+                                <c-col lg="4">
+                                    <label cLabel>Es importación</label>
+                                    <ejs-combobox id='esImportacion'
+                                        allowFiltering="false"
+                                        [allowCustom]="false"
+                                        [showClearButton]="true"
+                                        formControlName="esImportacion"
+                                        [dataSource]='cbOpcionesImportacion'
+                                        [fields]='fieldsBooleanas'
+                                        [placeholder]='localWaterMark'>
+                                    </ejs-combobox>
+                                </c-col>
+                                
+                            </c-row>
+
+     
+
+                            <c-row class="mt-3">
+                                <c-col lg="6">
+                                    <c-form-check [switch]="true">
+                                        <input cFormCheckInput sizing="sm" type="checkbox" id="activo" formControlName="activo" />
+                                        <label #lblEstado id="lblEstado" cFormCheckLabel>Activo</label>
+                                    </c-form-check>
+                                </c-col>
+                            </c-row>
+
+                            
+                        </c-card-body>
+                    </c-card>
+                </c-col>
+            </c-row>
+        </form>
+    </div>
+</div>

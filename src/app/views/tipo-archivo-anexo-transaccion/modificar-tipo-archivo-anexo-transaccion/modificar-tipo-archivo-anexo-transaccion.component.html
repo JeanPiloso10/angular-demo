@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <h4 class="modal-title">Modificar Tipo Archivo </h4>
+  <button type="button" (click)="cerrar()" cButtonClose>
+  </button>
+</div>
+<div class="modal-body">
+
+  <app-formulario-tipo-archivo-anexo-transaccion *ngIf="modelo" [errores]="errores" [modelo]="modelo"
+    [StateEnum]="StateEnum" (onSubmit)="guardarCambios($event)">
+
+  </app-formulario-tipo-archivo-anexo-transaccion>
+</div>

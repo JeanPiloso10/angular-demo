@@ -1,0 +1,24 @@
+::ng-deep .e-grid .e-rowcell {
+  font-size: 0.8rem;
+}
+
+::ng-deep .e-grid .e-headercelldiv {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+c-card-header strong {
+  font-size: 0.95rem;
+}
+
+.text-muted.small {
+  font-size: 0.8rem;
+}

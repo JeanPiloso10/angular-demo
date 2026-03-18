@@ -1,0 +1,65 @@
+<div class="animate__animated animate__fadeIn">
+ 
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px"  width='100%'>
+            <e-items>
+                <e-item text='Nuevo' tooltipText='Nuevo - Alt+N' prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow' (click)="nuevoRegistro()" ></e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>
+    <br/>
+    <ejs-grid #grid 
+              [dataSource]='data' 
+              [allowPaging]="true" 
+              [pageSettings]='pageSettings' 
+              [allowSorting]='true' 
+              [sortSettings]='sortOptions'
+              [toolbar]="toolbar"
+              [allowExcelExport]="true"
+              [allowFiltering]="true"
+              [filterSettings]="filterSettings"
+              enableStickyHeader='true' 
+              [showColumnChooser]= 'true'
+              (toolbarClick)='clickHandler($event)'
+              (commandClick)="commandClick($event)"
+              [editSettings]='editSettings' 
+              [appDragScroll]="{ selector: '.e-content', axis: 'x' }"
+              >
+      <e-columns>
+          <e-column headerText="Opciones" width="80" [commands]="commands"></e-column>
+          <e-column field='codigo' headerText='Código' width='80' textAlign='Left' [showInColumnChooser]='false' [isPrimaryKey]="true"></e-column>
+          <e-column field='descripcion' headerText='Descripción' width='120'  ></e-column>
+          <e-column field='region.codigo' headerText='Código Región' width='80'  ></e-column>
+          <e-column field='region.descripcion' headerText='Descripción Región' width='120'  ></e-column>
+          <e-column field='codigoSRI' headerText='Código SRI' width='80'  ></e-column>
+          <e-column field='activo' headerText='Activo' width='120'>
+            <ng-template #template let-item>
+                @if(item.activo === true) {
+                <span class="badge bg-success me-1">SÍ</span>
+                }@else {
+                <span class="badge bg-warning me-1">NO</span>
+                }
+            </ng-template>
+        </e-column>
+
+          <e-column field='esParaisoFiscal' headerText='Paraíso Fiscal' width='120'>
+            <ng-template #template let-item>
+                @if(item.esParaisoFiscal === true) {
+                <span class="badge bg-success me-1">SÍ</span>
+                }@else {
+                <span class="badge bg-warning me-1">NO</span>
+                }
+            </ng-template>
+        </e-column>
+
+          <e-column field='codigoDiscado' headerText='Código Discado'[visible]='false' width='80'  ></e-column>
+          <e-column field='usuarioCreacion' [visible]='false' headerText='Creado por' width='120'  ></e-column>
+          <e-column field='fechaCreacion' [visible]='false' headerText='Fecha Creación' width='120'  ></e-column>
+          <e-column field='equipoCreacion' [visible]='false' headerText='Creado desde' width='120'  ></e-column>
+          <e-column field='usuarioModificacion' [visible]='false' headerText='Modificado por' width='120'  ></e-column>
+          <e-column field='fechaModificacion' [visible]='false' headerText='Fecha Modificación' width='120'  ></e-column>
+          <e-column field='equipoModificacion' [visible]='false' headerText='Modificado desde' width='120'  ></e-column>
+      </e-columns>
+  </ejs-grid>
+
+</div>

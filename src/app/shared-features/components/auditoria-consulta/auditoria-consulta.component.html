@@ -1,0 +1,58 @@
+<div class="modal-header d-flex justify-content-between align-items-start">
+    <div>
+        <h4 class="modal-title mb-0">Detalle de Auditoría</h4>
+        <small *ngIf="titulo" class="text-muted">{{ titulo }}</small>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <button type="button" class="btn btn-sm btn-outline-primary btn-help" title="Ayuda" (click)="startTour()">
+            <svg cIcon name="cilInfo" size="lg"></svg>
+        </button>
+        <button type="button" (click)="cerrar()" cButtonClose></button>
+    </div>
+</div>
+<div class="modal-body">
+        <ejs-grid #grid id="auditoria-grid" 
+        [appDragScroll]="{ selector: '.e-content', axis: 'x' }"
+        [dataSource]="listadoAuditoria"
+        [allowSorting]="true"
+        allowTextWrap="false"
+        [allowResizing]="true"
+        [allowExcelExport]="true"
+        [allowFiltering]="true"
+        [filterSettings]="filterSettings"
+        [toolbar]="toolbarOptions"
+        (toolbarClick)="toolbarClick($event)">
+        <e-columns>
+            <e-column field='identificacionPrincipal' headerText='Id' width='120' textAlign='Right' [visible]="false"
+                [isPrimaryKey]="true"></e-column>
+            <e-column field='accion' headerText='Tipo' width='170'></e-column>
+            <e-column field='motivoName' headerText='Motivos' width='200' textAlign='Center'>
+                <ng-template #template e-template let-data>
+                    <ng-container *ngFor="let motivo of transformMotivoToBadgeArray(data.motivoName)">
+                        <span class="badge bg-primary me-1">{{ motivo }}</span>
+                    </ng-container>
+                </ng-template>
+            </e-column>
+            <e-column field="observacion" headerText="Observación" width="300">
+                <ng-template #template let-data>
+                    <span [innerHTML]="data.observacion"></span>
+                </ng-template>
+            </e-column>
+            
+            <e-column field='usuarioCreacion' headerText='Usuario' width='180'></e-column>
+            <e-column field='fechaCreacion' headerText='Fecha' width='180'></e-column>
+            <e-column field='equipoCreacion' headerText='Equipo' width='180'></e-column>
+
+            <e-column field="jsonBackup" [visible]="mostrarJsonBackup" headerText="Versión Anterior" width="200" textAlign='center'>
+                <ng-template #template let-data>
+                                <span *ngIf="data.jsonBackup" class="badge bg-success me-1 cursor-pointer btn-json"
+                  (click)="verJsonBackup(data.jsonBackup)">
+                  <svg cIcon class="me-2" name="cilFile"></svg>
+                  Ver
+                </span>
+                </ng-template>
+            </e-column>
+
+        </e-columns>
+    </ejs-grid>
+</div>

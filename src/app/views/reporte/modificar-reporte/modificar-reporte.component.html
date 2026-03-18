@@ -1,0 +1,20 @@
+
+
+
+   
+        <div class="modal-header">
+            <h4 class="modal-title">Modificar Reporte</h4>
+            <button type="button" (click)="cerrar()" cButtonClose>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <app-formulario-reporte
+            *ngIf="modelo"
+            [errores]="errores"
+            [modelo]="modelo"
+            [StateEnum]="StateEnum"></app-formulario-reporte>
+            
+
+        </div>  
+   

@@ -1,0 +1,78 @@
+<c-row>
+    <c-col>
+        <form id="entityForm">
+
+        <c-card>
+            <div class="modal-header">
+                <h4 class="modal-title">{{this.titulo}}</h4>
+                <button type="button" (click)="cerrar()" cButtonClose>
+                </button>
+                </div>
+            <c-card-body>                                                    
+                      
+                <c-row>
+                    <c-col>
+                        <label cLabel>Filtro de Búsqueda</label>
+                        <!-- <input cFormControl sizing="sm" #filtro> -->
+
+                        <c-input-group>
+                            <input aria-label=""
+                                   sizing="sm"
+                                   cFormControl
+                                   placeholder="Escriba el código, descripción o identificación de la entidad a buscar"
+                                   #filtro
+                            />
+                            <button cButton color="secondary" 
+                            (click)="buscar()"
+                            type="button" variant="outline">
+                              Buscar
+                            </button>
+                            <button cButton color="secondary"
+                            (click)="limpiar()"
+                            type="button" variant="outline">
+                              Limpiar
+                            </button>
+                          </c-input-group>
+
+                    </c-col>
+                </c-row>
+                
+                <c-row>
+                    <div class="control-section" class="mt-5">
+                        <ejs-grid #grid 
+                            [dataSource]='data' 
+                            [allowPaging]="true" 
+                            [pageSettings]='pageSettings' 
+                            [allowSorting]='true' 
+                            [toolbar]="toolbar"
+                            enableStickyHeader='true' 
+                            [showColumnChooser]= 'true'
+                            [allowResizing]="true"
+                            (commandClick)="commandClick($event)"
+                            >
+                            <e-columns>
+                                <e-column headerText="" width="40"  textAlign='Left' [commands]="commands"></e-column>
+                                <e-column field='codigo' headerText='Código' width='30' textAlign='Left'  ></e-column>
+                                <e-column field='descripcion' headerText='Descripción' width='120' textAlign='Left'  ></e-column>
+                                <e-column field='identificacion' headerText='Identificación' width='50' textAlign='Left'  ></e-column>
+                                <e-column field='estado' headerText='Estado' width='50' textAlign='Left'  ></e-column>
+                            </e-columns>
+                        </ejs-grid>
+                       
+                    </div>
+                </c-row>
+                
+
+            </c-card-body>
+            <c-card-footer>
+                <c-button-group aria-label="Basic mixed styles example" role="group">
+                    
+                    <a cButton color="primary" (click)="cerrar()">
+                        Cerrar
+                    </a>  
+                    </c-button-group>
+            </c-card-footer>
+        </c-card>
+    </form>
+    </c-col>
+</c-row> 

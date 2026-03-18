@@ -1,0 +1,120 @@
+<div class="animate__animated animate__fadeIn">
+    <form cForm
+    [formGroup]="form" [autocomplete]="'off'">
+
+    <div class="right-z-index-top-toolbar" [ngStyle]="isModal ? {'top': '0px'} : {}">
+        <ejs-toolbar *ngIf="isModal" height="25px" width='100%'>
+            <e-items>
+                <e-item text='Grabar' tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()" [disabled]="form.invalid"></e-item>
+            </e-items>
+        </ejs-toolbar>
+        <ejs-toolbar *ngIf="!isModal" height="25px" width='100%'>
+            <e-items>
+                <e-item text='Nuevo' [disabled]="!estadoBotones.btnNuevo"  tooltipText='Grabar - Alt+N' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="nuevoRegistro()" ></e-item>
+                <e-item text='Modificar' [disabled]="!estadoBotones.btnModificar" tooltipText='Grabar - Alt+M' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="modificarRegistro()" ></e-item>
+                <e-item text='Grabar' [disabled]="!estadoBotones.btnGrabar" tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()" ></e-item>
+                <e-item text='Cancelar' [disabled]="!estadoBotones.btnSalir" tooltipText='Cancelar - Alt+C' prefixIcon='e-icons e-undo' overflow='Show' showTextOn='overflow' (click)="cancelar()"  ></e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>
+
+    <br/>
+    <c-row>
+        <c-col [md]="isModal ? 12 : 6" [lg]="isModal ? 12 : 6" [xl]="isModal ? 12 : 6">
+            <c-card>
+                <c-card-body> 
+                    <c-col >
+                        <label cLabel >Codigo</label>
+                        <input
+                        cFormControl sizing="sm" 
+                        [readonly]="StateEnum == tipoAccion.Update"   
+                        oninput="this.value = this.value.toUpperCase()"
+                        [ngClass]="{ 'is-invalid': form.get('codigo').invalid && form.get('codigo').touched }"
+                        autocomplete="off" 
+                        formControlName="codigo" 
+                        (keyup.enter)="consultarRegistro()"                        
+                        type="text"  #codigo 
+                         [ngClass]="{ 'is-invalid': form.get('codigo').invalid && form.get('codigo').touched}"
+                        />  
+                        <c-form-feedback [ngClass]="{ 'is-invalid': form.get('codigo').invalid && form.get('codigo').touched}">{{obtenerError('codigo')}}</c-form-feedback>
+                    </c-col>
+
+                    <c-col >
+                        <label cLabel >Descripción</label>
+                        <input cFormControl sizing="sm"  
+                        oninput="this.value = this.value.toUpperCase()"
+                        [ngClass]="{ 'is-invalid': form.get('descripcion').invalid && form.get('descripcion').touched }"
+                        autocomplete="off" 
+                        formControlName="descripcion" 
+                        type="text"  
+                        [ngClass]="{ 'is-invalid': form.get('descripcion').invalid && form.get('descripcion').touched}"
+                        #descripcion />  
+                        <c-form-feedback [ngClass]="{ 'is-invalid': form.get('descripcion').invalid && form.get('descripcion').touched}">{{obtenerError('descripcion')}}</c-form-feedback>
+                    </c-col>
+
+                    <c-col >
+                        <label cLabel >Código Discado</label>
+                        <input cFormControl sizing="sm" [valid]="form.get('codigoDiscado').valid" autocomplete="off" formControlName="codigoDiscado" type="text" #codigoDiscado />  
+                        <c-form-feedback [valid]="form.get('codigoDiscado').valid">{{obtenerError('codigoDiscado')}}</c-form-feedback>
+                    </c-col>
+        
+                    <c-col>
+                        <label cLabel >Región</label>
+                        <ejs-combobox id='codigoRegion' 
+                        allowFiltering="true"
+                        [allowCustom]="false"
+                        [showClearButton]="true" 
+                        formControlName="codigoRegion" 
+                        [dataSource]='regiones' 
+                        [fields]='fields' 
+                        [placeholder]='localWaterMark'
+                        [ngClass]="{ 'is-invalid':  form.get('codigoRegion').invalid &&  form.get('codigoRegion').touched}"
+                        ></ejs-combobox> 
+                        <c-form-feedback
+                            [ngClass]="{ 'is-invalid':  form.get('codigoRegion').invalid &&  form.get('codigoRegion').touched}">
+                            {{ obtenerError('codigoRegion') }}
+                        </c-form-feedback>
+                    </c-col>
+
+                    <c-col >
+                        <label cLabel >Código SRI</label>
+                        <input cFormControl sizing="sm" [valid]="form.get('codigoSRI').valid" autocomplete="off" formControlName="codigoSRI" type="text" #codigoSRI />  
+                        <c-form-feedback [valid]="form.get('codigoSRI').valid">{{obtenerError('codigoSRI')}}</c-form-feedback>
+                    </c-col>
+
+                    
+
+                    
+
+                    <c-col >
+                        <label cLabel >Código SRI Paraíso Fiscal</label>
+                        <input cFormControl sizing="sm" autocomplete="off" formControlName="codigoSRIParaisoFiscal" type="text" />
+                    </c-col>
+                    
+
+                    <c-col >
+                        <c-form-check [switch]="true" style="margin-top: 5px;">
+                            <input cFormCheckInput type="checkbox" id="esParaisoFiscal" class="mt-2"
+                                formControlName="esParaisoFiscal" />
+                            <label [ngClass]="{ 'bold': form.get('esParaisoFiscal').value }"
+                                cFormCheckLabel>Es Paraíso Fiscal</label>
+                        </c-form-check>
+                    </c-col>
+                    
+                    <c-col >
+                        <c-form-check [switch]="true" style="margin-top: 5px;">
+                            <input cFormCheckInput type="checkbox" #activo id="activo" class="mt-2"
+                                formControlName="activo" />
+                            <label #lblEstado id="activo" [ngClass]="{ 'bold': form.get('activo').value }"
+                                cFormCheckLabel>Activo</label>
+                        </c-form-check>
+                    </c-col>
+                    
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+  
+    
+</form>
+</div>

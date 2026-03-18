@@ -1,0 +1,14 @@
+@use "@coreui/coreui/scss/coreui" as coreui with (
+  $enable-transitions: true,
+  $enable-ltr: true,
+  $enable-rtl: false,
+  $enable-dark-mode: true,
+  $enable-deprecation-messages: false
+);
+
+@use "@coreui/chartjs/scss/coreui-chartjs";
+
+@use "theme";
+@use "custom";
+@use "pivot";
+

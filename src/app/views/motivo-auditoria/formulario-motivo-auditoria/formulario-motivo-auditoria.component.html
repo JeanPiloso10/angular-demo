@@ -1,0 +1,111 @@
+<div class="animate__animated animate__fadeIn">
+	<form [formGroup]="Form" autocomplete="off">
+		<div class="right-z-index-top-toolbar">
+			<ejs-toolbar height="25px" width='100%'>
+				<e-items>
+					<e-item text='Nuevo' [disabled]="!estadoBotones.btnNuevo" (click)="btnNuevoRegistro()"
+						prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow'></e-item>
+
+					<e-item text='Grabar' [disabled]="loading" tooltipText='Grabar - Alt+G'
+						[disabled]="!estadoBotones.btnGrabar" prefixIcon='e-icons e-save' overflow='Show'
+						showTextOn='overflow' (click)="guardarCambios()"></e-item>
+					<e-item text='Modificar' [disabled]="!estadoBotones.btnModificar" (click)="btnModificarRegistro();"
+						prefixIcon='e-icons e-edit' overflow='Show' showTextOn='overflow'></e-item>
+
+					<e-item *ngIf="!modalTransaccion || !modalTransaccion[0]" text='Cancelar'
+						[disabled]="!estadoBotones.btnSalir" (click)="cancelar()" prefixIcon='e-icons e-undo'
+						overflow='Show' showTextOn='overflow'></e-item>
+
+				</e-items>
+			</ejs-toolbar>
+		</div>
+		<br />
+		<c-row>
+			<c-col md="12" lg="12" xl="6">
+				<c-card>
+					<c-card-body>
+						<c-row>
+							<c-col lg="3">
+								<label cLabel>Código</label>
+								<input cFormControl formControlName="idMotivoAuditoria" id="idMotivoAuditoria" #MotivoAuditoriaId sizing="sm"
+									type="number"
+									(keydown.enter)="onBuscarMotivoAuditoria()"
+									(keyup.enter)="onFocusInput('idMotivoAuditoria')"
+									[ngClass]="{ 'is-invalid': Form.get('idMotivoAuditoria').invalid && Form.get('idMotivoAuditoria').touched}">
+								<c-form-feedback
+									[ngClass]="{ 'is-invalid': Form.get('idMotivoAuditoria').invalid && Form.get('idMotivoAuditoria').touched}">{{obtenerError('idMotivoAuditoria')}}
+								</c-form-feedback>
+							</c-col>
+							<c-col lg="9">
+								<label cLabel>Descripción</label>
+								<ejs-combobox id="descripcion" formControlName="descripcion" [allowCustom]="true"
+									[allowFiltering]="true" (keyup.enter)="onFocusInput('descripcion')"
+									(filtering)="debouncedGetMotivoAuditoria($event)"
+									(change)="onDescripcionChange($event)"
+									#MotivoAuditoriaDescripcion [dataSource]="motivoAuditoriaList"
+									[fields]="fieldsMotivoAuditoria" formControlName="descripcion"
+									[ngClass]="{ 'is-invalid': Form.get('descripcion').invalid && Form.get('descripcion').touched}"></ejs-combobox>
+								<c-form-feedback
+									[ngClass]="{ 'is-invalid': Form.get('descripcion').invalid && Form.get('descripcion').touched}">{{obtenerError('descripcion')}}
+								</c-form-feedback>
+							</c-col>
+						</c-row>
+						<br/>
+						<c-row>
+							<c-col lg="6">
+								<c-form-check [switch]="true">
+									<input cFormCheckInput sizing="sm" type="checkbox" id="activo" formControlName="activo" />
+									<label #lblEstado id="lblEstado" cFormCheckLabel>Activo</label>
+								</c-form-check>
+							</c-col>
+						</c-row>
+					</c-card-body>
+					@if(this.modelo != undefined && this.modelo.usuarioCreacion){
+						<c-card-footer>
+                            <c-row>
+                                @if(this.modelo.usuarioCreacion){
+                                    <c-col lg="4">
+                                        <label cLabel>Creado Por:</label>
+                                        <input cFormControl id="usuarioCreacion" sizing="sm" type="text"
+                                            formControlName="usuarioCreacion" autocomplete="off">
+                                    </c-col>
+                                    <c-col lg="4">
+                                        <label cLabel>Fecha Creación:</label>
+                                        <input cFormControl id="fechaCreacion" sizing="sm" type="text"
+                                            formControlName="fechaCreacion" autocomplete="off">
+                                    </c-col>
+                                    <c-col lg="4">
+                                        <label cLabel>Equipo Creación:</label>
+                                        <input cFormControl id="equipoCreacion" sizing="sm" type="text"
+                                            formControlName="equipoCreacion" autocomplete="off">
+                                    </c-col>
+                                    }
+                            </c-row>
+                            <c-row>
+                                <c-col lg="4">
+									<label cLabel>Modificado Por:</label>
+									<input cFormControl id="usuarioModificacion" sizing="sm" type="text"
+										formControlName="usuarioModificacion" autocomplete="off">
+								</c-col>
+								<c-col lg="4">
+									<label cLabel>Fecha Modificación:</label>
+									<input cFormControl id="fechaModificacion" sizing="sm" type="text"
+										formControlName="fechaModificacion" autocomplete="off">
+								</c-col>
+								<c-col lg="4">
+									<label cLabel>Equipo Modificación:</label>
+									<input cFormControl id="equipoModificacion" sizing="sm" type="text"
+										formControlName="equipoModificacion" autocomplete="off">
+								</c-col>
+                            </c-row>
+						</c-card-footer>
+					}
+				</c-card>
+			</c-col>
+		</c-row>
+
+
+
+	</form>
+
+</div>

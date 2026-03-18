@@ -1,0 +1,56 @@
+<div class="animate__animated animate__fadeIn">
+
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px"  width='100%'>
+            
+                <e-items>
+                    <e-item text='Nuevo' [disabled]="!estadoBotones.btnNuevo" tooltipText='Grabar - Alt+N' prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow' (click)="nuevoRegistro()" ></e-item>
+                </e-items>
+       
+        </ejs-toolbar>
+    </div>
+    <br />
+    <c-row>
+        <c-col lg="12" class="pb-3">
+            <c-card>
+                
+                <c-card-body>
+       
+                    <ejs-grid #grid 
+                    [dataSource]='data' 
+                    [allowSorting]='true' 
+                    [allowResizing]="true" 
+                    [sortSettings]='sortOptions'
+                    [toolbar]="toolbar"
+                    [allowFiltering]="true"
+                    [filterSettings]="{ type: 'Excel' }"
+                    [allowExcelExport]="true"
+                    [appDragScroll]="{ selector: '.e-content', axis: 'x' }"
+                    enableStickyHeader=true 
+                    [showColumnChooser]= 'true'
+                    (toolbarClick)='clickHandler($event)'
+                    (commandClick)="commandClick($event)"
+                    [editSettings]='editSettings' 
+                    >
+                        <e-columns>
+                            <e-column headerText="Opciones" width="80" [commands]="commands"></e-column>
+                            <e-column field='idConfiguracion' [visible]='false' headerText='Id' width='50' textAlign='Right' [showInColumnChooser]='false' [isPrimaryKey]="true"></e-column>
+                            <e-column field='codigo' headerText='Codigo' width='80'  ></e-column>
+                            <e-column field='descripcion' headerText='Descripcion' width='120'  ></e-column>
+                            <e-column field='valorPorDefecto' headerText='Valor por Defecto' width='80'  ></e-column>
+  
+                            <e-column field='activo' headerText='Activo' width='50'  ></e-column>
+                            <e-column field='usuarioCreacion' [visible]='false' headerText='Creado por' width='120'  ></e-column>
+                            <e-column field='fechaCreacion' [visible]='false' headerText='Fecha Creación' width='120'  ></e-column>
+                            <e-column field='equipoCreacion' [visible]='false' headerText='Creado desde' width='120'  ></e-column>
+                            <e-column field='usuarioModificacion' [visible]='false' headerText='Modificado por' width='120'  ></e-column>
+                            <e-column field='fechaModificacion' [visible]='false' headerText='Fecha Modificación' width='120'  ></e-column>
+                            <e-column field='equipoModificacion' [visible]='false' headerText='Modificado desde' width='120'  ></e-column>
+                        </e-columns>
+                    </ejs-grid>
+
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</div>

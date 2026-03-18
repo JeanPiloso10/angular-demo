@@ -1,0 +1,21 @@
+/* Disable interactions when in Read mode */
+.disabletreegrid {
+    pointer-events: none;
+    opacity: 0.95; /* keep readable but not interactable */
+}
+
+
+
+.disabletreegrid {
+    pointer-events: none;
+    opacity: 0.4;
+}
+.wrapper {
+    cursor: not-allowed;
+}
+
+.e-bigger.bootstrap5 .e-treegrid .e-hierarchycheckbox .e-frame,
+.e-bigger.bootstrap5-dark .e-treegrid .e-hierarchycheckbox .e-frame {
+    height: 17px;
+    width: 17px;
+}

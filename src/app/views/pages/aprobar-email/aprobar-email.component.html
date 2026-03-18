@@ -1,0 +1,112 @@
+<div class="min-vh-100 d-flex flex-column align-items-center justify-content-center bg-body">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col md="8" lg="6">
+
+        <!-- Estado: Cargando -->
+        @if (loading) {
+          <div class="card">
+            <div class="card-body text-center py-5">
+              <c-spinner color="primary" class="mb-4"></c-spinner>
+              <h4 class="mb-2">Verificando autenticación...</h4>
+              <p class="text-body-secondary">Por favor espere un momento.</p>
+            </div>
+          </div>
+        }
+
+        <!-- Estado: Confirmación de aprobación -->
+        @if (showConfirmacion && !loading && !procesando) {
+          <div class="card border-primary">
+            <div class="card-header bg-primary text-white d-flex align-items-center">
+              <i class="cil-task me-2" style="font-size: 1.25rem;"></i>
+              <strong>Confirmar Aprobación</strong>
+            </div>
+            <div class="card-body text-center py-5">
+              <div class="mb-4">
+                <i class="cil-check-circle text-primary" style="font-size: 5rem;"></i>
+              </div>
+              <h4 class="mb-3">¿Confirmar aprobación?</h4>
+              <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <button cButton color="success" (click)="confirmarAprobacion()">
+                  <i class="cil-check me-2"></i>
+                  Sí, Aprobar
+                </button>
+                <button cButton color="danger" variant="outline" (click)="cancelarAprobacion()">
+                  <i class="cil-x me-2"></i>
+                  No, Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Estado: Procesando aprobación -->
+        @if (procesando && !loading) {
+          <div class="card">
+            <div class="card-body text-center py-5">
+              <c-spinner color="success" class="mb-4"></c-spinner>
+              <h4 class="mb-2">Procesando aprobación...</h4>
+              <p class="text-body-secondary">Estamos validando y registrando su firma.</p>
+            </div>
+          </div>
+        }
+
+        <!-- Estado: Error -->
+        @if (showError && !loading && !procesando) {
+          <div class="card border-danger">
+            <div class="card-header bg-danger text-white d-flex align-items-center">
+              <i class="cil-warning me-2" style="font-size: 1.25rem;"></i>
+              <strong>Error en la Aprobación</strong>
+            </div>
+            <div class="card-body text-center py-5">
+              <div class="mb-4">
+                <i class="cil-x-circle text-danger" style="font-size: 5rem;"></i>
+              </div>
+              <h4 class="mb-3">No se pudo completar la aprobación</h4>
+              <p class="text-body-secondary mb-4">{{ errorMessage }}</p>
+              <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <button cButton color="info" variant="outline" (click)="cerrarPestana()">
+                  <i class="cil-window-close me-2"></i>
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Estado: Éxito -->
+        @if (showSuccess && !loading && !procesando) {
+          <div class="card border-success">
+            <div class="card-header bg-success text-white d-flex align-items-center">
+              <i class="cil-check-circle me-2" style="font-size: 1.25rem;"></i>
+              <strong>Aprobación Exitosa</strong>
+            </div>
+            <div class="card-body text-center py-5">
+              <div class="mb-4">
+                <i class="cil-check-circle text-success" style="font-size: 5rem;"></i>
+              </div>
+              <h4 class="mb-3">¡Aprobación completada!</h4>
+              <p class="text-body-secondary mb-4">{{ successMessage }}</p>
+
+              <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <button cButton color="info" variant="outline" (click)="cerrarPestana()">
+                  <i class="cil-window-close me-2"></i>
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Footer informativo -->
+        <div class="text-center mt-4">
+          <small class="text-body-secondary">
+            <i class="cil-lock-locked me-1"></i>
+            Aprobación segura mediante autenticación Microsoft
+          </small>
+        </div>
+
+      </c-col>
+    </c-row>
+  </c-container>
+</div>

@@ -1,0 +1,383 @@
+/* Tokens de tema (CoreUI usa data-coreui-theme en :root) */
+:root[data-coreui-theme='light'] {
+  --pivot-header-bg: #f2f2f2;
+  --pivot-header-color: #333;
+  --pivot-sticky-bg: var(--pivot-header-bg);
+  --pivot-row-bg: #ffffff;
+  --pivot-row-color: #222;
+  --pivot-border-color: #cccccc;
+  --pivot-hover-row-bg: #eaeaea;
+  --pivot-selected-bg: #e6f0ff;
+  --pivot-selected-border: #4890dd;
+  --pivot-pending-bg: #fff3cd;
+  --pivot-pending-color: #333;
+  --pivot-approved-bg: #d4edda;
+  --pivot-approved-color: #1b3d23;
+  --pivot-input-focus-ring: #4890dd;
+  --pivot-cell-create-text: #28a745;
+  --pivot-cell-update-text: #28a745;
+  --pivot-cell-update-text-bg: #bbbafa;
+  --pivot-historial-color-subida: #dc2626;
+  --pivot-historial-color-bajada: #16a34a;
+  --pivot-historial-opacidad-igual: .6;
+}
+
+:root[data-coreui-theme='dark'] {
+  --pivot-header-bg: #2e3238;
+  --pivot-header-color: #f1f1f1;
+  --pivot-sticky-bg: var(--pivot-header-bg);
+  --pivot-row-bg: #1f2226;
+  --pivot-row-color: #e4e7eb;
+  --pivot-border-color: #4a4f55;
+  --pivot-hover-row-bg: #30363d;
+  --pivot-selected-bg: #123c63;
+  --pivot-selected-border: #4da3ff;
+  --pivot-pending-bg: #5c4b17;
+  --pivot-pending-color: #f7e5b2;
+  --pivot-approved-bg: #2d4a33;
+  --pivot-approved-color: #dfffe8;
+  --pivot-input-focus-ring: #4da3ff;
+  --pivot-cell-create-text: #28a745;
+  --pivot-cell-update-text: #28a745;
+  --pivot-cell-update-text-bg: #424174;
+  --pivot-historial-color-subida: #dc2626;
+  --pivot-historial-color-bajada: #16a34a;
+  --pivot-historial-opacidad-igual: .6;
+}
+
+.pivot-cell-create-text {
+  color: var(--pivot-cell-create-text);
+  font-weight: bold;
+}
+
+.pivot-cell-update-text {
+  //background-color: var(--pivot-cell-update-text-bg);
+  color: var(--pivot-cell-update-text);
+  font-weight: bold;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.pivot-cell-create {
+  background-color: var(--pivot-approved-bg);
+  color: var(--pivot-approved-color);
+  font-weight: bold;
+}
+
+.pivot-cell-pending-approval {
+  background-color: var(--pivot-pending-bg);
+  color: var(--pivot-pending-color);
+  font-weight: bold;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.pivot-cell-approved {
+  background-color: var(--pivot-approved-bg);
+  color: var(--pivot-approved-color);
+  font-weight: bold;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.pivot-cell-selected {
+  border: 2px solid var(--pivot-selected-border) !important;
+  background: var(--pivot-selected-bg) !important;
+  color: var(--pivot-row-color);
+}
+
+.pivot-toolbar {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+
+}
+
+.search-compact {
+  position: relative;
+  max-width: 260px;
+  color: var(--pivot-header-color);
+
+  input[cformcontrol] {
+    height: 32px;
+    padding-right: 60px;
+    border-right: 0 !important;
+  }
+
+  [cinputgrouptext] {
+    height: 32px;
+    border-left: 1px solid var(--pivot-border-color) !important;
+  }
+
+  .btn-clear {
+    position: absolute;
+    right: 36px; // antes de la lupa
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 .35rem;
+    line-height: 1;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .btn-clear:focus,
+  .btn-clear:active,
+  .btn-clear:focus-visible {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+
+  }
+
+  .btn-clear svg {
+    pointer-events: none;
+  }
+
+  .search-close {
+    color: var(--pivot-header-color);
+    cursor: pointer;
+  }
+
+}
+
+.icono-subida {
+  color: var(--pivot-historial-color-subida);
+}
+
+.icono-bajada {
+  color: var(--pivot-historial-color-bajada);
+}
+
+.icono-igual {
+  opacity: var(--pivot-historial-opacidad-igual);
+}
+
+// ============================================================================
+// ESTILOS COMUNES DE TABLAS PIVOT
+// Movidos desde componentes individuales para reducir tamaño de bundles
+// ============================================================================
+
+.pivot-container {
+  width: 100%;
+  overflow: auto;
+  margin: 0;
+  border: 1px solid var(--pivot-border-color);
+  background: var(--pivot-row-bg);
+  color: var(--pivot-row-color);
+  font-size: 11.5px;
+}
+
+@supports (height: 1dvh) {
+  .pivot-container {
+    height: 65dvh;
+  }
+}
+
+.pivot-table,
+.pivot-table--complex {
+  width: max-content;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: center;
+  background: var(--pivot-row-bg);
+  color: var(--pivot-row-color);
+}
+
+.pivot-table th,
+.pivot-table td,
+.pivot-table--complex th,
+.pivot-table--complex td {
+  border: none;
+  border-right: 1px solid var(--pivot-border-color, #cccccc);
+  border-bottom: 1px solid var(--pivot-border-color, #cccccc);
+  background-clip: padding-box;
+}
+
+.pivot-table thead th,
+.pivot-table--complex thead th {
+  position: sticky;
+  top: 0;
+  background: var(--pivot-header-bg);
+  color: var(--pivot-header-color);
+  z-index: 6;
+  box-shadow: 0 1px 0 0 var(--pivot-border-color);
+  border-top: 1px solid var(--pivot-border-color);
+}
+
+.pivot-table--complex thead th.pivot-header-prov {
+  z-index: 6 !important;
+  left: auto !important;
+  transform: none !important;
+}
+
+.th-check-cabecera,
+.th-accion-cabecera,
+.th-clasificacion-cabecera {
+  position: sticky;
+  top: 0;
+  background-color: var(--pivot-header-bg);
+  color: var(--pivot-header-color);
+  z-index: 20 !important;
+  box-shadow:
+    1px 0 0 0 var(--pivot-border-color) inset,
+    0 -1px 0 0 var(--pivot-border-color) inset,
+    0 1px 0 0 var(--pivot-border-color) inset;
+}
+
+.th-check-cabecera {
+  left: 0;
+}
+
+.pivot-col-check {
+  position: sticky;
+  left: 0;
+  top: 0;
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  background: var(--pivot-sticky-bg);
+  color: var(--pivot-header-color);
+  z-index: 4;
+  box-shadow:
+    1px 0 0 0 var(--pivot-border-color) inset,
+    0 -1px 0 0 var(--pivot-border-color) inset,
+    0 1px 0 0 var(--pivot-border-color) inset;
+}
+
+.pivot-col-accion {
+  position: sticky;
+  left: 50px;
+  top: 0;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  text-align: center;
+  background: var(--pivot-sticky-bg);
+  color: var(--pivot-header-color);
+  z-index: 4;
+  border-right: 1px solid var(--pivot-border-color);
+  border-top: 1px solid var(--pivot-border-color);
+  border-bottom: 1px solid var(--pivot-border-color);
+}
+
+.pivot-col-clasificacion {
+  position: sticky;
+  top: 0;
+  left: 150px;
+  min-width: 300px;
+  max-width: 300px;
+  text-align: left;
+  padding-left: 0.5rem;
+  background: var(--pivot-sticky-bg);
+  z-index: 4;
+  border-right: 1px solid var(--pivot-border-color);
+  border-top: 1px solid var(--pivot-border-color);
+  border-bottom: 1px solid var(--pivot-border-color);
+}
+
+.pivot-table--first-child {
+  padding: 0.5rem;
+  min-width: 50px;
+  max-width: 50px;
+  background: var(--pivot-row-bg);
+  color: var(--pivot-row-color);
+}
+
+.pivot-table--nth-child {
+  padding: 0.5rem;
+  width: 150px;
+  min-width: 100px;
+  max-width: 150px;
+  white-space: normal;
+  word-break: break-word;
+  z-index: 1;
+  background: var(--pivot-row-bg);
+  color: var(--pivot-row-color);
+}
+
+.category-row {
+  cursor: pointer;
+  height: 48px;
+  text-align: left;
+  background: var(--pivot-header-bg);
+  color: var(--pivot-header-color);
+}
+
+.category-row td {
+  border-right: none;
+  box-shadow: none;
+  border-bottom: 1px solid var(--pivot-border-color);
+}
+
+.product-row {
+  display: none;
+  transition: all 0.3s ease;
+  background: var(--pivot-row-bg);
+  color: var(--pivot-row-color);
+}
+
+.product-row.expanded {
+  display: table-row;
+}
+
+.pivot-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  text-align: right;
+  border: 1px solid var(--pivot-border-color);
+  border-radius: 2px;
+  box-sizing: border-box;
+  background: var(--pivot-row-bg);
+  color: var(--pivot-row-color);
+}
+
+.pivot-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--pivot-input-focus-ring) 40%, transparent);
+  border-color: var(--pivot-input-focus-ring);
+}
+
+.product-name {
+  vertical-align: middle;
+}
+
+.accordion-icon {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.readonly-pointer {
+  cursor: pointer;
+}
+
+.pivot-table tbody tr:hover td:not(.pivot-cell-selected),
+.pivot-table--complex tbody tr:hover td:not(.pivot-cell-selected) {
+  background: var(--pivot-hover-row-bg);
+}
+
+.pivot-table,
+.pivot-table th,
+.pivot-table td,
+.pivot-table--complex,
+.pivot-table--complex th,
+.pivot-table--complex td,
+.category-row,
+.pivot-cell-selected {
+  transition: background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.pivot-table tbody tr:last-child td,
+.pivot-table--complex tbody tr:last-child td {
+  border-bottom: 1px solid var(--pivot-border-color);
+}
+
+mark.match {
+  background: #fff59d;
+  padding: 0 0.15rem;
+  border-radius: 4px;
+}

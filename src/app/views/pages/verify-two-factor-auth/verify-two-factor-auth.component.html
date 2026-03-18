@@ -1,0 +1,48 @@
+<div class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center">
+  <c-container breakpoint="md">
+      <c-row class="justify-content-center">
+          <c-col md="8" lg="6" xl="4">
+              <c-card-group>
+                  <c-card class="p-4">
+                      <c-card-body>
+                          <form cForm (submit)="onSubmit()" [formGroup]='form'>
+                              
+                           
+                              <p class="text-medium-emphasis">Ingresa el código generado en tu aplicación de autenticación</p>
+                              <c-input-group class="mb-4">
+                                  <span cInputGroupText>
+                                      <svg cIcon name="cilShieldAlt"></svg>
+                                  </span>
+                                  <input
+                                      #totpCode
+                                      formControlName="totpCode"
+                                      cFormControl
+                                      placeholder="Código de Autenticación"
+                                      type="text"
+                                  />
+                              </c-input-group>
+
+                              <c-button-group role="group" class="d-flex justify-content-between">
+                                <button type="submit" cButton class="px-4" color="primary" [disabled]="loading">
+                                  <c-spinner [hidden]="!loading" component="span" size="sm"></c-spinner>
+                                  Verificar
+                              </button>
+                                <button type="button" cButton color="secondary" (click)="cancel()">
+                                  Regresar
+                                </button>
+                              </c-button-group>
+
+                              
+
+                              <div class="mt-2 text-center">
+                                  <a (click)="requestAlternativeVerification()" class="btn btn-link">No puedo generar el código, enviar PIN a mi correo electrónico+</a>
+                              </div>
+                          </form>
+                      </c-card-body>
+                      <app-mostrar-errores [errores]="errores"></app-mostrar-errores>
+                  </c-card>
+              </c-card-group>
+          </c-col>
+      </c-row>
+  </c-container>
+</div>

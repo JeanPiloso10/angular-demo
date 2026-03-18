@@ -1,0 +1,62 @@
+<div class="animate__animated animate__fadeIn">
+    <form [formGroup]="Form" autocomplete="off">
+        <div class="right-z-index-top-toolbar" [ngStyle]="{'top': '0px'}">
+            <ejs-toolbar height="25px" width='100%'>
+                <e-items>
+                    <e-item text='Grabar' [disabled]="loading" tooltipText='Grabar - Alt+G'
+                        [disabled]="!estadoBotones.btnGrabar" prefixIcon='e-icons e-save' overflow='Show'
+                        showTextOn='overflow' (click)="guardarCambios()"></e-item>
+                </e-items>
+            </ejs-toolbar>
+        </div>
+        <br />
+        <c-row>
+            <c-col>
+                <c-card>
+                    <c-card-body>
+                      
+                        <c-col>
+                            <label cLabel>Transacción</label>
+                            <ejs-combobox #TipoArchivoAnexoCodigoTransaccion id='codigoTransaccion'
+                                allowFiltering="true" [allowCustom]="false" [showClearButton]="true"
+                                formControlName="codigoTransaccion" [dataSource]='cbTransaccion'
+                                (keyup.enter)="onFocusInput('codigoTransaccion')"
+                                (filtering)='onFilteringTransaccion($event)'
+                                [fields]='fieldsTransaccion' [placeholder]='localWaterMark'
+                                [ngClass]="{ 'is-invalid':  Form.get('codigoTransaccion').invalid &&  Form.get('codigoTransaccion').touched}"></ejs-combobox>
+                            <c-form-feedback
+                                [ngClass]="{ 'is-invalid':  Form.get('codigoTransaccion').invalid &&  Form.get('codigoTransaccion').touched}">
+                                {{ obtenerError('codigoTransaccion') }}
+                            </c-form-feedback>
+                        </c-col>
+
+                        <c-col>
+                            <label cLabel>Tipo Archivo</label>
+                            <ejs-combobox id="idTipoArchivoAnexo" formControlName="idTipoArchivoAnexo"
+                                [dataSource]="cbTipoArchivoAnexo" [fields]="fieldsTipoArchivoAnexo"
+                                [allowCustom]="allowCustomValue" (keyup.enter)="onFocusInput('idTipoArchivoAnexo')"
+                                [allowFiltering]='true' (filtering)='onFilteringTipoArchivoAnexo($event)'
+                                (change)="onChange($event)" #TipoArchivoAnexoId
+                                [ngClass]="{ 'is-invalid': Form.get('idTipoArchivoAnexo').invalid && Form.get('idTipoArchivoAnexo').touched}"></ejs-combobox>
+                            <c-form-feedback
+                                [ngClass]="{ 'is-invalid': Form.get('idTipoArchivoAnexo').invalid && Form.get('idTipoArchivoAnexo').touched}">{{obtenerError('idTipoArchivoAnexo')}}
+                            </c-form-feedback>
+                        </c-col>
+                        <br/>
+                        <c-col>
+                            <c-form-check [switch]="true">
+                                <input cFormCheckInput sizing="sm" type="checkbox" id="activo"
+                                    formControlName="activo" />
+                                <label #lblEstado id="lblEstado" cFormCheckLabel>Activo</label>
+                            </c-form-check>
+                        </c-col>
+                    </c-card-body>
+                </c-card>
+            </c-col>
+        </c-row>
+
+
+
+    </form>
+
+</div>

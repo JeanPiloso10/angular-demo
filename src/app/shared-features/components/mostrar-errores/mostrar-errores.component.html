@@ -1,0 +1,5 @@
+<ng-container *ngIf="errores.length > 0">
+    <ul>
+        <li *ngFor="let error of errores; trackBy: trackError">{{error}}</li>
+    </ul>
+</ng-container>

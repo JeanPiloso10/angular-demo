@@ -1,0 +1,62 @@
+<div class="animate__animated animate__fadeIn">
+
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px" width='100%'>
+            <e-items>
+                <e-item text='Nuevo' [disabled]="!estadoBotones.btnNuevo" tooltipText='Nuevo - Alt+N'
+                    prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow'
+                    (click)="btnNuevoRegistro()"></e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>
+    <br />
+
+    <c-row>
+        <c-col>
+            <c-card>
+                <c-card-body>
+                    <c-col>
+                        <ejs-grid #grid [dataSource]='data' [allowSorting]='true' [allowResizing]="true" [appDragScroll]="{ selector: '.e-content', axis: 'x' }"
+                            [searchSettings]='searchSettings' enableStickyHeader=true [editSettings]='editSettings'
+                            [toolbar]='toolbarOptions' (toolbarClick)='toolbarClick($event)' (commandClick)="onCommandClick($event)"
+                            [allowExcelExport]="true"
+                            [allowFiltering]="true"
+                            [filterSettings]="{ type: 'Excel' }"
+                            [showColumnChooser]='true'>
+                            <e-columns>
+                                <e-column headerText="Acciones" width="50" [commands]="commands"></e-column>
+
+                                <e-column field='idMotivoAuditoria' [visible]='false' isPrimaryKey="true" headerText='Id'
+                                    width='50' textAlign='center' [showInColumnChooser]='true'></e-column>
+                                <e-column field='descripcion' headerText='Descripción' width='120'
+                                    textAlign='Left'></e-column>
+                                <e-column field='activo' headerText='Activo' textAlign='center' width=50>
+                                    <ng-template #template let-item>
+                                        @if(item.activo === true) {
+                                        <span class="badge bg-success me-1">Si</span>
+                                        }@else {
+                                        <span class="badge bg-warning me-1">No</span>
+                                        }
+                                    </ng-template>
+                                </e-column>
+                                <e-column field='usuarioCreacion' [visible]='false' headerText='Creado por'
+                                    width='120'></e-column>
+                                <e-column field='fechaCreacion' [visible]='false' headerText='Fecha Creación'
+                                    width='120'></e-column>
+                                <e-column field='equipoCreacion' [visible]='false' headerText='Creado desde'
+                                    width='120'></e-column>
+                                <e-column field='usuarioModificacion' [visible]='false' headerText='Modificado por'
+                                    width='120'></e-column>
+                                <e-column field='fechaModificacion' [visible]='false' headerText='Fecha Modificación'
+                                    width='120'></e-column>
+                                <e-column field='equipoModificacion' [visible]='false' headerText='Modificado desde'
+                                    width='120'></e-column>
+                            </e-columns>
+                        </ejs-grid>
+                    </c-col>
+                   
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</div>

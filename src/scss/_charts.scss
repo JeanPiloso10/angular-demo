@@ -1,0 +1,6 @@
+// Ajustes visuales para los tooltips de Chart.js
+.chartjs-tooltip-body-item > td {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+  font-size: smaller;
+}

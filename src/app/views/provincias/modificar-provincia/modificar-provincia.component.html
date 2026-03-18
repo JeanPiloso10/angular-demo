@@ -1,0 +1,9 @@
+<div class="modal-header">
+    <h4 class="modal-title">Modificar Provincia</h4>
+    <button type="button" (click)="cerrar()" cButtonClose>
+    </button>
+</div>
+<div class="modal-body">
+    <app-formulario-provincia *ngIf="modelo" [isModal]="true" [modelo]="modelo" [StateEnum]="StateEnum"
+        (onSubmit)="guardarCambios($event)"></app-formulario-provincia>
+</div>

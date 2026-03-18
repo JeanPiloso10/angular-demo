@@ -1,0 +1,68 @@
+<div class="animate__animated animate__fadeIn">
+    <form cForm
+    [formGroup]="form">
+
+    <div class="right-z-index-top-toolbar" [ngStyle]="isModal ? {'top': '0px'} : {}">
+        <ejs-toolbar *ngIf="isModal" height="25px" width='100%'>
+            <e-items>
+                <e-item text='Grabar' tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()" [disabled]="form.invalid"></e-item>
+            </e-items>
+        </ejs-toolbar>
+        <ejs-toolbar *ngIf="!isModal" height="25px" width='100%'>
+            <e-items>
+                <e-item text='Grabar' tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show' showTextOn='overflow' (click)="guardarCambios()" [disabled]="form.invalid" ></e-item>
+                <e-item text='Cancelar' tooltipText='Cancelar - Alt+C' prefixIcon='e-icons e-undo' overflow='Show' showTextOn='overflow' (click)="cancelar()"  ></e-item>
+            </e-items>
+        </ejs-toolbar>
+    </div>
+
+    <br/>
+    <c-row>
+        <c-col [md]="isModal ? 12 : 6" [lg]="isModal ? 12 : 6" [xl]="isModal ? 12 : 6">
+            <c-card>
+                <c-card-body> 
+                    <c-col >
+                        <label cLabel >Codigo</label>
+                        <input cFormControl sizing="sm" 
+                        [readonly]="StateEnum == tipoAccion.Update"   
+                        oninput="this.value = this.value.toUpperCase()"
+                        [ngClass]="{ 'is-invalid': form.get('codigo').invalid && form.get('codigo').touched }"
+                        autocomplete="off" 
+                        formControlName="codigo" 
+                        type="text"  
+                        #codigo />  
+                        <c-form-feedback [valid]="form.get('codigo').valid && form.get('codigo').touched">{{obtenerError('codigo')}}</c-form-feedback>
+                    </c-col>
+                    
+
+                    <c-col >
+                        <label cLabel >Descripción</label>
+                        <input cFormControl  sizing="sm" [ngClass]="{ 'is-invalid': form.get('descripcion').invalid && form.get('descripcion').touched }" autocomplete="off" formControlName="descripcion" type="text" #descripcion />  
+                        <c-form-feedback [valid]="form.get('descripcion').valid && form.get('descripcion').touched">{{obtenerError('descripcion')}}</c-form-feedback>
+                    </c-col>
+        
+                    <c-col>
+                        <label cLabel >Pais</label>
+                        <ejs-combobox id='codigoPais' 
+                        allowFiltering="true"
+                        [allowCustom]="false"
+                        [showClearButton]="true" 
+                        formControlName="codigoPais" 
+                        [dataSource]='paises' 
+                        [fields]='fields' 
+                        [placeholder]='localWaterMark'
+                        [ngClass]="{ 'is-invalid':  form.get('codigoPais').invalid &&  form.get('codigoPais').touched}"
+                        ></ejs-combobox> 
+                        <c-form-feedback
+                            [ngClass]="{ 'is-invalid':  form.get('codigoPais').invalid &&  form.get('codigoPais').touched}">
+                            {{ obtenerError('codigoPais') }}
+                        </c-form-feedback>
+                    </c-col>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+  
+    
+</form>
+</div>

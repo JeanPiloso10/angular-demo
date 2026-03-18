@@ -1,0 +1,88 @@
+<div class="animate__animated animate__fadeIn">
+    <form [formGroup]="Form" autocomplete="off">
+        <div class="right-z-index-top-toolbar">
+            <ejs-toolbar height="25px" width='100%'>
+                <e-items>
+                    <!-- <e-item text='Consultar' prefixIcon='e-icons e-search' overflow='Show' (click)="buscar()"
+                        showTextOn='overflow'></e-item> -->
+                        <e-item>
+                        <ng-template #template>
+                            <button cButton color="primary"
+                            (click)="consultar()">
+                                <svg cIcon class="me-1" name="cilSearch"></svg>
+                                Consultar
+                            </button>
+                        </ng-template>
+                    </e-item>
+                </e-items>
+            </ejs-toolbar>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card border">
+                    <div class="card-header">
+                        <c-nav variant="tabs">
+                            <c-nav-item>
+                                <a [cTabContent]="tabContent1" (click)="toggleCollapse()"
+                                    [tabPaneIdx]="activeTabPaneIdx" cTooltipPlacement="top" cNavLink>
+                                    <svg cIcon class="me-2" name="cilFilter"></svg>
+                                    Filtros de Búsqueda
+                                </a>
+                            </c-nav-item>
+                        </c-nav>
+                        <c-tab-content #tabContent1="cTabContent" cRounded="bottom" [activeTabPaneIdx]="0">
+                            <c-tab-pane class="preview" role="tabpanel">
+                                <div [visible]="visibleCollapse" cCollapse>
+                                    <div class="card-header">
+                                        <c-row class="mt-2">
+                                            <c-col lg="2">
+                                                <label cLabel>Fecha Desde</label>
+                                                <input type="date" cFormControl sizing="sm" id="fdesde" formControlName="fdesde"
+                                                    [ngClass]="{ 'is-invalid': Form.get('fdesde').invalid && Form.get('fdesde').touched}">
+                                                <c-form-feedback
+                                                    [ngClass]="{ 'is-invalid': Form.get('fdesde').invalid && Form.get('fdesde').touched}">{{obtenerError('fdesde')}}</c-form-feedback>
+                                            </c-col>
+                                            <c-col lg="2">
+                                                <label cLabel>Fecha Hasta</label>
+                                                <input type="date" cFormControl sizing="sm" id="fhasta" formControlName="fhasta"
+                                                    [ngClass]="{ 'is-invalid': Form.get('fhasta').invalid && Form.get('fhasta').touched}">
+                                                <c-form-feedback
+                                                    [ngClass]="{ 'is-invalid': Form.get('fhasta').invalid && Form.get('fhasta').touched}">{{obtenerError('fhasta')}}</c-form-feedback>
+                                            </c-col>
+                                        </c-row>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <ejs-grid #grid id='DefaultExport' [dataSource]='data' height="1000"  allowTextWrap='true'
+                                            [pageSettings]='pageOption' [allowPaging]="true" [allowSorting]='true'
+                                            [toolbar]="toolbar" enableStickyHeader=true [allowResizing]="true"
+                                            [allowExcelExport]="true" [allowFiltering]="true" [filterSettings]="{ type: 'Excel' }"
+                                            [appDragScroll]="{ selector: '.e-content', axis: 'x' }"
+                                            [editSettings]='editSettings' (toolbarClick)='toolbarClick($event)'>
+                                            <e-columns>
+                                                <e-column field='fechaCreacion' type="date" format='yyyy-MM-dd HH:mm:ss'
+                                                width='80' headerText='Fecha Creación'></e-column>
+                                                <e-column field='descripcion' headerText='Descripción' width='400'></e-column>
+
+
+                                            </e-columns>
+                                        </ejs-grid>
+
+                                    </div>
+                                </div>
+                            </c-tab-pane>
+                        </c-tab-content>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+
+</div>

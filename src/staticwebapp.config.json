@@ -1,0 +1,19 @@
+{
+  "globalHeaders": {
+    "X-Robots-Tag": "noindex, nofollow"
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/assets/*",
+      "/*.ico",
+      "/*.js",
+      "/*.css",
+      "/*.map",
+      "/*.woff",
+      "/*.woff2",
+      "/*.ttf",
+      "/robots.txt"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+.notification-item {
+    background-color: #e6f7ff; /* Fondo celeste claro */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px; /* Espaciado interno */
+    margin-bottom: 10px; /* Espaciado entre los elementos */
+    display: block;
+    color: #000; /* Color del texto */
+    text-decoration: none; /* Sin subrayado en el texto */
+}
+
+.notification-item:hover {
+    background-color: #d5efff; /* Fondo más oscuro al pasar el mouse */
+    color: #000 !important;
+}
+
+.notification-item h6 {
+    font-weight: bold;
+}
+
+.notification-item small {
+    color: #888; /* Color gris para la fecha */
+}
+
+.notification-item p {
+    margin-top: 5px; /* Espaciado superior entre el título y el mensaje */
+}
+
+.notification-item.notificacion-no-clickeada {
+    background-color: #ffe6e6; /* Fondo color para las notificaciones no clickeadas */
+    border: 2px solid #ff4d4d; /* Borde rojo para destacar */
+}
+
+.notification-item.notificacion-no-clickeada:hover {
+    background-color: #ffcccc; /* Fondo más oscuro al pasar el mouse en no clickeadas */
+}
+
+.titulo-ajustado {
+    margin-left: 20px; /* Ajusta este valor según el espacio que desees mover el título */
+}

@@ -1,0 +1,147 @@
+<div class="animate__animated animate__fadeIn">
+    <c-row>
+        <!-- ══════════════════════════════════════ -->
+        <!-- PAÍSES                                 -->
+        <!-- ══════════════════════════════════════ -->
+        <c-col lg="4" md="12">
+            <c-card class="mb-3">
+                <c-card-header class="d-flex justify-content-between align-items-center">
+                    <strong><i class="e-icons e-globe me-1"></i> Países</strong>
+                    <button *ngIf="tienePermiso(permissionsPais, Operacion.Crear)"
+                            class="btn btn-sm btn-primary" (click)="nuevoPais()">
+                        <i class="e-icons e-plus"></i> Nuevo
+                    </button>
+                </c-card-header>
+                <c-card-body class="p-2">
+                    <ejs-grid #gridPaises
+                              [dataSource]='paises'
+                              [allowPaging]="true"
+                              [pageSettings]='pageSettings'
+                              [allowSorting]='true'
+                              [allowFiltering]="true"
+                              [filterSettings]="filterSettings"
+                              [toolbar]="toolbarGrid"
+                              [allowExcelExport]="true"
+                              (toolbarClick)='clickHandlerPaises($event)'
+                              (rowSelected)="onPaisSelected($event)"
+                              (commandClick)="commandClickPais($event)"
+                              [editSettings]='editSettings'
+                              height="350">
+                        <e-columns>
+                            <e-column headerText="Opc." width="80" [commands]="commandsPais"></e-column>
+                            <e-column field='codigo' headerText='Código' width='70' [isPrimaryKey]="true"></e-column>
+                            <e-column field='descripcion' headerText='Descripción' width='130'></e-column>
+                            <e-column field='region.descripcion' headerText='Región' width='100'></e-column>
+                            <e-column field='activo' headerText='Activo' width='70'>
+                                <ng-template #template let-item>
+                                    @if(item.activo === true) {
+                                    <span class="badge bg-success">SÍ</span>
+                                    }@else {
+                                    <span class="badge bg-warning">NO</span>
+                                    }
+                                </ng-template>
+                            </e-column>
+                        </e-columns>
+                    </ejs-grid>
+                </c-card-body>
+            </c-card>
+        </c-col>
+
+        <!-- ══════════════════════════════════════ -->
+        <!-- PROVINCIAS                             -->
+        <!-- ══════════════════════════════════════ -->
+        <c-col lg="4" md="12">
+            <c-card class="mb-3">
+                <c-card-header class="d-flex justify-content-between align-items-center">
+                    <strong>
+                        <i class="e-icons e-location me-1"></i> Provincias
+                        <span *ngIf="paisSeleccionado" class="text-muted small ms-1">
+                            ({{ paisSeleccionado.descripcion }})
+                        </span>
+                    </strong>
+                    <button *ngIf="paisSeleccionado && tienePermiso(permissionsProvincia, Operacion.Crear)"
+                            class="btn btn-sm btn-primary" (click)="nuevaProvincia()">
+                        <i class="e-icons e-plus"></i> Nueva
+                    </button>
+                </c-card-header>
+                <c-card-body class="p-2">
+                    <div *ngIf="!paisSeleccionado" class="text-center text-muted py-5">
+                        <i class="e-icons e-chevron-left-double" style="font-size: 2rem;"></i>
+                        <p class="mt-2">Seleccione un país para ver sus provincias</p>
+                    </div>
+
+                    <div *ngIf="paisSeleccionado">
+                        <ejs-grid #gridProvincias
+                                  [dataSource]='provincias'
+                                  [allowPaging]="true"
+                                  [pageSettings]='pageSettings'
+                                  [allowSorting]='true'
+                                  [allowFiltering]="true"
+                                  [filterSettings]="filterSettings"
+                                  [toolbar]="toolbarGrid"
+                                  [allowExcelExport]="true"
+                                  (toolbarClick)='clickHandlerProvincias($event)'
+                                  (rowSelected)="onProvinciaSelected($event)"
+                                  (commandClick)="commandClickProvincia($event)"
+                                  [editSettings]='editSettings'
+                                  height="350">
+                            <e-columns>
+                                <e-column headerText="Opc." width="80" [commands]="commandsProvincia"></e-column>
+                                <e-column field='codigo' headerText='Código' width='80' [isPrimaryKey]="true"></e-column>
+                                <e-column field='descripcion' headerText='Descripción' width='150'></e-column>
+                            </e-columns>
+                        </ejs-grid>
+                    </div>
+                </c-card-body>
+            </c-card>
+        </c-col>
+
+        <!-- ══════════════════════════════════════ -->
+        <!-- CIUDADES                               -->
+        <!-- ══════════════════════════════════════ -->
+        <c-col lg="4" md="12">
+            <c-card class="mb-3">
+                <c-card-header class="d-flex justify-content-between align-items-center">
+                    <strong>
+                        <i class="e-icons e-city me-1"></i> Ciudades
+                        <span *ngIf="provinciaSeleccionada" class="text-muted small ms-1">
+                            ({{ provinciaSeleccionada.descripcion }})
+                        </span>
+                    </strong>
+                    <button *ngIf="provinciaSeleccionada && tienePermiso(permissionsCiudad, Operacion.Crear)"
+                            class="btn btn-sm btn-primary" (click)="nuevaCiudad()">
+                        <i class="e-icons e-plus"></i> Nueva
+                    </button>
+                </c-card-header>
+                <c-card-body class="p-2">
+                    <div *ngIf="!provinciaSeleccionada" class="text-center text-muted py-5">
+                        <i class="e-icons e-chevron-left-double" style="font-size: 2rem;"></i>
+                        <p class="mt-2">Seleccione una provincia para ver sus ciudades</p>
+                    </div>
+
+                    <div *ngIf="provinciaSeleccionada">
+                        <ejs-grid #gridCiudades
+                                  [dataSource]='ciudades'
+                                  [allowPaging]="true"
+                                  [pageSettings]='pageSettings'
+                                  [allowSorting]='true'
+                                  [allowFiltering]="true"
+                                  [filterSettings]="filterSettings"
+                                  [toolbar]="toolbarGrid"
+                                  [allowExcelExport]="true"
+                                  (toolbarClick)='clickHandlerCiudades($event)'
+                                  (commandClick)="commandClickCiudad($event)"
+                                  [editSettings]='editSettings'
+                                  height="350">
+                            <e-columns>
+                                <e-column headerText="Opc." width="80" [commands]="commandsCiudad"></e-column>
+                                <e-column field='codigo' headerText='Código' width='80' [isPrimaryKey]="true"></e-column>
+                                <e-column field='descripcion' headerText='Descripción' width='150'></e-column>
+                            </e-columns>
+                        </ejs-grid>
+                    </div>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</div>

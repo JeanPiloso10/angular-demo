@@ -1,0 +1,69 @@
+<div class="animate__animated animate__fadeIn">
+    <div class="modal-header">
+        <h4 class="modal-title">{{titulo}}</h4>
+        <button type="button" (click)="cerrar()" cButtonClose></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="Form" autocomplete="off">
+            <div class="right-z-index-top-toolbar" [ngStyle]="{'top': '0px'}">
+                <ejs-toolbar height="25px" width='100%'>
+                    <e-items>
+                        div
+                        <e-item text='Grabar' tooltipText='Grabar - Alt+G' prefixIcon='e-icons e-save' overflow='Show'
+                            showTextOn='overflow' (click)="guardarCambios()"
+                            ></e-item>
+                    </e-items>
+                </ejs-toolbar>
+            </div>
+            <br/>
+            <c-row>
+                <c-col lg="12">
+                    <label cLabel>Código</label>
+                    <input cFormControl formControlName="codigo" id="codigo" #CategoriaCompraCodigo sizing="sm" type="text"
+                        type="text" style="text-transform: uppercase;"
+                        (keyup.enter)="onFocusInput('codigo')"
+                        [ngClass]="{ 'is-invalid': Form.get('codigo').invalid && Form.get('codigo').touched}">
+                    <c-form-feedback
+                        [ngClass]="{ 'is-invalid': Form.get('codigo').invalid && Form.get('codigo').touched}">{{obtenerError('codigo')}}
+                    </c-form-feedback>
+
+                </c-col>
+            </c-row>
+            <c-row>
+                <c-col lg="12">
+                    <label cLabel>Descripción </label>
+                    <input cFormControl formControlName="descripcion" id="descripcion"
+                        type="text" style="text-transform: uppercase;" #CategoriaCompraDescripcion sizing="sm" type="text"
+                        (keyup.enter)="onFocusInput('descripcion')"
+                        [ngClass]="{ 'is-invalid': Form.get('descripcion').invalid && Form.get('descripcion').touched}">
+                    <c-form-feedback
+                        [ngClass]="{ 'is-invalid': Form.get('descripcion').invalid && Form.get('descripcion').touched}">{{obtenerError('descripcion')}}
+                    </c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row>
+                <c-col lg="12">
+                    <label cLabel>Tipos Compra</label>
+                    <ejs-multiselect formControlName="tipoCompras" id='tipoCompras' sizing="sm"
+                        [dataSource]='cbTipoCompras' [mode]='default' [fields]='localFieldsTipoCompra' #CategoriaCompraTipo
+                        (valueChange)="valueChangeTipoCompra($event)"
+                        [ngClass]="{ 'is-invalid': Form.get('tipoCompras').invalid && Form.get('tipoCompras').touched}">
+                    </ejs-multiselect>
+                    <c-form-feedback
+                        [ngClass]="{ 'is-invalid': Form.get('tipoCompras').invalid && Form.get('tipoCompras').touched}">{{obtenerError('tipoCompras')}}
+                    </c-form-feedback>
+                </c-col>
+            </c-row>
+            <br/>
+            <c-row>
+                <c-col lg="6">
+                    <c-form-check [switch]="true">
+                        <input cFormCheckInput sizing="sm" type="checkbox" id="activo" formControlName="activo" />
+                        <label #lblEstado id="lblEstado" cFormCheckLabel>Activo</label>
+                    </c-form-check>
+                </c-col>
+            </c-row>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+.list-group-item {
+  padding: 0.5rem 0.75rem;
+}
+
+.btn-icon-delete {
+  background: transparent;
+  border: none;
+  padding: 0.25rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #dc3545; /* danger */
+  cursor: pointer;
+  border-radius: 4px;
+}
+.btn-icon-delete:hover {
+  color: #b02a37;
+  background-color: rgba(220,53,69,0.08);
+}
+.btn-icon-delete:focus-visible {
+  outline: 2px solid rgba(220,53,69,0.5);
+  outline-offset: 2px;
+}

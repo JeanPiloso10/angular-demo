@@ -1,0 +1,170 @@
+<div class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center">
+  <c-container breakpoint="md">
+    <c-row class="justify-content-center">
+      <c-col md="8" lg="6" xl="4">
+        <c-card-group>
+          <c-card class="p-4">
+            <c-card-body>
+  
+              <div class="d-flex justify-content-center mb-4">
+                <img [src]="this.logo" alt="Logo Genérico" width="380" height="70">
+              </div>
+              
+              <form cForm (submit)="onSubmit()" [formGroup]='form'>
+                <h1>Iniciar sesión</h1>
+                <p class="text-medium-emphasis">Inicie sesión en su cuenta</p>
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilUser"></svg>
+                  </span>
+                  <input formControlName="username"
+                  cFormControl
+                  autoComplete="username" 
+                  placeholder="Username" />
+                </c-input-group>
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input
+                      formControlName="password"
+                      autoComplete="current-password"
+                      cFormControl
+                      placeholder="Password"
+                      [type]="showPassword ? 'text' : 'password'"
+                    />
+                  <span cInputGroupText
+                        role="button"
+                        tabindex="0"
+                        (click)="togglePasswordVisibility()"
+                        (keydown.enter)="togglePasswordVisibility()"
+                        (keydown.space)="togglePasswordVisibility()"
+                        [attr.aria-pressed]="showPassword"
+                        [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                        [attr.title]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                        style="cursor: pointer; user-select: none;">
+                    <svg cIcon [name]="showPassword ? 'cilLowVision' : 'cilEye'"></svg>
+                  </span>
+                </c-input-group>
+        
+                <c-row>
+                  <c-col xs="6">
+                    <button type="submit" cButton class="px-4" color="primary" [disabled]="loadingMicrosoftAuth || loading">
+                      <c-spinner [hidden]="!loading" component="span" size="sm"></c-spinner>
+                      Iniciar sesión
+                    </button>
+                  </c-col>
+                  <c-col xs="6" class="text-end">
+                    <button type="button" cButton color="link" (click)="forgotPassword()">
+                      Olvidé mi contraseña
+                    </button>
+                  </c-col>
+                </c-row>
+                <br/>
+                <c-row>
+                  <c-col class="col-12">
+                    <button cButton class="px-4 w-100" color="secondary" [disabled]="loadingMicrosoftAuth || loading" (click)="loginWithMicrosoft()" variant="outline">
+                      <c-spinner [hidden]="!loadingMicrosoftAuth" component="span" size="sm"></c-spinner>
+                      <i class="fab fa-microsoft"></i>
+                      Autenticar con su cuenta de Microsoft
+                    </button>
+                  </c-col>
+                </c-row>
+              </form>
+        
+              <app-mostrar-errores [errores]="errores"></app-mostrar-errores>
+              
+            </c-card-body>
+          </c-card>
+        </c-card-group>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>
+       
+    
+       
+
+
+
+<!-- <c-row class="vh-100 m-0">
+
+  <c-col class="d-none d-lg-block col-lg-8 p-0">
+    <div class="container-cover h-100" style="background-image: url('/assets/img/brand/fondoLogin.png'); background-size: cover; background-position: center;"></div>
+  </c-col>
+
+  <c-col class="col-lg-4 col-12 container-form p-0 vh-100 d-flex align-items-center justify-content-center">
+
+    <div class="w-100 d-flex flex-column justify-content-start">
+      <c-container class="px-4">
+        
+        <c-card class="p-4">
+          <c-card-body>
+
+            <div class="d-flex justify-content-center mb-4">
+              <img [src]="this.logo" alt="Logo Genérico" width="380" height="70">
+            </div>
+            
+            <form cForm (submit)="onSubmit()" [formGroup]='form'>
+              <h1>Iniciar sesión</h1>
+              <p class="text-medium-emphasis">Inicie sesión en su cuenta</p>
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilUser"></svg>
+                </span>
+                <input formControlName="username"
+                cFormControl
+                autoComplete="username" 
+                placeholder="Username" />
+              </c-input-group>
+              <c-input-group class="mb-4">
+                <span cInputGroupText>
+                  <svg cIcon name="cilLockLocked"></svg>
+                </span>
+                <input
+                    formControlName="password"
+                    autoComplete="current-password"
+                    cFormControl
+                    placeholder="Password"
+                    type="password"
+                  />
+              </c-input-group>
+      
+              <c-row>
+                <c-col xs="6">
+                  <button type="submit" cButton class="px-4" color="primary" [disabled]="loadingMicrosoftAuth || loading">
+                    <c-spinner [hidden]="!loading" component="span" size="sm"></c-spinner>
+                    Iniciar sesión
+                  </button>
+                </c-col>
+                <c-col xs="6" class="text-end">
+                  <button type="button" cButton color="link" (click)="forgotPassword()">
+                    Olvidé mi contraseña
+                  </button>
+                </c-col>
+              </c-row>
+              <br/>
+              <c-row>
+                <c-col class="col-12">
+                  <button cButton class="px-4 w-100" color="secondary" [disabled]="loadingMicrosoftAuth || loading" (click)="loginWithMicrosoft()" variant="outline">
+                    <c-spinner [hidden]="!loadingMicrosoftAuth" component="span" size="sm"></c-spinner>
+                    <i class="fab fa-microsoft"></i>
+                    Autenticar con su cuenta de Microsoft
+                  </button>
+                </c-col>
+              </c-row>
+            </form>
+      
+            <app-mostrar-errores [errores]="errores"></app-mostrar-errores>
+            
+          </c-card-body>
+        </c-card>
+        
+      </c-container>
+      
+   
+    </div>
+    
+   
+  </c-col>
+</c-row> -->

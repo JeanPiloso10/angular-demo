@@ -1,0 +1,20 @@
+#emailComposerModal {
+	display: flex;
+	flex-direction: column;
+	max-height: 85vh;
+}
+
+#emailComposerModalBody {
+	flex: 1 1 auto;
+	overflow-y: auto;
+}
+
+#emailComposerModal .modal-footer {
+	flex-shrink: 0;
+	border-top: 1px solid var(--cui-border-color, #dee2e6);
+	background-color: var(--cui-body-bg, #fff);
+}
+
+#emailComposerModal .modal-footer .btn {
+	min-width: 110px;
+}

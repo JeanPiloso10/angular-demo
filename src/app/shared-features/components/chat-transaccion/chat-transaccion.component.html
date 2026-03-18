@@ -1,0 +1,12 @@
+
+
+<div ejs-chatui #chatui
+[headerText]='this.titulo'
+[user]="user"
+[messages]="messages"
+(messageSend)="onMessageSend($event)"
+[showTimeStamp]="true"
+[showTimeBreak]="true"
+[autoScrollToBottom]="true"
+placeholder="Escribe un mensaje...">
+</div>

@@ -1,0 +1,106 @@
+
+
+<div class="animate__animated animate__fadeIn">
+    <form cForm [formGroup]="form">
+    <div class="right-z-index-top-toolbar">
+        <ejs-toolbar height="25px"  width='100%'>
+            
+            <e-items>
+                <e-item text='Nuevo' [disabled]="!estadoBotones.btnNuevo" tooltipText='Grabar - Alt+N' prefixIcon='e-icons e-plus' overflow='Show' showTextOn='overflow' (click)="nuevoRegistro()" ></e-item>
+            </e-items>
+   
+    </ejs-toolbar>
+    </div>
+    <br />
+    <c-row>
+        <c-col lg="12" class="pb-3">
+            <c-card>
+                <c-card-header>
+                    <c-row class="mt-2">
+                        <c-col lg="4">
+                            <label cLabel>Ver por:</label>
+                            <ejs-combobox id='tipoVista' #TipoVista 
+                              [allowCustom]="false"
+                              (change)="handleChangeTipoVista($event)"
+                              [dataSource]='cbTipoVista' formControlName="tipoVista"
+                              [fields]='localFieldsTipoVista'></ejs-combobox>
+                          </c-col>
+                    </c-row>
+                    <c-row class="mt-2">
+                          <c-col lg="6">
+                            <label cLabel>Seleccione un item:</label>
+                            <ejs-combobox id='listaEntidad' #ListaEntidad
+                              allowFiltering="true"
+                              [allowCustom]="false"
+                              (filtering)='onFiltering($event)'
+                              (change)="handleChangeEntidad($event.value)"
+                              [dataSource]='data' formControlName="listaEntidad"
+                              [fields]='localFieldsListaEntidad'>
+                            </ejs-combobox>
+                          </c-col>
+                    </c-row>
+                    <br/>
+                </c-card-header>
+                <c-card-body>
+                    <ejs-grid #grid 
+                    [dataSource]='configuracionFirma' 
+                    allowResizing="true"
+                    id='DefaultExport'
+                    allowSorting="true"
+                    [sortSettings]='sortOptions'
+                    [allowFiltering]='true'
+                    [filterSettings]='filterSettings' 
+                    gridLines='Both'
+                    (toolbarClick)='toolbarClick($event)'
+                    [allowExcelExport]='true'
+                    [toolbar]="toolbar"
+                    enableStickyHeader=true 
+                    [showColumnChooser]= 'true' [appDragScroll]="{ selector: '.e-content', axis: 'x' }"
+                    (commandClick)="commandClick($event)"
+                    [editSettings]='editSettings' 
+                    >
+                        <e-columns>
+                            <e-column headerText="Opciones" width="80" [commands]="commands"></e-column>
+                            <e-column field='idConfiguracionFirma' [visible]='false' headerText='Id' width='50' textAlign='Right' [showInColumnChooser]='false' [isPrimaryKey]="true"></e-column>
+                            <e-column field='transaccion.cnoTransaccion' headerText='Transacción' width='120'  ></e-column>
+                            <e-column field='sucursal.cnoSucursal' headerText='Sucursal' width='120'  ></e-column>
+                            <e-column field='tipoDocumento' headerText='Tipo Documento' width='120'  ></e-column>
+                            <e-column field='referencia1Texto' headerText='Referencia 1' width='230'></e-column>
+                            <e-column field='referencia2Texto' headerText='Referencia 2' width='230'  ></e-column>
+                            <e-column field='referencia3' headerText='Referencia 3' width='120'  ></e-column>
+                            <e-column field='usuarioFirmante' headerText='Usuario' width='120'  ></e-column>
+                            <e-column field='role.name' headerText='Rol' width='230'  ></e-column>
+                            <e-column field='tipoAprobador.cnoTipoAprobador' headerText='Tipo Aprobador' width='230'  ></e-column>
+                            <e-column field='montoMaximo' headerText='Monto' format="N2" width='100' textAlign='Right'></e-column>
+                            
+                            <e-column field='usuarioFirmanteSuperior' headerText='Usuario Superior' width='120'  ></e-column>
+                            <e-column field='roleSuperior.name' headerText='Rol Superior' width='230'  ></e-column>
+                            <e-column field='tipoAprobadorSuperior.cnoTipoAprobador' headerText='Tipo Aprobador Superior' width='230'  ></e-column>
+                            <e-column field='montoMaximoSuperior' headerText='Monto Superior' format="N2" width='100' textAlign='Right'></e-column>
+
+                            <e-column field='ordenFirma' headerText='Orden Firma' format="N" width='100'
+                            textAlign='Right'></e-column>
+
+                            <e-column field='activo'   headerText='Activo' width='80'  >
+                                <ng-template #template let-item>
+                                    @if(item.activo === true) {
+                                      <span class="badge bg-success me-1">SÍ</span>
+                                    }@else {
+                                      <span class="badge bg-warning me-1">NO</span>
+                                    }
+                                  </ng-template>
+                            </e-column>
+                            <e-column field='usuarioCreacion' [visible]='false' headerText='Creado por' width='120'  ></e-column>
+                            <e-column field='fechaCreacion' [visible]='false' headerText='Fecha Creación' width='120'  ></e-column>
+                            <e-column field='equipoCreacion' [visible]='false' headerText='Creado desde' width='120'  ></e-column>
+                            <e-column field='usuarioModificacion' [visible]='false' headerText='Modificado por' width='120'  ></e-column>
+                            <e-column field='fechaModificacion' [visible]='false' headerText='Fecha Modificación' width='120'  ></e-column>
+                            <e-column field='equipoModificacion' [visible]='false' headerText='Modificado desde' width='120'  ></e-column>
+                        </e-columns>
+                    </ejs-grid>
+                </c-card-body>
+            </c-card>
+        </c-col>
+    </c-row>
+</form>   
+</div>

@@ -1,0 +1,48 @@
+:host::ng-deep {
+  .sidebar.sidebar-narrow-unfoldable {
+    ng-scrollbar {
+      width: 100% !important;
+
+      .ng-scroll-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+      }
+    }
+  }
+}
+
+/// Estilos para la alerta de actualización
+.update-alert {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+  box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  background-color: #ffeeba;
+  display: flex;
+  align-items: center;
+  gap: 15px; /* 🔹 Espaciado entre el texto y el botón */
+}
+
+/* 🔹 Ajuste SOLO en escritorio */
+@media (min-width: 769px) {
+  .update-btn {
+    margin-left: 10px; /* 🔹 Mueve el botón cerca del texto */
+  }
+}
+
+/* 🔹 Ajuste SOLO en móvil */
+@media (max-width: 768px) {
+  .update-alert {
+    flex-direction: column; /* 🔹 Coloca el botón debajo del texto */
+    align-items: flex-start;
+  }
+
+  .update-btn {
+    margin-top: 8px; /* 🔹 Espacio entre el texto y el botón */
+    align-self: flex-start;
+  }
+}

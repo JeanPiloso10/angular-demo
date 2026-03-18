@@ -1,0 +1,231 @@
+<!-- Offcanvas Sidebar -->
+<c-offcanvas #offcanvas
+  placement="end"
+  [visible]="visible"
+  (visibleChange)="onVisibleChange($event)"
+  [backdrop]="true"
+  [scroll]="false"
+  id="aiChatSidebar">
+
+  <!-- Header -->
+  <c-offcanvas-header>
+    <div class="d-flex align-items-center gap-2 w-100">
+      <div class="sidebar-avatar">
+        <svg cIcon name="cilSpeech" size="lg"></svg>
+      </div>
+      <div class="flex-grow-1">
+        <h6 class="mb-0 fw-semibold">Asistente Analytics</h6>
+        <small class="text-body-secondary">Pregunta por tus datos</small>
+      </div>
+      <button type="button" class="btn btn-ghost-secondary btn-sm" title="Limpiar chat" aria-label="Limpiar chat" (click)="clearChat()">
+        <svg cIcon name="cilTrash" size="sm"></svg>
+      </button>
+      <button class="btn-close" aria-label="Cerrar" (click)="close()"></button>
+    </div>
+  </c-offcanvas-header>
+
+  <!-- Body -->
+  <c-offcanvas-body>
+    <div class="chat-container d-flex flex-column h-100">
+
+      <!-- Messages Area -->
+      <div class="messages-area flex-grow-1" #messageContainer>
+
+        <!-- Quick Suggestions (only when empty) -->
+        <div *ngIf="showQuickSuggestions && messages.length <= 1" class="quick-suggestions mb-3">
+          <p class="text-body-secondary small mb-2">
+            <svg cIcon name="cilLightbulb" size="sm" class="me-1"></svg>
+            Sugerencias rápidas:
+          </p>
+          <div class="d-flex flex-wrap gap-2">
+            <button *ngFor="let s of quickSuggestions"
+                    class="btn btn-outline-primary btn-sm suggestion-chip"
+                    (click)="useQuickSuggestion(s)">
+              {{ s }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div *ngFor="let msg of messages; trackBy: trackByMessageId"
+             class="message-bubble"
+             [ngClass]="{ 'user-message': msg.role === 'user', 'assistant-message': msg.role === 'assistant' }">
+
+          <div class="bubble-content">
+            <!-- Avatar -->
+            <div class="bubble-avatar" *ngIf="msg.role === 'assistant'">
+              <svg cIcon name="cilSpeech" size="sm"></svg>
+            </div>
+
+            <div class="bubble-body" [ngClass]="{ 'ms-auto': msg.role === 'user' }">
+              <!-- Message text -->
+              <div class="bubble-text" *ngIf="msg.text" [innerHTML]="msg.text"></div>
+
+              <!-- Data table (compact inline) -->
+              <div *ngIf="msg.rows?.length" class="bubble-table mt-2">
+                <div class="table-responsive">
+                  <table class="table table-sm table-hover mb-0">
+                    <thead>
+                      <tr>
+                        <th *ngFor="let col of msg.columns" class="small text-nowrap">
+                          {{ col | formatColumnHeader }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of msg.rows | slice:0:15">
+                        <td *ngFor="let col of msg.columns" class="small text-nowrap">
+                          {{ row[col] | formatCellValue }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <small *ngIf="msg.rows && msg.rows.length > 15" class="text-body-secondary d-block mt-1">
+                  … y {{ msg.rows.length - 15 }} filas más
+                </small>
+              </div>
+
+              <!-- Vega-Lite Chart (download only) -->
+              <div *ngIf="msg.chartSpec" class="bubble-chart-card mt-2">
+                <div class="chart-card-icon">
+                  <svg cIcon name="cilChartLine" size="xl"></svg>
+                </div>
+                <div class="chart-card-info">
+                  <span class="chart-card-title">{{ msg.chartSpec.description || 'Gráfico generado' }}</span>
+                  <small class="text-body-secondary">Haz clic para descargar</small>
+                </div>
+                <button class="btn btn-sm btn-primary chart-card-btn" 
+                        title="Descargar como imagen"
+                        (click)="downloadChart(msg.chartSpec)">
+                  <svg cIcon name="cilCloudDownload" size="sm"></svg>
+                </button>
+              </div>
+
+              <!-- CSV / Excel file export (download card) -->
+              <div *ngIf="msg.fileExport" class="bubble-file-card mt-2">
+                <div class="file-card-icon" [ngClass]="{ 'file-csv': msg.fileExport.format === 'csv', 'file-excel': msg.fileExport.format === 'excel' }">
+                  <svg cIcon name="cilSpreadsheet" size="xl"></svg>
+                </div>
+                <div class="file-card-info">
+                  <span class="file-card-title">{{ msg.fileExport.fileName }}</span>
+                  <small class="text-body-secondary">{{ msg.fileExport.format === 'excel' ? 'Archivo Excel' : 'Archivo CSV' }}</small>
+                </div>
+                <button class="btn btn-sm btn-primary file-card-btn" 
+                        title="Descargar archivo"
+                        (click)="downloadFile(msg.fileExport)">
+                  <svg cIcon name="cilCloudDownload" size="sm"></svg>
+                </button>
+              </div>
+
+              <!-- Inline disambiguation candidates (quick pick buttons in bubble) -->
+              <div *ngIf="msg.suggestions?.length" class="bubble-suggestions mt-2">
+                <div *ngFor="let s of msg.suggestions" class="mb-2">
+                  <small class="fw-semibold text-body-secondary">{{ s.field }}:</small>
+                  <div class="d-flex flex-wrap gap-1 mt-1">
+                    <button *ngFor="let c of s.candidates"
+                            class="btn btn-outline-primary btn-sm suggestion-chip"
+                            (click)="pickCandidate(s.field, c)"
+                            [disabled]="loading">
+                      {{ c }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Timestamp -->
+              <div class="bubble-time text-body-secondary">
+                {{ getTimeString(msg.timestamp) }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div *ngIf="isTyping" class="message-bubble assistant-message">
+          <div class="bubble-content">
+            <div class="bubble-avatar">
+              <svg cIcon name="cilSpeech" size="sm"></svg>
+            </div>
+            <div class="bubble-body">
+              <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Confirmation Panel -->
+      <div *ngIf="activeSuggestions?.length" class="confirmation-panel border-top p-3">
+        <p class="small fw-semibold mb-2">
+          <svg cIcon name="cilWarning" size="sm" class="me-1 text-warning"></svg>
+          Se requieren confirmaciones
+        </p>
+        <div *ngFor="let s of activeSuggestions" class="mb-2">
+          <small class="fw-semibold">{{ s.field }}</small>
+          <span class="text-body-secondary ms-1" *ngIf="s.typed">(captado: "{{ s.typed }}")</span>
+          <div class="d-flex flex-wrap gap-1 mt-1">
+            <button *ngFor="let c of s.candidates"
+                    class="btn btn-sm"
+                    [ngClass]="{ 'btn-primary': isChosen(s.field, c), 'btn-outline-secondary': !isChosen(s.field, c) }"
+                    (click)="chooseCandidate(s.field, c)">
+              {{ c }}
+            </button>
+          </div>
+        </div>
+        <div class="d-flex gap-2 mt-2">
+          <button class="btn btn-primary btn-sm" (click)="runWithConfirmations()" [disabled]="loading">
+            Confirmar
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" (click)="dismissSuggestions()">
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-area border-top p-3">
+        <div class="input-wrapper d-flex align-items-end gap-2">
+          <textarea
+            #inputField
+            class="form-control chat-input"
+            [(ngModel)]="inputText"
+            (keydown)="onKeyDown($event)"
+            placeholder="Escribe tu pregunta..."
+            rows="1"
+            [disabled]="loading"
+            maxlength="1000"></textarea>
+
+          <!-- Voice button -->
+          <button *ngIf="voiceSupported"
+                  class="btn btn-ghost-secondary input-btn"
+                  [ngClass]="{ 'voice-active': isListening }"
+                  (click)="toggleVoice()"
+                  [title]="isListening ? 'Detener' : 'Hablar'"
+                  [disabled]="loading">
+            <svg cIcon [name]="isListening ? 'cilMediaStop' : 'cilMicrophone'" size="lg"></svg>
+          </button>
+
+          <!-- Send button -->
+          <button class="btn btn-primary input-btn send-btn"
+                  aria-label="Enviar mensaje"
+                  (click)="sendMessage()"
+                  [disabled]="loading || !inputText?.trim()">
+            <svg cIcon name="cilSend" size="lg"></svg>
+          </button>
+        </div>
+        <div *ngIf="isListening" class="voice-status mt-1">
+          <small class="text-danger">
+            <span class="pulse-dot"></span>
+            Escuchando... habla ahora
+          </small>
+        </div>
+      </div>
+
+    </div>
+  </c-offcanvas-body>
+</c-offcanvas>

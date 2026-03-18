@@ -1,0 +1,16 @@
+
+
+<div class="modal-header">
+    <h4 class="modal-title">Nueva Configuración</h4>
+    <button type="button" (click)="cerrar()" cButtonClose>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <app-formulario-configuracion
+    [errores]="errores"
+    [StateEnum]="StateEnum" 
+    (onSubmit)="guardarCambios($event)"></app-formulario-configuracion>
+    
+
+</div>

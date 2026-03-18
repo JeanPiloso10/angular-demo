@@ -1,0 +1,10 @@
+<app-formulario-categoria-compra
+*ngIf="modelo"
+[StateEnum]="StateEnum"
+[errores]="errores"
+[modelo]="modelo"
+[titulo]="titulo"
+(onSubmit)="guardarCambios($event)"
+>
+
+</app-formulario-categoria-compra>
